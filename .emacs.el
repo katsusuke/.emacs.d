@@ -86,6 +86,12 @@
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 ))
 
+;; リージョンをハイライト
+;; C-g で解除(マークは残っているがリージョンは無効)
+;; C-x C-x でリージョンを復活
+;; M-; ハイライトがあればコメントアウト
+(transient-mark-mode 1)
+
 ;; load-path の追加
 (defun add-load-path (path)
   (setq path (expand-file-name path))
