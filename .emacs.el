@@ -1,5 +1,6 @@
 ;; .emacs.el
-;; last update 2011/2/17
+;; last update 2011/7/5
+;;
 ;;
 ;; .emacs.el を再読み込みするには
 ;; C-x C-s または Command + s
@@ -23,7 +24,11 @@
 ;;                     '(left . 100)       ; フレームのY座標の位置
 		     '(alpha . 85)
 		     )default-frame-alist))
-
+      ;; サーバ起動
+      (server-start)
+      ;; クライアントを終了するとき終了するかどうかを聞かない
+      (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+      
       (require 'carbon-font)
       ; Hide menu bar and tool bar
       (setq menu-bar-mode nil)
@@ -104,6 +109,19 @@
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "/usr/share/emacs/site-lisp")
 
+;; バックアップ関係
+(setq backup-directory-alist `(("." . "/Users/shimizu/.backups")))
+(setq version-control t ;; Use version numbers for backups
+      kept-new-versions 16 ;; Number of newest versions to keep
+      kept-old-versions 2 ;; Number of oldest versions to keep
+      delete-old-versions t ;; Ask to delete excess backup versions?
+      backup-by-copying-when-linked t) ;; Copy linked files, don't rename.
+(defun force-backup-of-buffer ()
+  (let ((buffer-backed-up nil))
+    (backup-buffer)))
+(add-hook 'before-save-hook  'force-backup-of-buffer)
+
+
 ;画面端でおりかえす
 (setq truncate-partial-width-windows nil)
 
@@ -140,6 +158,13 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+(defun revert-buffer-force ()
+  (interactive)
+  (revert-buffer t t))
+(define-key global-map "\C-c\C-x\C-j" 'revert-buffer-force)
+(define-key global-map "\C-c\C-x\ j" 'revert-buffer-force)
+(define-key global-map "\C-x\C-j" 'revert-buffer)
+(define-key global-map "\C-x\ j" 'revert-buffer)
 
 ;Elisp Installer
 (require 'install-elisp)
@@ -238,6 +263,8 @@
 ;; (setq auto-mode-alist  (cons '("\\.rhtml$" . html-mode) auto-mode-alist))
 
 ;; Rails -> rinari
+;; ちなみに閉じタグを出すのは C-c /
+
 ;(require 'ido)
 ;(ido-mode t)
 (require 'rinari)
@@ -253,13 +280,25 @@
 (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
 (autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
 
+
+(autoload 'gtags-mode "gtags" "" t)
+(setq gtags-mode-hook
+      '(lambda ()
+         (local-set-key "\M-t" 'gtags-find-tag)     ;; 定義にジャンプ
+         (local-set-key "\M-r" 'gtags-find-rtag)    ;; 参照を検索
+         (local-set-key "\M-s" 'gtags-find-symbol)));; 定義にジャンプ
+(global-set-key "\M-e" 'gtags-pop-stack)            ;; スタックを戻る
+
 ;; c-mod
 (add-hook
  'c-mode-hook
  '(lambda ()
+    (gtags-mode 1)
+    (gtags-make-complete-list)
     (setq tab-width 8
           c-basic-offset 4
           indent-tabs-mode 1)))
+
 ;; c++-mode
 (add-hook
  'c++-mode-hook
