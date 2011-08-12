@@ -8,22 +8,40 @@
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
+(if (eq window-system 'w32)
+    (progn
+      (custom-set-variables
+       '(column-number-mode t)
+       '(show-paren-mode t)
+       '(tool-bar-mode nil))
+      (custom-set-faces
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))))
+
 (if (eq window-system 'mac)
     (progn
       ;; フレームのディフォルトの設定。
+      (custom-set-variables
+       '(column-number-mode t)
+       '(show-paren-mode t)
+       '(tool-bar-mode nil))
+      (custom-set-faces
+       ;; custom-set-faces was added by Custom.
+       ;; If you edit it by hand, you could mess it up, so be careful.
+       ;; Your init file should contain only one such instance.
+       ;; If there is more than one, they won't work right.
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
+      (set-frame-parameter nil 'alpha 85)
       (setq default-frame-alist
-            (append (list 
-		     '(foreground-color . "white")
-		     '(background-color . "black")
-		     '(border-color . "black")
-		     '(mouse-color . "red")    ; ???
-		     '(cursor-color . "white") ;
-		     '(width . 120)     ; フレームの横幅
-		     '(height . 50)    ; フレームの高さ
-;;                     '(top . 100)        ; フレームのX座標の位置
-;;                     '(left . 100)       ; フレームのY座標の位置
-		     '(alpha . 85)
-		     )default-frame-alist))
+	    (append (list 
+;; 		     '(foreground-color . "white")
+;; 		     '(background-color . "black")
+;; 		     '(border-color . "black")
+;; 		     '(mouse-color . "red")    ; ???
+;; 		     '(cursor-color . "white") ;
+ 		     '(width . 120)     ; フレームの横幅
+ 		     '(height . 50)    ; フレームの高さ
+;; 		     '(alpha . 85)
+ 		     )default-frame-alist))
       ;; サーバ起動
       (server-start)
       ;; クライアントを終了するとき終了するかどうかを聞かない
@@ -31,8 +49,8 @@
       
       (require 'carbon-font)
       ; Hide menu bar and tool bar
-      (setq menu-bar-mode nil)
-      (tool-bar-mode nil)
+      ;(setq menu-bar-mode nil)
+      ;(tool-bar-mode nil)
 
       (fixed-width-set-fontset "hiramaru" 10)
 
