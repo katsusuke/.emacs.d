@@ -1,5 +1,8 @@
 ;; .emacs.el
 ;; last update 2011/7/5
+
+;; メモ
+;; 現在有効なキーボードショートカットを表示するには<F1> b
 ;;
 ;;
 ;; .emacs.el を再読み込みするには
@@ -125,7 +128,9 @@
 ;(add-load-path "~/.emacs.d/emacs-rails")
 (add-load-path "~/.emacs.d/rinari")
 (add-load-path "~/.emacs.d/rhtml")
+(add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "/usr/share/emacs/site-lisp")
+
 
 ;; バックアップ関係
 (setq backup-directory-alist `(("." . "/Users/shimizu/.backups")))
@@ -236,6 +241,16 @@
 ;;   )
 (add-hook  'csharp-mode-hook 'my-csharp-mode-fn t)
 
+;; Coffee-mode
+(autoload 'coffee-mode "coffeescript-mode" "Major mode for editing Coffeescript." t)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+(defun coffee-custom ()
+  "coffee-mode-hook"
+  (set (make-local-variable 'tab-width) 2))
+(add-hook 'coffee-mode-hook
+  '(lambda() (coffee-custom)))
+
 ;; ruby-mode
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
 (setq auto-mode-alist
@@ -292,7 +307,27 @@
 
 ;; Rails -> rinari
 ;; ちなみに閉じタグを出すのは C-c /
-
+;; キーバインド	findするディレクトリ
+;; C-c ; f f	RAILS_ROOT/
+;; C-c ; f c	app/controller/
+;; C-c ; f m	app/models/
+;; C-c ; f v	app/views/
+;; C-c ; f h	app/helper/
+;; C-c ; f i	db/migrate/
+;; C-c ; f n	config/
+;; C-c ; f e	config/environment/
+;; C-c ; f j	pubic/javascript/
+;; C-c ; f l	vendor/plugin/
+;; C-c ; f o	log/
+;; C-c ; f p	public/
+;; C-c ; f s	script/
+;; C-c ; f t	test/
+;; C-c ; f w	lib/workers/
+;; C-c ; f x	test/fixtures/
+;; C-c ; f y	public/stylesheets/
+;; C-c ; f r	spec/
+;; C-c ; f z	spec/fixtures
+;; C-c ; g      grep
 ;(require 'ido)
 ;(ido-mode t)
 (require 'rinari)
