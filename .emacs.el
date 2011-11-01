@@ -127,6 +127,7 @@
 (add-load-path "~/.emacs.d")
 ;(add-load-path "~/.emacs.d/emacs-rails")
 (add-load-path "~/.emacs.d/rinari")
+(add-load-path "~/.emacs.d/haml-mode")
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "/usr/share/emacs/site-lisp")
@@ -263,6 +264,13 @@
           '(lambda ()
             (inf-ruby-keys)))
 
+;; HAML
+;; C-i でインデント C-I でアンインデント
+(autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
+(setq auto-mode-alist
+      (append '(("\\.haml$" . haml-mode)) auto-mode-alist))
+
+
 ;; flymake のエラーをミニバッファに出す
 (defun credmp/flymake-display-err-minibuf ()
   "Displays the error/warning for the current line in the minibuffer"
@@ -333,7 +341,9 @@
 (require 'rinari)
 (require 'rhtml-mode)
 (add-hook 'rhtml-mode-hook
-    (lambda () (rinari-launch)))
+	  (lambda () (rinari-launch)))
+(add-hook 'haml-mode-hook
+	  (lambda () (rinari-launch)))
 
 
 
