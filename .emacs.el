@@ -134,7 +134,7 @@
 
 
 ;; バックアップ関係
-(setq backup-directory-alist `(("." . "/Users/shimizu/.backups")))
+(setq backup-directory-alist `(("." . (concat (getenv "HOME") "/.backups"))))
 (setq version-control t ;; Use version numbers for backups
       kept-new-versions 16 ;; Number of newest versions to keep
       kept-old-versions 2 ;; Number of oldest versions to keep
@@ -269,6 +269,13 @@
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 (setq auto-mode-alist
       (append '(("\\.haml$" . haml-mode)) auto-mode-alist))
+(add-hook
+ 'haml-mode-hook
+ '(lambda ()
+    (c-set-offset 'substatement-open '0)
+    (setq tab-width  8
+          indent-tabs-mode nil)))
+
 
 
 ;; flymake のエラーをミニバッファに出す
