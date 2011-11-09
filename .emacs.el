@@ -343,7 +343,9 @@
 (add-hook 'rhtml-mode-hook
 	  (lambda () (rinari-launch)))
 (add-hook 'haml-mode-hook
-	  (lambda () (rinari-launch)))
+	  (lambda ()
+	    (rinari-launch)
+	    (setq indent-tabs-mode nil)))
 
 
 
