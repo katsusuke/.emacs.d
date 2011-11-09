@@ -1,0 +1,3 @@
+[submodule "rhtml"]
+	path = rhtml
+	url = http://github.com/eschulte/rhtml.git
