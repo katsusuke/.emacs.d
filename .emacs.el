@@ -134,7 +134,7 @@
 
 
 ;; バックアップ関係
-(setq backup-directory-alist `(("." . (concat (getenv "HOME") "/.backups"))))
+(setq backup-directory-alist `(("." . "~/.backups")))
 (setq version-control t ;; Use version numbers for backups
       kept-new-versions 16 ;; Number of newest versions to keep
       kept-old-versions 2 ;; Number of oldest versions to keep
@@ -250,7 +250,9 @@
   "coffee-mode-hook"
   (set (make-local-variable 'tab-width) 2))
 (add-hook 'coffee-mode-hook
-  '(lambda() (coffee-custom)))
+  '(lambda()
+     (coffee-custom)
+     (setq indent-tabs-mode nil)))
 
 ;; ruby-mode
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
