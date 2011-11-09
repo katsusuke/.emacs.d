@@ -134,7 +134,13 @@
 
 
 ;; バックアップ関係
-(setq backup-directory-alist `(("." . "~/.backups")))
+
+;; backup-directory-alist は以下の構造を持つ
+;; (regexp . directory)
+;; regexp に一致したファイルのバックアップが directory に作られる
+(setq backup-directory-alist (cons (cons "\\.*$" (expand-file-name "~/.backup"))
+				   backup-directory-alist))
+
 (setq version-control t ;; Use version numbers for backups
       kept-new-versions 16 ;; Number of newest versions to keep
       kept-old-versions 2 ;; Number of oldest versions to keep
