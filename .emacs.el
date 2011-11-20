@@ -249,7 +249,7 @@
 (add-hook  'csharp-mode-hook 'my-csharp-mode-fn t)
 
 ;; Coffee-mode
-(autoload 'coffee-mode "coffeescript-mode" "Major mode for editing Coffeescript." t)
+(autoload 'coffee-mode "coffee-mode" "Major mode for editing Coffeescript." t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 (defun coffee-custom ()
