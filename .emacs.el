@@ -18,7 +18,42 @@
        '(show-paren-mode t)
        '(tool-bar-mode nil))
       (custom-set-faces
-       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))))
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅"))))
+       '(wb-line-number-face ((t (:foreground "LightGrey"))))
+       '(wb-line-number-scroll-bar-face
+	 ((t (:foreground "white" :background "LightBlue2")))))
+      (set-frame-parameter nil 'alpha 85)
+      (setq default-frame-alist
+	    (append (list 
+;; 		     '(foreground-color . "white")
+;; 		     '(background-color . "black")
+;; 		     '(border-color . "black")
+;; 		     '(mouse-color . "red")    ; ???
+;; 		     '(cursor-color . "white") ;
+ 		     '(width . 120)     ; フレームの横幅
+ 		     '(height . 50)    ; フレームの高さ
+;; 		     '(alpha . 85)
+ 		     )default-frame-alist))
+      ;; デフォルトの文字コードはUTF-8にする
+      (set-default-coding-systems 'utf-8)
+      (prefer-coding-system 'utf-8-unix)
+
+      ;; 静的検証作業用
+      (setenv "PATH" (format "c:\\cygwin\\bin;%s" (getenv "PATH")))
+      (setenv "CYGWIN" "nodosfilewarning")
+;      (setq find-grep-options " | sed 's/^\\/cygdrive\\/\\([a-z]\\)/\\1:/g'")
+      (setq grep-command "grep -n -e ")
+      (setq grep-program "grep")
+      (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
+      (defun fg () (interactive)
+	(let ((grep-find-command (concat grep-find-command (thing-at-point 'symbol))))
+	  (call-interactively 'grep-find)))
+
+      ;; ここまで
+      (server-start)
+      (remove-hook
+       'kill-buffer-query-functions 
+       'server-kill-buffer-query-function)))
 
 (if (eq window-system 'mac)
     (progn
@@ -263,7 +298,7 @@
 ;; ruby-mode
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
 (setq auto-mode-alist
-  (append '(("\\.rb$" . ruby-mode)) auto-mode-alist))
+  (append '(("\\.\\(rb\\|rake\\)$" . ruby-mode)) auto-mode-alist))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby" "")
