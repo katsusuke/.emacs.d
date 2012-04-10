@@ -1,9 +1,7 @@
 ;; .emacs.el
-;; last update 2011/7/5
-
+;; last update 2012/3/28
 ;; メモ
 ;; 現在有効なキーボードショートカットを表示するには<F1> b
-;;
 ;;
 ;; .emacs.el を再読み込みするには
 ;; C-x C-s または Command + s
@@ -127,6 +125,14 @@
       (define-key function-key-map [134221148] [?\M-\\])
       (define-key function-key-map [201330012] [?\C-\M-\\])
 
+      ;; スクロールゆっくり
+      (global-set-key [wheel-up] '(lambda () "" (interactive) (scroll-down 1)))
+      (global-set-key [wheel-down] '(lambda () "" (interactive) (scroll-up 1)))
+      (global-set-key [double-wheel-up] '(lambda () "" (interactive) (scroll-down 2)))
+      (global-set-key [double-wheel-down] '(lambda () "" (interactive) (scroll-up 2)))
+      (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
+      (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
+
       (defface hlline-face
 	'((((class color)
 	    (background dark))
@@ -147,12 +153,6 @@
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 ))
 
-;; リージョンをハイライト
-;; C-g で解除(マークは残っているがリージョンは無効)
-;; C-x C-x でリージョンを復活
-;; M-; ハイライトがあればコメントアウト
-(transient-mark-mode 1)
-
 ;; load-path の追加
 (defun add-load-path (path)
   (setq path (expand-file-name path))
@@ -167,6 +167,11 @@
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "/usr/share/emacs/site-lisp")
 
+;; リージョンをハイライト
+;; C-g で解除(マークは残っているがリージョンは無効)
+;; C-x C-x でリージョンを復活
+;; M-; ハイライトがあればコメントアウト
+(transient-mark-mode 1)
 
 ;; バックアップ関係
 
@@ -218,15 +223,18 @@
 (global-set-key "\M-n" 'next-buffer)
 
 
-;key-bindings
+;; 全環境共通 key-bindings
 (if (eq window-system 'x)
     (progn
       (define-key function-key-map [backspace] [8])
       (put 'backspace 'ascii-character 8)))
 ;; (global-set-key "\C-h" 'backward-delete-char)
 ;; (global-set-key "\177" 'delete-char)
-(global-set-key "\M-g" 'goto-line)
+;goto-line はデフォルトでは M-g g
+;(global-set-key "\M-g" 'goto-line)
 (global-set-key "\C-h" 'delete-backward-char)
+;; TABをBackspaceで消す
+(global-set-key [backspace] 'backward-delete-char)
 ;(global-set-key "\C-@" 'set-mark-command)
 
 ;ファイルの先頭に #! が含まれているとき、自動的に chmod +x を行ってくれます。
@@ -454,6 +462,11 @@
                             (setq c-basic-offset 4)
                             (setq tab-width 4)
                             ) t)
+
+;; YAML-mode
+(add-hook 'yaml-mode-hook
+	  '(lambda ()
+	     (indent-tabs-mode nil)))
 
 ;; refe
 ;; (require 'refe)
