@@ -138,7 +138,7 @@
 	    (background dark))
 	   ;;(:background "dark state gray"))
 	   (:background "gray10"
-			:underline "gray24"))
+			:underline "gray4"))
 	  (((class color)
 	    (background light))
 	   (:background "ForestGreen"
@@ -476,7 +476,7 @@
 ;; PHP-mode
 (autoload 'php-mode "php-mode" "PHP mode" t)
 (setq auto-mode-alist
-      (cons '("\\.\\(php\\|php5\\|inc\\)$" . php-mode) auto-mode-alist))
+      (cons '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . php-mode) auto-mode-alist))
 (add-hook 'php-mode-hook '(lambda ()
                             (setq php-intelligent-tab nil)
                             (setq intelligent-tab nil)
