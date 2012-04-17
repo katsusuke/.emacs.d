@@ -1,11 +1,12 @@
 ;; .emacs.el
-;; last update 2012/3/28
+;; last update 2012/4/17
 ;; メモ
 ;; 現在有効なキーボードショートカットを表示するには<F1> b
 ;;
 ;; .emacs.el を再読み込みするには
 ;; C-x C-s または Command + s
 ;; M-x load-file RET ~/.emacs.el RET
+
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
@@ -191,6 +192,24 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+;; 自動でrevert-buffer
+(defun check-and-revert-buffer ()
+  (unless (verify-visited-file-modtime (current-buffer))
+    (save-excursion
+      (remove-hook 'window-configuration-change-hook 'check-and-revert-buffer)
+      (revert-buffer t nil))))
+(add-hook 'window-configuration-change-hook 'check-and-revert-buffer)
+
+;; リージョンの行数を表示
+(defun count-lines-and-chars ()
+  (if mark-active
+      (format "%d lines,%d chars "
+              (count-lines (region-beginning) (region-end))
+              (- (region-end) (region-beginning)))
+      ;;(count-lines-region (region-beginning) (region-end)) ;; これだとｴｺｰｴﾘｱがﾁﾗつく
+    ""))
+(add-to-list 'default-mode-line-format
+             '(:eval (count-lines-and-chars)))
 
 ;画面端でおりかえす
 (setq truncate-partial-width-windows nil)
