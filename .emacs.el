@@ -101,6 +101,8 @@
       ;; キーバインドの一覧はこちら
       ;; → http://macwiki.sourceforge.jp/wiki/index.php/MacKeyMode
       (mac-key-mode 1)
+      ;; C-zで最小化してうざいので無効に
+      (global-unset-key "\C-z")
       ;; Option キーを Meta キーとして使う
       (setq mac-option-modifier 'meta)
       ;; C-x <left/right>でバッファの切り替え（これはデフォルト動作）
