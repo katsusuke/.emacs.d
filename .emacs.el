@@ -325,8 +325,7 @@
 
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
-(setq auto-mode-alist
-      (append '(("\\.cs$" . csharp-mode)) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
 ;; (defun my-csharp-mode-fn ()
 ;;   "function that runs when csharp-mode is initialized for a buffer."
 ;;   ...insert your code here...
@@ -348,8 +347,8 @@
 
 ;; ruby-mode
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
-(setq auto-mode-alist
-  (append '(("\\.\\(rb\\|rake\\)$" . ruby-mode)) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby" "")
@@ -361,8 +360,7 @@
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
-(setq auto-mode-alist
-      (append '(("\\.haml$" . haml-mode)) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
  'haml-mode-hook
  '(lambda ()
@@ -496,8 +494,7 @@
 
 ;; PHP-mode
 (autoload 'php-mode "php-mode" "PHP mode" t)
-(setq auto-mode-alist
-      (cons '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . php-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" php-mode))
 (add-hook 'php-mode-hook '(lambda ()
                             (setq php-intelligent-tab nil)
                             (setq intelligent-tab nil)
@@ -510,6 +507,11 @@
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
 	     (indent-tabs-mode nil)))
-
+;; css-mode
+(add-hook 'css-mode-hook
+	  '(lambda ()
+	     (setq css-indent-offset 2)
+	     (indent-tabs-mode nil)
+	     (setq css-indent-offset 2)))
 ;; refe
 ;; (require 'refe)
