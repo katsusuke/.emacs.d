@@ -54,6 +54,7 @@
        'kill-buffer-query-functions 
        'server-kill-buffer-query-function)))
 
+;; Carbon Emacs 22用
 (if (eq window-system 'mac)
     (progn
       ;; フレームのディフォルトの設定。
@@ -166,7 +167,7 @@
 	  (call-interactively 'grep)
 	  (setq grep-command org-grep-command)))
 ))
-;; MacPorts emacs-app 用
+;; MacPorts emacs-app 24用
 (if (eq window-system 'ns)
     (progn
       ;; フレームのディフォルトの設定。
@@ -197,29 +198,36 @@
       ;; クライアントを終了するとき終了するかどうかを聞かない
       (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
       
-      (create-fontset-from-ascii-font "Menlo-12:weight=normal:slant=normal" nil "menlomarugo")
-      (set-fontset-font "fontset-menlomarugo"
-			'unicode
-			(font-spec :family "Hiragino Maru Gothic ProN" :size 12)
-			nil
-			'append)
-      (add-to-list 'default-frame-alist '(font . "fontset-menlomarugo"))
-      ; Hide menu bar and tool bar
-      ;(setq menu-bar-mode nil)
-      ;(tool-bar-mode nil)
+      ;; フォント設定 :height を変えるとサイズが変わる
+      ;; 他をいじるとカオス
+      (set-face-attribute 'default nil :family "monaco" :height 100)
+      (set-fontset-font
+       (frame-parameter nil 'font)
+       'japanese-jisx0208
+       '("Hiragino Kaku Gothic ProN" . "iso10646-1"))
+      (set-fontset-font
+       (frame-parameter nil 'font)
+       'japanese-jisx0212
+       '("Hiragino Kaku Gothic ProN" . "iso10646-1")) 
+      (set-fontset-font
+       (frame-parameter nil 'font)
+       'mule-unicode-0100-24ff
+       '("monaco" . "iso10646-1"))
+      (setq face-font-rescale-alist
+	    '(("^-apple-hiragino.*" . 1.2)
+	      (".*osaka-bold.*" . 1.2)
+	      (".*osaka-medium.*" . 1.2)
+	      (".*courier-bold-.*-mac-roman" . 1.0)
+	      (".*monaco cy-bold-.*-mac-cyrillic" . 0.9) (".*monaco-bold-.*-mac-roman" . 0.9)
+	      ("-cdac$" . 1.3)))
 
-      ;(fixed-width-set-fontset "hiramaru" 10)
 
       ;; 最近使ったファイル
       (recentf-mode t)
       (setq recentf-max-menu-items 10)
       (setq recentf-max-saved-items 20)
       ;; (setq recentf-exclude '("^/[^/:]+:")) ;除外するファイル名
-
-      ;; Macのキーバインドを使う
-      ;; キーバインドの一覧はこちら
-      ;; → http://macwiki.sourceforge.jp/wiki/index.php/MacKeyMode
-;      (mac-key-mode 1)
+      ;; MacPorts のemacs-app はデフォルトでMacのキーバインド使える
       ;; C-zで最小化してうざいので無効に
       (global-unset-key "\C-z")
       ;; Option キーを Meta キーとして使う
