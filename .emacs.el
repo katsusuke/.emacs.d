@@ -154,6 +154,136 @@
 
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+
+      ;; grep -r
+;;       (setq grep-command "grep -rnH -e ")
+;;       (setq grep-program "grep")
+;;       (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
+      (defun rg () (interactive)
+	(let (org-grep-command)
+	  (setq org-grep-command grep-command)
+	  (setq grep-command "grep -rnH -e ")
+	  (call-interactively 'grep)
+	  (setq grep-command org-grep-command)))
+))
+;; MacPorts emacs-app 用
+(if (eq window-system 'ns)
+    (progn
+      ;; フレームのディフォルトの設定。
+      (custom-set-variables
+       '(column-number-mode t)
+       '(show-paren-mode t)
+       '(tool-bar-mode nil))
+      (custom-set-faces
+       ;; custom-set-faces was added by Custom.
+       ;; If you edit it by hand, you could mess it up, so be careful.
+       ;; Your init file should contain only one such instance.
+       ;; If there is more than one, they won't work right.
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
+      (set-frame-parameter nil 'alpha 85)
+      (setq default-frame-alist
+	    (append (list 
+;; 		     '(foreground-color . "white")
+;; 		     '(background-color . "black")
+;; 		     '(border-color . "black")
+;; 		     '(mouse-color . "red")    ; ???
+;; 		     '(cursor-color . "white") ;
+ 		     '(width . 120)     ; フレームの横幅
+ 		     '(height . 50)    ; フレームの高さ
+;; 		     '(alpha . 85)
+ 		     )default-frame-alist))
+      ;; サーバ起動
+      (server-start)
+      ;; クライアントを終了するとき終了するかどうかを聞かない
+      (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+      
+      (create-fontset-from-ascii-font "Menlo-12:weight=normal:slant=normal" nil "menlomarugo")
+      (set-fontset-font "fontset-menlomarugo"
+			'unicode
+			(font-spec :family "Hiragino Maru Gothic ProN" :size 12)
+			nil
+			'append)
+      (add-to-list 'default-frame-alist '(font . "fontset-menlomarugo"))
+      ; Hide menu bar and tool bar
+      ;(setq menu-bar-mode nil)
+      ;(tool-bar-mode nil)
+
+      ;(fixed-width-set-fontset "hiramaru" 10)
+
+      ;; 最近使ったファイル
+      (recentf-mode t)
+      (setq recentf-max-menu-items 10)
+      (setq recentf-max-saved-items 20)
+      ;; (setq recentf-exclude '("^/[^/:]+:")) ;除外するファイル名
+
+      ;; Macのキーバインドを使う
+      ;; キーバインドの一覧はこちら
+      ;; → http://macwiki.sourceforge.jp/wiki/index.php/MacKeyMode
+;      (mac-key-mode 1)
+      ;; C-zで最小化してうざいので無効に
+      (global-unset-key "\C-z")
+      ;; Option キーを Meta キーとして使う
+      (setq mac-option-modifier 'meta)
+      ;; C-x <left/right>でバッファの切り替え（これはデフォルト動作）
+      ;; C-x <up/down>でフレームの切り替え
+      (global-set-key [?\C-x up] '(lambda () "" (interactive) (other-frame -1)))
+      (global-set-key [?\C-x down] '(lambda () "" (interactive) (other-frame 1)))
+
+      ;; バックスラッシュ入力
+      (define-key global-map [2213] nil)
+      (define-key global-map [67111077] nil)
+      (define-key global-map [134219941] nil)
+      (define-key global-map [201328805] nil)
+      (define-key function-key-map [2213] [?\\])
+      (define-key function-key-map [67111077] [?\C-\\])
+      (define-key function-key-map [134219941] [?\M-\\])
+      (define-key function-key-map [201328805] [?\C-\M-\\])
+      (define-key global-map [3420] nil)
+      (define-key global-map [67112284] nil)
+      (define-key global-map [134221148] nil)
+      (define-key global-map [201330012] nil)
+      (define-key function-key-map [3420] [?\\])
+      (define-key function-key-map [67112284] [?\C-\\])
+      (define-key function-key-map [134221148] [?\M-\\])
+      (define-key function-key-map [201330012] [?\C-\M-\\])
+
+      ;; スクロールゆっくり
+      (global-set-key [wheel-up] '(lambda () "" (interactive) (scroll-down 1)))
+      (global-set-key [wheel-down] '(lambda () "" (interactive) (scroll-up 1)))
+      (global-set-key [double-wheel-up] '(lambda () "" (interactive) (scroll-down 2)))
+      (global-set-key [double-wheel-down] '(lambda () "" (interactive) (scroll-up 2)))
+      (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
+      (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
+
+      (defface hlline-face
+	'((((class color)
+	    (background dark))
+	   ;;(:background "dark state gray"))
+	   (:background "gray10"
+			:underline "gray4"))
+	  (((class color)
+	    (background light))
+	   (:background "ForestGreen"
+			:underline nil))
+	  (t ()))
+	"*Face used by hl-line.")
+      (setq hl-line-face 'hlline-face)
+      ;;(setq hl-line-face 'underline)
+      (global-hl-line-mode)
+
+      ;; Show filename on titlebar
+      (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+
+      ;; grep -r
+;;       (setq grep-command "grep -rnH -e ")
+;;       (setq grep-program "grep")
+;;       (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
+      (defun rg () (interactive)
+	(let (org-grep-command)
+	  (setq org-grep-command grep-command)
+	  (setq grep-command "grep -rnH -e ")
+	  (call-interactively 'grep)
+	  (setq grep-command org-grep-command)))
 ))
 
 ;; load-path の追加
@@ -446,6 +576,9 @@
 	    (rinari-launch)
 	    (setq indent-tabs-mode nil)))
 
+(require 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
 
 
