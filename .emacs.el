@@ -137,6 +137,7 @@
       (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
       (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
 
+      ;; カーソル行ハイライト
       (defface hlline-face
 	'((((class color)
 	    (background dark))
@@ -155,17 +156,6 @@
 
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
-
-      ;; grep -r
-;;       (setq grep-command "grep -rnH -e ")
-;;       (setq grep-program "grep")
-;;       (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
-      (defun rg () (interactive)
-	(let (org-grep-command)
-	  (setq org-grep-command grep-command)
-	  (setq grep-command "grep -rnH -e ")
-	  (call-interactively 'grep)
-	  (setq grep-command org-grep-command)))
 ))
 ;; MacPorts emacs-app 24用
 (if (eq window-system 'ns)
@@ -263,35 +253,26 @@
       (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
       (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
 
-      (defface hlline-face
-	'((((class color)
-	    (background dark))
-	   ;;(:background "dark state gray"))
-	   (:background "gray10"
-			:underline "gray4"))
-	  (((class color)
-	    (background light))
-	   (:background "ForestGreen"
-			:underline nil))
-	  (t ()))
-	"*Face used by hl-line.")
-      (setq hl-line-face 'hlline-face)
-      ;;(setq hl-line-face 'underline)
+      ;; カーソル行ハイライト
+      ;; (defface hlline-face
+      ;; 	'((((class color)
+      ;; 	    (background dark))
+      ;; 	   ;;(:background "dark state gray"))
+      ;; 	   (:background "gray10"
+      ;; 			:underline "gray4"))
+      ;; 	  (((class color)
+      ;; 	    (background light))
+      ;; 	   (:background "ForestGreen"
+      ;; 			:underline nil))
+      ;; 	  (t ()))
+      ;; 	"*Face used by hl-line.")
+      ;; (setq hl-line-face 'hlline-face)
+      ;; (setq hl-line-face 'underline)
       (global-hl-line-mode)
 
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 
-      ;; grep -r
-;;       (setq grep-command "grep -rnH -e ")
-;;       (setq grep-program "grep")
-;;       (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
-      (defun rg () (interactive)
-	(let (org-grep-command)
-	  (setq org-grep-command grep-command)
-	  (setq grep-command "grep -rnH -e ")
-	  (call-interactively 'grep)
-	  (setq grep-command org-grep-command)))
 ))
 
 ;; load-path の追加
@@ -313,6 +294,18 @@
 ;; C-x C-x でリージョンを復活
 ;; M-; ハイライトがあればコメントアウト
 (transient-mark-mode 1)
+
+;; カーソル位置の単語をハイライト
+;; M-<left>	ahs-backward	前のシンボルへ移動
+;; M-<right>	ahs-forward	次のシンボルへ移動
+;; M-s-<left>	ahs-backward-difinition	?
+;; M-s-<right>	ahs-forward-definition	?
+;; M--	ahs-back-to-start	最初のカーソル位置のシンボルへ移動
+;; C-x C-'	ahs-change-range	ハイライトする範囲を表示しているディスプレイの範囲かバッファ全体かを切り替える
+;; C-x C-a	ahs-edit-mode	ハイライトしているシンボルを一括でrenameする
+(require 'auto-highlight-symbol)
+(global-auto-highlight-symbol-mode t)
+
 
 ;; バックアップ関係
 
