@@ -160,58 +160,61 @@
 ;; MacPorts emacs-app 24用
 (if (eq window-system 'ns)
     (progn
-      ;; フレームのディフォルトの設定。
-      (custom-set-variables
-       '(column-number-mode t)
-       '(show-paren-mode t)
-       '(tool-bar-mode nil))
-      (custom-set-faces
-       ;; custom-set-faces was added by Custom.
-       ;; If you edit it by hand, you could mess it up, so be careful.
-       ;; Your init file should contain only one such instance.
-       ;; If there is more than one, they won't work right.
-       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
-      (set-frame-parameter nil 'alpha 85)
-      (setq default-frame-alist
-	    (append (list 
-;; 		     '(foreground-color . "white")
-;; 		     '(background-color . "black")
-;; 		     '(border-color . "black")
-;; 		     '(mouse-color . "red")    ; ???
-;; 		     '(cursor-color . "white") ;
- 		     '(width . 120)     ; フレームの横幅
- 		     '(height . 50)    ; フレームの高さ
-;; 		     '(alpha . 85)
- 		     )default-frame-alist))
+      (defun set-frame-default ()
+	;; フレームのディフォルトの設定。
+	(custom-set-variables
+	 '(column-number-mode t)
+	 '(show-paren-mode t)
+	 '(tool-bar-mode nil))
+	(custom-set-faces
+	 ;; custom-set-faces was added by Custom.
+	 ;; If you edit it by hand, you could mess it up, so be careful.
+	 ;; Your init file should contain only one such instance.
+	 ;; If there is more than one, they won't work right.
+	 '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
+	;(set-frame-parameter nil 'alpha 85)
+	(setq default-frame-alist
+	      (append (list 
+		       ;; 		     '(foreground-color . "white")
+		       ;; 		     '(background-color . "black")
+		       ;; 		     '(border-color . "black")
+		       ;; 		     '(mouse-color . "red")    ; ???
+		       ;; 		     '(cursor-color . "white") ;
+		       '(width . 120)     ; フレームの横幅
+		       '(height . 50)    ; フレームの高さ
+		       '(alpha . 85)
+		       )default-frame-alist))
+	;; フォント設定 :height を変えるとサイズが変わる
+	;; 他をいじるとカオス
+	(set-face-attribute 'default nil :family "monaco" :height 100)
+	(set-fontset-font
+	 (frame-parameter nil 'font)
+	 'japanese-jisx0208
+	 '("Hiragino Kaku Gothic ProN" . "iso10646-1"))
+	(set-fontset-font
+	 (frame-parameter nil 'font)
+	 'japanese-jisx0212
+	 '("Hiragino Kaku Gothic ProN" . "iso10646-1")) 
+	(set-fontset-font
+	 (frame-parameter nil 'font)
+	 'mule-unicode-0100-24ff
+	 '("monaco" . "iso10646-1"))
+	(setq face-font-rescale-alist
+	      '(("^-apple-hiragino.*" . 1.2)
+		(".*osaka-bold.*" . 1.2)
+		(".*osaka-medium.*" . 1.2)
+		(".*courier-bold-.*-mac-roman" . 1.0)
+		(".*monaco cy-bold-.*-mac-cyrillic" . 0.9) (".*monaco-bold-.*-mac-roman" . 0.9)
+		("-cdac$" . 1.3)))
+	)
+      (set-frame-default)
       ;; サーバ起動
       (server-start)
       ;; クライアントを終了するとき終了するかどうかを聞かない
       (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+      ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
+      (setq ns-pop-up-frames nil)
       
-      ;; フォント設定 :height を変えるとサイズが変わる
-      ;; 他をいじるとカオス
-      (set-face-attribute 'default nil :family "monaco" :height 100)
-      (set-fontset-font
-       (frame-parameter nil 'font)
-       'japanese-jisx0208
-       '("Hiragino Kaku Gothic ProN" . "iso10646-1"))
-      (set-fontset-font
-       (frame-parameter nil 'font)
-       'japanese-jisx0212
-       '("Hiragino Kaku Gothic ProN" . "iso10646-1")) 
-      (set-fontset-font
-       (frame-parameter nil 'font)
-       'mule-unicode-0100-24ff
-       '("monaco" . "iso10646-1"))
-      (setq face-font-rescale-alist
-	    '(("^-apple-hiragino.*" . 1.2)
-	      (".*osaka-bold.*" . 1.2)
-	      (".*osaka-medium.*" . 1.2)
-	      (".*courier-bold-.*-mac-roman" . 1.0)
-	      (".*monaco cy-bold-.*-mac-cyrillic" . 0.9) (".*monaco-bold-.*-mac-roman" . 0.9)
-	      ("-cdac$" . 1.3)))
-
-
       ;; 最近使ったファイル
       (recentf-mode t)
       (setq recentf-max-menu-items 10)
@@ -254,24 +257,28 @@
       (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
 
       ;; カーソル行ハイライト
-      ;; (defface hlline-face
-      ;; 	'((((class color)
-      ;; 	    (background dark))
-      ;; 	   ;;(:background "dark state gray"))
-      ;; 	   (:background "gray10"
-      ;; 			:underline "gray4"))
-      ;; 	  (((class color)
-      ;; 	    (background light))
-      ;; 	   (:background "ForestGreen"
-      ;; 			:underline nil))
-      ;; 	  (t ()))
-      ;; 	"*Face used by hl-line.")
-      ;; (setq hl-line-face 'hlline-face)
+      (defface hlline-face
+      	'((((class color)
+      	    (background dark))
+      	   ;;(:background "dark state gray"))
+      	   (:background "gray10"
+      			:underline "gray4"))
+      	  (((class color)
+      	    (background light))
+      	   (:background "ForestGreen"
+      			:underline nil))
+      	  (t ()))
+      	"*Face used by hl-line.")
+      (setq hl-line-face 'hlline-face)
       ;; (setq hl-line-face 'underline)
       (global-hl-line-mode)
 
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+
+      ;; grep のコマンドは find -print0 |xargs grep を使う
+;      (require 'grep)
+;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
 
 ))
 
@@ -524,8 +531,12 @@
  '(lambda ()
     (define-key ruby-mode-map "\C-cd" 'flymake-display-err-menu-for-current-line)))
 
-
-
+;; grep の結果画面は画面端で折り返さないけど、
+;; コンパイルの結果画面は画面端で折り返す
+(add-hook 'compilation-mode-hook
+          '(lambda ()
+	     (cond ((eq major-mode 'grep-mode)
+		    (setq truncate-lines t)))))
 
 ;; ;; rails
 ;; ;; rails.el
@@ -603,7 +614,7 @@
  '(lambda ()
     (gtags-mode 1)
     (gtags-make-complete-list)
-    (setq tab-width 8
+    (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
 
