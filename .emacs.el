@@ -639,7 +639,7 @@
 
 ;; PHP-mode
 (autoload 'php-mode "php-mode" "PHP mode" t)
-(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" php-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . php-mode))
 (add-hook 'php-mode-hook '(lambda ()
                             (setq php-intelligent-tab nil)
                             (setq intelligent-tab nil)
