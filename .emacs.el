@@ -294,6 +294,7 @@
 (add-load-path "~/.emacs.d/haml-mode")
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "~/.emacs.d/coffee-mode/")
+(add-load-path "~/.emacs.d/js2-mode")
 (add-load-path "/usr/share/emacs/site-lisp")
 
 ;; リージョンをハイライト
@@ -660,3 +661,8 @@
 	     (setq css-indent-offset 2)))
 ;; refe
 ;; (require 'refe)
+
+;; js2-mode
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
