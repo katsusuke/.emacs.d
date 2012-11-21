@@ -7,3 +7,6 @@
 [submodule ".emacs.d/haml-mode"]
 	path = .emacs.d/haml-mode
 	url = https://github.com/nex3/haml-mode.git
+[submodule ".emacs.d/rhtml"]
+	path = .emacs.d/rhtml
+	url = http://github.com/eschulte/rhtml.git
