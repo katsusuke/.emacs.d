@@ -1,9 +1,6 @@
 [submodule "rhtml"]
 	path = rhtml
 	url = http://github.com/eschulte/rhtml.git
-[submodule "haml-mode"]
-	path = haml-mode
-	url = https://github.com/nex3/haml-mode.git
 [submodule "rinari"]
 	path = rinari
 	url = https://github.com/eschulte/rinari.git
