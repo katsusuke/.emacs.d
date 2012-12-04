@@ -295,6 +295,7 @@
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "~/.emacs.d/js2-mode")
+(add-load-path "~/.emacs.d/yaml-mode")
 (add-load-path "/usr/share/emacs/site-lisp")
 
 ;; リージョンをハイライト
@@ -487,6 +488,7 @@
 ;; ruby-mode
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
 (add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
@@ -650,6 +652,9 @@
                             ) t)
 
 ;; YAML-mode
+(autoload 'yaml-mode "yaml-mode" "YAML mode" t)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
 	     (indent-tabs-mode nil)))
