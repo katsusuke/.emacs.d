@@ -615,6 +615,21 @@
 (add-hook
  'c-mode-hook
  '(lambda ()
+    ;; cedit
+    (load-library "cedet")
+    (global-ede-mode 1)
+    (semantic-mode 1)
+    (setq semantic-default-submodes
+         '(
+           global-semantic-idle-scheduler-mode
+           global-semantic-idle-completions-mode
+           global-semanticdb-minor-mode
+           global-semantic-decoration-mode
+           global-semantic-highlight-func-mode
+           global-semantic-stickyfunc-mode
+           global-semantic-mru-bookmark-mode
+           ))
+    ;; gtags
     (gtags-mode 1)
     (gtags-make-complete-list)
     (setq tab-width 4
@@ -626,7 +641,7 @@
  'c++-mode-hook
  '(lambda ()
     (c-set-offset 'substatement-open '0)
-    (setq tab-width  8
+    (setq tab-width  4
           c-basic-offset 4
           indent-tabs-mode 1)))
 
