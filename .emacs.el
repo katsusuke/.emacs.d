@@ -47,12 +47,7 @@
       (defun fg () (interactive)
 	(let ((grep-find-command (concat grep-find-command (thing-at-point 'symbol))))
 	  (call-interactively 'grep-find)))
-
-      ;; ここまで
-      (server-start)
-      (remove-hook
-       'kill-buffer-query-functions 
-       'server-kill-buffer-query-function)))
+      ))
 
 ;; Carbon Emacs 22用
 (if (eq window-system 'mac)
@@ -80,10 +75,6 @@
  		     '(height . 50)    ; フレームの高さ
 ;; 		     '(alpha . 85)
  		     )default-frame-alist))
-      ;; サーバ起動
-      (server-start)
-      ;; クライアントを終了するとき終了するかどうかを聞かない
-      (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
       
       (require 'carbon-font)
       ; Hide menu bar and tool bar
@@ -208,10 +199,6 @@
 		("-cdac$" . 1.3)))
 	)
       (set-frame-default)
-      ;; サーバ起動
-      (server-start)
-      ;; クライアントを終了するとき終了するかどうかを聞かない
-      (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
       
@@ -683,6 +670,13 @@
 ;; (require 'refe)
 
 ;; js2-mode
-(autoload 'js2-mode "js2" nil t)
+(autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
+;; クライアントを終了するとき終了するかどうかを聞かない
+;; サーバ起動
+(require 'server)
+(unless (server-running-p)
+  (progn
+    (server-start)
+    (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))
