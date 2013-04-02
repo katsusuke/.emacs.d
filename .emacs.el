@@ -673,10 +673,12 @@
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;; クライアントを終了するとき終了するかどうかを聞かない
-;; サーバ起動
-(require 'server)
-(unless (server-running-p)
-  (progn
-    (server-start)
-    (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))
+(if (or (eq window-system 'w32) (eq window-system 'mac) (eq window-system 'ns) (eq window-system 'x))
+    (progn
+      ;; クライアントを終了するとき終了するかどうかを聞かない
+      ;; サーバ起動
+      (require 'server)
+      (unless (server-running-p)
+	(progn
+	  (server-start)
+	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
