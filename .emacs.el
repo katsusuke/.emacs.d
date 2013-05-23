@@ -479,11 +479,16 @@
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
-(autoload 'run-ruby "inf-ruby" "")
-(autoload 'inf-ruby-keys "inf-ruby" "")
+(autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
+;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
 (add-hook 'ruby-mode-hook
-          '(lambda ()
-            (inf-ruby-keys)))
+	  '(lambda ()
+;	     (message "dbg1:%s\n" ruby-mode-map)
+	     (define-key ruby-mode-map "{" nil);ここの設定はEmacs24.3のバグ?
+	     (define-key ruby-mode-map "}" nil);
+;	     (message "dbg2:%s\n" ruby-mode-map)
+;	     (inf-ruby-keys)
+	     ))
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
@@ -598,6 +603,11 @@
          (local-set-key "\M-s" 'gtags-find-symbol)));; 定義にジャンプ
 (global-set-key "\M-e" 'gtags-pop-stack)            ;; スタックを戻る
 
+;; C Scope
+;; タグ作成は cscope -bR
+(require 'xcscope)
+(setq cscope-do-not-update-database t)
+
 ;; c-mod
 (add-hook
  'c-mode-hook
@@ -682,3 +692,20 @@
 	(progn
 	  (server-start)
 	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(ede-project-directories (quote ("/Users/k-shimizu/Desktop/Sample/Src")))
+ '(gud-gdb-command-name "gdb --annotate=1")
+ '(large-file-warning-threshold nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
