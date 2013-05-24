@@ -1,0 +1,285 @@
+GLOBAL(1)                                                            GLOBAL(1)
+
+
+
+[1mNAME[0m
+       global - print locations of the specified object.
+
+[1mSYNOPSIS[0m
+       [1mglobal [22m[-adGilnqrstTvx][-e] [4mpattern[0m
+       [1mglobal [22m-c[diIoOPrsT] [4mprefix[0m
+       [1mglobal [22m-f[adlnqrstvx][-L file-list] [4mfiles[0m
+       [1mglobal [22m-g[aGilnoOqtvVx][-L file-list][-e] [4mpattern[24m [[4mfiles[24m]
+       [1mglobal [22m-I[ailnqtvx][-e] [4mpattern[0m
+       [1mglobal [22m-P[aGilnoOqtvVx][-e] [4mpattern[0m
+       [1mglobal [22m-p[qrv]
+       [1mglobal [22m-u[qv]
+
+[1mDESCRIPTION[0m
+       [1mGlobal  [22mfinds  locations of the specified object in C, C++, Yacc, Java,
+       PHP and Assembly source files, and print the path name, line number and
+       line image of the locations.  [1mGlobal [22mcan locate not only object defini-
+       tions but also object references and other symbols.
+
+       [1mGlobal [22mcan treat a source tree, that is,  a  directory  that  has  sub-
+       directories  and  source files, as a project.  In advance of using this
+       command, you must execute [1mgtags[22m(1) at the root directory of  a  project
+       to  make  tag files.  Then you can execute this command anywhere in the
+       project.  You need not specify where the tag file is.  Instead,  [1mglobal[0m
+       locates it by itself.
+
+       You  can  specify  a regular expression for the [4mpattern[24m.  [1mGlobal [22munder-
+       stands two different versions of regular expression syntax:  [4mbasic[24m  and
+       [4mextended[24m. The default is [4mextended[24m.
+
+[1mCOMMANDS[0m
+       The following commands are available:
+
+       <no command> [4mpattern[0m
+              Print  objects  which  match  to the [4mpattern[24m.  By default, print
+              object definitions.
+
+       [1m-c[22m, [1m--completion [22m[[4mprefix[24m]
+              Print object names which start with the  specified  [4mprefix[24m.   If
+              [4mprefix[24m is not specified, print all object names.
+
+       [1m-f[22m, [1m--file [4m[22mfiles[0m
+              Print  all  objects  in  the  [4mfiles[24m.  This option implies the [1m-x[0m
+              option.
+
+       [1m-g[22m, [1m--grep [4m[22mpattern[24m [[4mfiles[24m]
+              Print all lines which match to the [4mpattern[24m.  If [4mfiles[24m is  speci-
+              fied, this command searches in the files.
+
+       [1m--help [22mShow help.
+
+       [1m-I[22m, [1m--idutils [4m[22mpattern[0m
+              Print  all  lines which match to the [4mpattern[24m.  This function use
+              [1midutils[22m(1) as a search engine.  To use this command, you need to
+              install  [1midutils[22m(1) in your system and execute [1mgtags[22m(1) with the
+              [1m-I [22moption.
+
+       [1m-P[22m, [1m--path [22m[[4mpattern[24m]
+              Print path names which match to  the  [4mpattern[24m.   If  no  pattern
+              specified, print all path names in the project.
+
+       [1m-p[22m, [1m--print-dbpath[0m
+              Print the location of 'GTAGS'.
+
+       [1m-u[22m, [1m--update[0m
+              Update tag files incrementally.  This command internally invokes
+              [1mgtags[22m(1).  You can execute this command anywhere in the  project
+              differing from [1mgtags[22m(1).
+
+       [1m--version[0m
+              Show version number.
+
+[1mOPTIONS[0m
+       The following options are available:
+
+       [1m-a[22m, [1m--absolute[0m
+              Print absolute path name. By default, print relative path name.
+
+       [1m-d[22m, [1m--definition[0m
+              Print locations of object definitions.
+
+       [1m--from-here [4m[22mcontext[0m
+              Decide   tag   type   by   the  [4mcontext[24m.  The  [4mcontext[24m  must  be
+              'lineno:path'.  If this option is specified then the [1m-s  [22mand  [1m-r[0m
+              are ignored.  Regular expression is not allowed for the [4mpattern[24m.
+              This option assumes use in conversational environments  such  as
+              editors and IDEs.
+
+       [1m-e[22m, [1m--regexp [4m[22mpattern[0m
+              Use [4mpattern[24m as the pattern; useful to protect patterns beginning
+              with '-'.
+
+       [1m--encode-path [4m[22mchars[0m
+              Convert path characters in [4mchars[24m into a '%' symbol, followed  by
+              the  two-digit  hexadecimal  representation of the character.  A
+              blank will be converted to '%20'.
+
+       [1m-G[22m, [1m--basic-regexp[0m
+              Interpret [4mpattern[24m as a basic regular expression.  The default is
+              extended regular expression.
+
+       [1m-i[22m, [1m--ignore-case[0m
+              Ignore case distinctions in the pattern.
+
+       [1m-l[22m, [1m--local[0m
+              Print only objects which exist under the current directory.
+
+       [1m-L[22m, [1m--file-list [4m[22mfile-list[0m
+              Obtain files from [4mfile-list[24m in addition to the arguments.
+
+       [1m--literal[0m
+              Execute  literal  search  instead  of regular expression search.
+              This option is only valid when the [1m-g [22mcommand is specified.
+
+       [1m--match-part [4m[22mpart[0m
+              Specify the matched part of path name.   This  option  is  valid
+              only  with  the  [1m-c  [22mcommand with the [1m-P [22moption.  The default is
+              [4mall[24m.
+
+       [1m-n[22m, [1m--nofilter[0m
+              Suppress sort filter and path conversion filter.
+
+       [1m-O[22m, [1m--only-other[0m
+              Treat only text files other  than  source  code  like  'README'.
+              This  option  is  valid  only  with  the [1m-g [22mor [1m-P [22mcommand.  This
+              option overrides the [1m-o [22moption.
+
+       [1m-o[22m, [1m--other[0m
+              Treat not only source files  but  also  text  files  other  than
+              source  code  like 'README'.  This option is valid only with the
+              [1m-g [22mor [1m-P [22mcommand.
+
+       [1m--print0[0m
+              Print each record followed by a null character instead of a new-
+              line.
+
+       [1m-q[22m, [1m--quiet[0m
+              Quiet mode.
+
+       [1m-r[22m, [1m--reference[22m, [1m--rootdir[0m
+              Print locations of object references.  With the [1m-p [22moption, print
+              the root directory of the project.
+
+       [1m--result [4m[22mformat[0m
+              Print out using the  specified  [4mformat[24m.   [4mformat[24m  may  be  [4mpath[24m,
+              [4mctags[24m,  [4mctags-x[24m,  [4mgrep[24m  or  [4mcscope[24m.   The  default is [4mpath[24m.  The
+              [1m--result=ctags [22mand [1m--result=ctags-x [22mare equivalent to the [1m-t [22mand
+              [1m-x  [22mrespectively.   The  [1m--result  [22moption is given more priority
+              than the -t and -x options.
+
+       [1m--single-update [4m[22mfile[0m
+              Update tag files incrementally  using  [1mgtags[22m(1)  with  [1m--single-[0m
+              [1mupdate [22moption.  It is considered that [4mfile[24m was added or updated,
+              and there is no change in other files.  This option implies  the
+              [1m-u [22moption.
+
+       [1m-s[22m, [1m--symbol[0m
+              Print locations of the specified symbol other than definitions.
+
+       [1m-T[22m, [1m--through[0m
+              Go  through  all  the  tag  files  listed  in  [1mGTAGSLIBPATH[22m.  By
+              default, stop searching when  tag  is  found.   This  option  is
+              ignored when either [1m-s[22m, [1m-r [22mor [1m-l [22moption is specified.
+
+       [1m-t[22m, [1m--tags[0m
+              Use standard ctags format.
+
+       [1m-v[22m, [1m--verbose[0m
+              Verbose mode.
+
+       [1m-V[22m, [1m--invert-match[0m
+              Invert  the  sense  of  matching,  to select non-matching lines.
+              This option is valid only with the [1m-g [22mor [1m-P [22mcommand.
+
+       [1m-x[22m, [1m--cxref[0m
+              Use standard ctags cxref (with the [4m-x[24m) format.
+
+[1mEXAMPLES[0m
+       $ ls -F
+       Makefile      src/    lib/
+       $ gtags
+       $ global main
+       src/main.c
+       $ global -x main
+       main              10 src/main.c  main (argc, argv) {
+       $ global -f src/main.c
+       main              10 src/main.c  main (argc, argv) {
+       func1            55 src/main.c  func1() {
+       func2            72 src/main.c  func2() {
+       func3           120 src/main.c  func3() {
+       $ global -x '^[sg]et'
+       set_num           20 lib/util.c  set_num(values) {
+       get_num           30 lib/util.c  get_num() {
+       $ global -rx '^[sg]et'
+       get_num          205 src/op.c            while (get_num() > 0) {
+       set_num          113 src/op.c            set_num(32);
+       set_num          225 src/opop.c               if (set_num(0) > 0) {
+       $ global strlen
+       $ (cd /usr/src/sys; gtags)
+       $ export GTAGSLIBPATH=/usr/src/sys
+       $ global strlen
+       $ (cd /usr/src/lib; gtags)
+       $ GTAGSLIBPATH=/usr/src/lib:/usr/src/sys
+       $ global strlen
+
+[1mFILES[0m
+       'GTAGS'
+              Tag file for object definitions.
+
+       'GRTAGS'
+              Tag file for object references.
+
+       'GPATH'
+              Tag file for path of source files.
+
+       'GTAGSROOT'
+              If environment variable [1mGTAGSROOT [22mis not set  and  file  'GTAGS-
+              ROOT' exists in the same directory with 'GTAGS' then [1mglobal [22msets
+              [1mGTAGSROOT [22mto the contents of the file.
+
+       '$HOME/.globalrc', '/etc/gtags.conf', '[sysconfdir]/gtags.conf'
+              Configuration files.
+
+[1mENVIRONMENT[0m
+       The following environment variables affect the execution of [1mglobal[22m:
+
+       [1mGTAGSROOT[0m
+              The root directory of the project.
+
+       [1mGTAGSDBPATH[0m
+              The directory on which tag files exist.  This value  is  ignored
+              when [1mGTAGSROOT [22mis not defined.
+
+       [1mGTAGSLIBPATH[0m
+              If  this  variable  is set, it is used as the path to search for
+              library functions. If the specified object is not found  in  the
+              project,  [1mglobal [22malso search in these paths.  Since only 'GTAGS'
+              is targeted in the retrieval, this variable is ignored when  the
+              [1m-r [22mor [1m-s [22mis specified.
+
+       [1mGTAGSCONF[0m
+              Configuration file. The default is '$HOME/.globalrc'.
+
+       [1mGTAGSLABEL[0m
+              Configuration label. The default is [4mdefault[24m.
+
+       [1mMAKEOBJDIRPREFIX[0m
+              If this variable is set, '$MAKEOBJDIRPREFIX' is used as the pre-
+              fix of BSD-style objdir. The default is '/usr/obj'.
+
+       [1mGTAGSTHROUGH[0m
+              If this variable is set, the [1m-T [22moption is specified.
+
+       [1mGTAGSBLANKENCODE[0m
+              If this variable is set, the --encode=" <TAB>" option is  speci-
+              fied.
+
+[1mCONFIGURATION[0m
+       The following configuration variables affect the execution of [1mglobal[22m:
+
+       icase_path(boolean)
+              Ignore case distinctions in the [4mpattern[24m.
+
+[1mDIAGNOSTICS[0m
+       [1mGlobal [22mexits with a non 0 value if an error occurred, 0 otherwise.
+
+[1mSEE ALSO[0m
+       [1mgtags[22m(1), [1mhtags[22m(1), [1mless[22m(1).
+
+       GNU GLOBAL source code tag system
+       (http://www.gnu.org/software/global/).
+
+[1mAUTHOR[0m
+       Shigio YAMAGUCHI, Hideki IWAMOTO and others.
+
+[1mHISTORY[0m
+       The [1mglobal [22mcommand appeared in FreeBSD 2.2.2.
+
+
+
+GNU Project                        May 2012                          GLOBAL(1)
