@@ -7,7 +7,6 @@
 ;; C-x C-s または Command + s
 ;; M-x load-file RET ~/.emacs.el RET
 
-
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
 (if (eq window-system 'w32)
@@ -48,6 +47,7 @@
 	(let ((grep-find-command (concat grep-find-command (thing-at-point 'symbol))))
 	  (call-interactively 'grep-find)))
       ))
+
 
 ;; Carbon Emacs 22用
 (if (eq window-system 'mac)
@@ -283,7 +283,9 @@
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "~/.emacs.d/js2-mode")
 (add-load-path "~/.emacs.d/yaml-mode")
-(add-load-path "/usr/share/emacs/site-lisp")
+(if (eq window-system 'w32)
+  (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
+  (add-load-path "/usr/share/emacs/site-lisp"))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
