@@ -38,16 +38,11 @@
 
       ;; 静的検証作業用
       (setenv "PATH" (format "c:\\cygwin\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin\\usr\\local\\bin;%s" (getenv "PATH")))
       (setenv "CYGWIN" "nodosfilewarning")
 ;      (setq find-grep-options " | sed 's/^\\/cygdrive\\/\\([a-z]\\)/\\1:/g'")
       (setq grep-command "grep -n -e ")
-      (setq grep-program "grep")
-      (setq grep-find-command "find \"z:/share/lcd/lcd_src/20110804_project_utf8/src\" -type f -name \"*.[ch]\" -print0|xargs -0e grep -ne ")
-      (defun fg () (interactive)
-	(let ((grep-find-command (concat grep-find-command (thing-at-point 'symbol))))
-	  (call-interactively 'grep-find)))
-      ))
-
+      (setq grep-program "grep")))
 
 ;; Carbon Emacs 22用
 (if (eq window-system 'mac)
@@ -283,6 +278,8 @@
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "~/.emacs.d/js2-mode")
 (add-load-path "~/.emacs.d/yaml-mode")
+(add-load-path "~/.emacs.d/foreign-regexp")
+
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
   (add-load-path "/usr/share/emacs/site-lisp"))
@@ -711,3 +708,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
+
+;; foreign-regexp
+(require 'foreign-regexp)
+(custom-set-variables
+ '(foreign-regexp/regexp-type 'ruby) ;; Choose by your preference.
+ '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.

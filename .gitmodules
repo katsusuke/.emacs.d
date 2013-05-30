@@ -16,3 +16,6 @@
 [submodule ".emacs.d/yaml-mode"]
 	path = .emacs.d/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
+[submodule ".emacs.d/foreign-regexp"]
+	path = .emacs.d/foreign-regexp
+	url = https://github.com/k-talo/foreign-regexp.el.git

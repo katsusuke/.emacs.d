@@ -3,3 +3,4 @@
 *.elc
 .emacs.d/anything-c-adaptive-history
 .emacs.d/semanticdb
+.emacs.d/server
