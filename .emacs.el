@@ -282,7 +282,7 @@
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
-  (add-load-path "/usr/share/emacs/site-lisp"))
+  (add-load-path "/opt/local/share/emacs/site-lisp"))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
