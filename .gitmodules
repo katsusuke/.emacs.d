@@ -16,3 +16,6 @@
 [submodule ".emacs.d/foreign-regexp"]
 	path = .emacs.d/foreign-regexp
 	url = https://github.com/k-talo/foreign-regexp.el.git
+[submodule ".emacs.d/rinari"]
+	path = .emacs.d/rinari
+	url = https://github.com/eschulte/rinari.git
