@@ -573,18 +573,18 @@
 ;; C-c ; g      grep
 ;(require 'ido)
 ;(ido-mode t)
-(require 'rinari)
-(require 'rhtml-mode)
-(add-hook 'rhtml-mode-hook
-	  (lambda () (rinari-launch)))
-(add-hook 'haml-mode-hook
-	  (lambda ()
-	    (rinari-launch)
-	    (setq indent-tabs-mode nil)))
+;; (require 'rinari)
+;; (require 'rhtml-mode)
+;; (add-hook 'rhtml-mode-hook
+;; 	  (lambda () (rinari-launch)))
+;; (add-hook 'haml-mode-hook
+;; 	  (lambda ()
+;; 	    (rinari-launch)
+;; 	    (setq indent-tabs-mode nil)))
 
-(require 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
+;; (require 'smart-compile)
+;; (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
+;; (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
 
 
