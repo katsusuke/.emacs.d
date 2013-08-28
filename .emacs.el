@@ -261,6 +261,9 @@
       ;; grep のコマンドは find -print0 |xargs grep を使う
 ;      (require 'grep)
 ;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
+      (setenv "PATH" (format "%s:%s"
+			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p0/bin")
+			     (getenv "PATH")))
 
 ))
 
@@ -606,6 +609,7 @@
 ;; タグ作成は cscope -bR
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
+(setq cscope-truncate-lines t)
 
 ;; c-mod
 (add-hook
@@ -615,6 +619,7 @@
     (load-library "cedet")
     (global-ede-mode 1)
     (semantic-mode 1)
+    (cpp-highlight-buffer t)
     (setq semantic-default-submodes
          '(
            global-semantic-idle-scheduler-mode
