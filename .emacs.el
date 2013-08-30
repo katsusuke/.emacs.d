@@ -590,7 +590,6 @@
 (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
 
-
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")
 (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
