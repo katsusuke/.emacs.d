@@ -274,7 +274,6 @@
     (setq load-path (cons path load-path))))
 
 (add-load-path "~/.emacs.d")
-;(add-load-path "~/.emacs.d/emacs-rails")
 (add-load-path "~/.emacs.d/rinari")
 (add-load-path "~/.emacs.d/haml-mode")
 (add-load-path "~/.emacs.d/rhtml")

@@ -1060,7 +1060,7 @@ buffer that is not the current buffer."
     (persistent-action . anything-c-buffers+-persistent-action)))
 
 (defun anything-c-buffers+-persistent-action (name)
-  (flet ((kill (item)
+  (cl-flet ((kill (item)
                (with-current-buffer item
                  (if (and (buffer-modified-p)
                           (buffer-file-name (current-buffer)))
@@ -2426,7 +2426,7 @@ If this action is executed just after `yank', replace with STR as yanked string.
 ;; the commands `anything-mark-ring' and `anything-global-mark-ring' instead.
 
 (defun anything-c-source-mark-ring-candidates ()
-  (flet ((get-marks (pos)
+  (cl-flet ((get-marks (pos)
            (save-excursion
              (goto-char pos)
              (beginning-of-line)
@@ -2482,7 +2482,7 @@ If this action is executed just after `yank', replace with STR as yanked string.
                              (anything-match-line-color-current-line))))))
                              
 (defun anything-c-source-global-mark-ring-candidates ()
-  (flet ((buf-fn (m)
+  (cl-flet ((buf-fn (m)
            (with-current-buffer (marker-buffer m)
              (goto-char m)
              (beginning-of-line)
@@ -4139,7 +4139,7 @@ If optional 2nd argument is non-nil, the file opened with `auto-revert-mode'.")
       (goto-char (point-min))
       (if (functionp regexp) (setq regexp (funcall regexp)))
       (let (hierarchy curhead)
-        (flet ((matched ()
+        (cl-flet ((matched ()
                         (if (numberp subexp)
                             (cons (match-string-no-properties subexp) (match-beginning subexp))
                           (cons (buffer-substring (point-at-bol) (point-at-eol))
@@ -4406,7 +4406,7 @@ Return nil if bmk is not a valid bookmark."
                          "*anything"
                          ;; echo area
                          " *Echo Area" " *Minibuf"))))
-               (flet ((buffer-name (x) x))
+               (cl-flet ((buffer-name (x) x))
                  (anything-test-candidates 'anything-c-source-buffers))))
      (desc "anything-c-stringify")
      (expect "str1"
