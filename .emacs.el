@@ -262,7 +262,7 @@
 ;      (require 'grep)
 ;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
       (setenv "PATH" (format "%s:%s"
-			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p0/bin")
+			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p247/bin")
 			     (getenv "PATH")))
 
 ))
@@ -678,6 +678,14 @@
 	     (setq css-indent-offset 2)
 	     (indent-tabs-mode nil)
 	     (setq css-indent-offset 2)))
+
+;; html-mode
+(add-hook 'html-mode-hook
+          (lambda()
+            (setq sgml-basic-offset 2)
+            (setq indent-tabs-mode nil)))
+
+
 ;; refe
 ;; (require 'refe)
 
