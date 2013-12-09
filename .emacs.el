@@ -281,6 +281,8 @@
 (add-load-path "~/.emacs.d/js2-mode")
 (add-load-path "~/.emacs.d/yaml-mode")
 (add-load-path "~/.emacs.d/foreign-regexp")
+(add-load-path "~/.emacs.d/yasnippet")
+(add-load-path "~/.emacs.d/yasnippets_rails")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -461,6 +463,13 @@
 ;;   )
 (add-hook  'csharp-mode-hook 'my-csharp-mode-fn t)
 
+;; grep の結果画面は画面端で折り返さないけど、
+;; コンパイルの結果画面は画面端で折り返す
+(add-hook 'compilation-mode-hook
+          '(lambda ()
+	     (cond ((eq major-mode 'grep-mode)
+		    (setq truncate-lines t)))))
+
 ;; Coffee-mode
 (autoload 'coffee-mode "coffee-mode" "Major mode for editing Coffeescript." t)
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
@@ -502,55 +511,59 @@
     (setq tab-width  8
           indent-tabs-mode nil)))
 
+;; flymake for ruby
+(require 'flymake)
+;; Invoke ruby with '-c' to get syntax checking
+(defun flymake-ruby-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		     'flymake-create-temp-inplace))
+	 (local-file (file-relative-name
+		      temp-file
+		      (file-name-directory buffer-file-name))))
+    (list "ruby" (list "-c" local-file))))
+(push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
+(push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
+(push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3) flymake-err-line-patterns)
+(add-hook
+ 'ruby-mode-hook
+ '(lambda ()
+    ;; Don't want flymake mode for ruby regions in rhtml files
+    (if (not (null buffer-file-name)) (flymake-mode))))
 
-
-;; flymake のエラーをミニバッファに出す
+;; エラー行で C-c d するとエラーの内容をミニバッファで表示する
 (defun credmp/flymake-display-err-minibuf ()
   "Displays the error/warning for the current line in the minibuffer"
   (interactive)
-  (let* ((line-no             (flymake-current-line-no))
-         (line-err-info-list  (nth 0 (flymake-find-err-info flymake-err-info line-no)))
-         (count               (length line-err-info-list))
-         )
+  (let* ((line-no (flymake-current-line-no))
+	 (line-err-info-list (nth 0 (flymake-find-err-info flymake-err-info line-no)))
+	 (count (length line-err-info-list))
+	 )
     (while (> count 0)
       (when line-err-info-list
-        (let* ((file       (flymake-ler-file (nth (1- count) line-err-info-list)))
-               (full-file  (flymake-ler-full-file (nth (1- count) line-err-info-list)))
-               (text (flymake-ler-text (nth (1- count) line-err-info-list)))
-               (line       (flymake-ler-line (nth (1- count) line-err-info-list))))
-          (message "[%s] %s" line text)
-          )
-        )
+	(let* ((file (flymake-ler-file (nth (1- count) line-err-info-list)))
+	       (full-file (flymake-ler-full-file (nth (1- count) line-err-info-list)))
+	       (text (flymake-ler-text (nth (1- count) line-err-info-list)))
+	       (line (flymake-ler-line (nth (1- count) line-err-info-list))))
+	  (message "[%s] %s" line text)
+	  )
+	)
       (setq count (1- count)))))
 (add-hook
  'ruby-mode-hook
  '(lambda ()
     (define-key ruby-mode-map "\C-cd" 'flymake-display-err-menu-for-current-line)))
 
-;; grep の結果画面は画面端で折り返さないけど、
-;; コンパイルの結果画面は画面端で折り返す
-(add-hook 'compilation-mode-hook
-          '(lambda ()
-	     (cond ((eq major-mode 'grep-mode)
-		    (setq truncate-lines t)))))
 
-;; ;; rails
-;; ;; rails.el
-;; (defun try-complete-abbrev (old)
-;;   (if (expand-abbrev) t nil))
-;; (setq hippie-expand-try-functions-list
-;;       '(try-complete-abbrev
-;;         try-complete-file-name
-;;         try-expand-dabbrev))
-;; (setq rails-use-mongrel t)
-;; (require 'rails)
-;; ;; 対応するファイルへの切り替え(C-c C-p)
-;; (define-key rails-minor-mode-map "\C-c\C-p" 'rails-lib:run-primary-switch)
-;; ;; 行き先を選べるファイル切り替え(C-c C-n)
-;; (define-key rails-minor-mode-map "\C-c\C-n" 'rails-lib:run-secondary-switch)
-;; (setq auto-mode-alist  (cons '("\\.rhtml$" . html-mode) auto-mode-alist))
+;; yasnippet
+(require 'yasnippet)
+(setq yas-snippet-dirs ".emacs.d/yasnippet/")
+(yas-global-mode 1)
+(yas-load-directory ".emacs.d/yasnippets-rails/rails-snippets/")
+(yas--initialize)
 
-;; Rails -> rinari
+;(message "after-yasnippet")
+
+;; rinari
 ;; ちなみに閉じタグを出すのは C-c /
 ;; キーバインド	findするディレクトリ
 ;; C-c ; f f	RAILS_ROOT/
@@ -573,21 +586,29 @@
 ;; C-c ; f r	spec/
 ;; C-c ; f z	spec/fixtures
 ;; C-c ; g      grep
-;(require 'ido)
-;(ido-mode t)
 (require 'rinari)
+;(message "after-rinari-req")
 (require 'rhtml-mode)
+;(message "after-rhtml")
 (add-hook 'rhtml-mode-hook
 	  (lambda () (rinari-launch)))
 (add-hook 'haml-mode-hook
 	  (lambda ()
 	    (rinari-launch)
 	    (setq indent-tabs-mode nil)))
+(add-hook 'ruby-mode-hook
+	  (lambda ()
+	    (rinari-launch)))
+(add-hook 'yaml-mode-hook
+	  '(lambda ()
+	     (rinari-launch)))
+
+(message "after-rinari")
+
 
 (require 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
-
 
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")

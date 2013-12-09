@@ -19,3 +19,9 @@
 [submodule ".emacs.d/rinari"]
 	path = .emacs.d/rinari
 	url = https://github.com/eschulte/rinari.git
+[submodule ".emacs.d/yasnippets-rails"]
+	path = .emacs.d/yasnippets-rails
+	url = https://github.com/eschulte/yasnippets-rails.git
+[submodule ".emacs.d/yasnippet"]
+	path = .emacs.d/yasnippet
+	url = https://github.com/capitaomorte/yasnippet
