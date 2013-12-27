@@ -271,7 +271,7 @@
 (defun add-load-path (path)
   (setq path (expand-file-name path))
   (unless (member path load-path)
-    (setq load-path (cons path load-path))))
+    (add-to-list 'load-path path)))
 
 (add-load-path "~/.emacs.d")
 (add-load-path "~/.emacs.d/rinari")
@@ -284,6 +284,10 @@
 (add-load-path "~/.emacs.d/yasnippet")
 (add-load-path "~/.emacs.d/yasnippets_rails")
 (add-load-path "~/.emacs.d/rvm")
+(add-load-path "~/.emacs.d/auto-complete")
+(add-load-path "~/.emacs.d/auto-complete/lib/ert")
+(add-load-path "~/.emacs.d/auto-complete/lib/fuzzy")
+(add-load-path "~/.emacs.d/auto-complete/lib/popup")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -430,7 +434,12 @@
 (require 'install-elisp)
 (setq install-elisp-repository-directory "~/.emacs.d/")
 
-;Anything
+;; auto-complete
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/dict")
+(ac-config-default)
+
+;; Anything
 (require 'anything-config)
 (setq anything-sources (list anything-c-source-buffers
                              anything-c-source-bookmarks
@@ -508,6 +517,8 @@
 	     (define-key ruby-mode-map "}" nil);
 ;	     (message "dbg2:%s\n" ruby-mode-map)
 ;	     (inf-ruby-keys)
+	     (make-local-variable 'ac-ignores)
+	     (add-to-list 'ac-ignores "end")
 	     ))
 
 ;; hash-rocket を1.9記法に変換する
@@ -765,3 +776,4 @@
 (custom-set-variables
  '(foreign-regexp/regexp-type 'ruby) ;; Choose by your preference.
  '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.
+
