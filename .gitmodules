@@ -25,3 +25,6 @@
 [submodule ".emacs.d/yasnippet"]
 	path = .emacs.d/yasnippet
 	url = https://github.com/capitaomorte/yasnippet
+[submodule ".emacs.d/rvm"]
+	path = .emacs.d/rvm
+	url = https://github.com/senny/rvm.el.git

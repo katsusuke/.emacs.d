@@ -261,9 +261,9 @@
       ;; grep のコマンドは find -print0 |xargs grep を使う
 ;      (require 'grep)
 ;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
-      (setenv "PATH" (format "%s:%s"
-			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p247/bin")
-			     (getenv "PATH")))
+;      (setenv "PATH" (format "%s:%s"
+;			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p247/bin")
+;			     (getenv "PATH")))
 
 ))
 
@@ -283,6 +283,7 @@
 (add-load-path "~/.emacs.d/foreign-regexp")
 (add-load-path "~/.emacs.d/yasnippet")
 (add-load-path "~/.emacs.d/yasnippets_rails")
+(add-load-path "~/.emacs.d/rvm")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -293,6 +294,9 @@
 ;; C-x C-x でリージョンを復活
 ;; M-; ハイライトがあればコメントアウト
 (transient-mark-mode 1)
+
+;; ウインドウ移動をShift+矢印で
+(windmove-default-keybindings)
 
 ;; カーソル位置の単語をハイライト
 ;; M-<left>	ahs-backward	前のシンボルへ移動
@@ -432,6 +436,7 @@
                              anything-c-source-bookmarks
                              anything-c-source-recentf
                              anything-c-source-file-name-history
+			     anything-c-source-emacs-commands
                              anything-c-source-locate))
 ;(define-key anything-map (kbd "\C-p") 'anything-previous-line)
 ;(define-key anything-map (kbd "\C-n") 'anything-next-line)
@@ -482,7 +487,12 @@
   '(lambda()
      (coffee-custom)))
 
-;; ruby-mode
+;; ruby-mod
+(require 'rvm)
+(rvm-use-default)
+(when (require 'rvm nil t)
+  (rvm-use-default))
+
 (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
 (add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . ruby-mode))
@@ -499,6 +509,18 @@
 ;	     (message "dbg2:%s\n" ruby-mode-map)
 ;	     (inf-ruby-keys)
 	     ))
+
+;; hash-rocket を1.9記法に変換する
+(defun ruby-anti-hash-rocket ()
+  (interactive)
+  (beginning-of-line)
+  (setq current-line (count-lines (point-min) (point)))
+  (setq replaced (replace-regexp-in-string ":\\([a-z0-9_]+\\)\s*=>" "\\1:" (buffer-string)))
+  (erase-buffer)
+  (insert replaced)
+  (goto-line (+ 1 current-line))
+  (beginning-of-line)
+  )
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
@@ -599,10 +621,6 @@
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (rinari-launch)))
-(add-hook 'yaml-mode-hook
-	  '(lambda ()
-	     (rinari-launch)))
-
 (message "after-rinari")
 
 
@@ -692,6 +710,7 @@
 
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
+	     (rinari-launch)
 	     (indent-tabs-mode nil)))
 ;; css-mode
 (add-hook 'css-mode-hook
