@@ -289,6 +289,7 @@
 (add-load-path "~/.emacs.d/auto-complete/lib/ert")
 (add-load-path "~/.emacs.d/auto-complete/lib/fuzzy")
 (add-load-path "~/.emacs.d/auto-complete/lib/popup")
+(add-load-path "~/.emacs.d/cscope")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
