@@ -432,11 +432,11 @@
 
 ;Elisp Installer
 (require 'install-elisp)
-(setq install-elisp-repository-directory "~/.emacs.d/")
+(setq install-elisp-repository-directory (expand-file-name "~/.emacs.d/"))
 
 ;; auto-complete
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/dict")
+(add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
 (ac-config-default)
 
 ;; Anything
@@ -589,9 +589,9 @@
 
 ;; yasnippet
 (require 'yasnippet)
-(setq yas-snippet-dirs ".emacs.d/yasnippet/")
+(setq yas-snippet-dirs (expand-file-name  "~/.emacs.d/yasnippet/"))
 (yas-global-mode 1)
-(yas-load-directory ".emacs.d/yasnippets-rails/rails-snippets/")
+(yas-load-directory (expand-file-name "~/.emacs.d/yasnippets-rails/rails-snippets/"))
 (yas--initialize)
 
 ;(message "after-yasnippet")
