@@ -281,6 +281,7 @@
 (add-load-path "~/.emacs.d/js2-mode")
 (add-load-path "~/.emacs.d/yaml-mode")
 (add-load-path "~/.emacs.d/foreign-regexp")
+(add-load-path "~/.emacs.d/web-mode")
 (add-load-path "~/.emacs.d/yasnippet")
 (add-load-path "~/.emacs.d/yasnippets_rails")
 (add-load-path "~/.emacs.d/rvm")
@@ -288,6 +289,7 @@
 (add-load-path "~/.emacs.d/auto-complete/lib/ert")
 (add-load-path "~/.emacs.d/auto-complete/lib/fuzzy")
 (add-load-path "~/.emacs.d/auto-complete/lib/popup")
+(add-load-path "~/.emacs.d/cscope")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -777,3 +779,29 @@
  '(foreign-regexp/regexp-type 'ruby) ;; Choose by your preference.
  '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.
 
+;;web-mode
+(require 'web-mode)
+
+;;; emacs 23以下の互換
+(when (< emacs-major-version 24)
+  (defalias 'prog-mode 'fundamental-mode))
+
+;;; 適用する拡張子
+(add-to-list 'auto-mode-alist '("\\.phtml$"     . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp$"       . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x$"   . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb$"       . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
+
+;;; インデント数
+(defun web-mode-hook ()
+  "Hooks for Web mode."
+  (setq indent-tabs-mode nil)
+  (setq web-mode-html-offset   2)
+  (setq web-mode-css-offset    2)
+  (setq web-mode-script-offset 2)
+  (setq web-mode-php-offset    2)
+  (setq web-mode-java-offset   2)
+  (setq web-mode-asp-offset    2))
+(add-hook 'web-mode-hook 'web-mode-hook)
