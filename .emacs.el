@@ -290,10 +290,24 @@
 (add-load-path "~/.emacs.d/auto-complete/lib/fuzzy")
 (add-load-path "~/.emacs.d/auto-complete/lib/popup")
 (add-load-path "~/.emacs.d/cscope")
+(add-load-path "~/.emacs.d/el-get")
 
 (if (eq window-system 'w32)
   (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
   (add-load-path "/opt/local/share/emacs/site-lisp"))
+
+;; el-get パッケージマネージャ
+(require 'el-get)
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
