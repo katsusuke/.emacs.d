@@ -306,6 +306,21 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(ede-project-directories (quote ("/Users/k-shimizu/Desktop/Sample/Src")))
+ '(el-get-dir "~/.emacs.d/el-get-packages/")
+ '(foreign-regexp/regexp-type (quote ruby))
+ '(gud-gdb-command-name "gdb --annotate=1")
+ '(large-file-warning-threshold nil)
+ '(reb-re-syntax (quote foreign-regexp))
+ '(safe-local-variable-values (quote ((ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t))))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (el-get 'sync)
 
@@ -770,17 +785,7 @@
 	(progn
 	  (server-start)
 	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(ede-project-directories (quote ("/Users/k-shimizu/Desktop/Sample/Src")))
- '(gud-gdb-command-name "gdb --annotate=1")
- '(large-file-warning-threshold nil)
- '(show-paren-mode t)
- '(tool-bar-mode nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -790,9 +795,7 @@
 
 ;; foreign-regexp
 (require 'foreign-regexp)
-(custom-set-variables
- '(foreign-regexp/regexp-type 'ruby) ;; Choose by your preference.
- '(reb-re-syntax 'foreign-regexp)) ;; Tell re-builder to use foreign regexp.
+ ;; Tell re-builder to use foreign regexp.
 
 ;;web-mode
 (require 'web-mode)
