@@ -746,6 +746,16 @@
                             (setq c-basic-offset 4)
                             (setq tab-width 4)
                             ) t)
+(defun flymake-php-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		     'flymake-create-temp-inplace))
+	 (local-file (file-relative-name
+		      temp-file
+		      (file-name-directory buffer-file-name))))
+    (list "php" (list "-c" local-file))))
+(push '(".+\\.php$" flymake-php-init) flymake-allowed-file-name-masks)
+(push '("Rakefile$" flymake-php-init) flymake-allowed-file-name-masks)
+
 
 ;; YAML-mode
 (autoload 'yaml-mode "yaml-mode" "YAML mode" t)
