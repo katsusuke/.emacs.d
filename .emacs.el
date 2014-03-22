@@ -277,6 +277,8 @@
 (add-load-path "~/.emacs.d")
 (add-load-path "~/.emacs.d/rinari")
 (add-load-path "~/.emacs.d/haml-mode")
+(add-load-path "~/.emacs.d/flymake-easy")
+(add-load-path "~/.emacs.d/flymake-haml")
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "~/.emacs.d/js2-mode")
@@ -567,11 +569,16 @@
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
+
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
  'haml-mode-hook
  '(lambda ()
+    ;; flymake-haml
+    (require 'flymake-easy)
+    (require 'flymake-haml)
+    (flymake-haml-load)
     (c-set-offset 'substatement-open '0)
     (setq tab-width  8
           indent-tabs-mode nil)))
