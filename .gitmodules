@@ -43,3 +43,6 @@
 [submodule ".emacs.d/flymake-easy"]
 	path = .emacs.d/flymake-easy
 	url = https://github.com/purcell/flymake-easy.git
+[submodule ".emacs.d/scss-mode"]
+	path = .emacs.d/scss-mode
+	url = https://github.com/antonj/scss-mode.git

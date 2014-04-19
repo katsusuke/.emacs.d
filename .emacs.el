@@ -276,6 +276,7 @@
 
 (add-load-path "~/.emacs.d")
 (add-load-path "~/.emacs.d/rinari")
+(add-load-path "~/.emacs.d/scss-mode")
 (add-load-path "~/.emacs.d/haml-mode")
 (add-load-path "~/.emacs.d/flymake-easy")
 (add-load-path "~/.emacs.d/flymake-haml")
@@ -367,12 +368,14 @@
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
 ;; 自動でrevert-buffer
-(defun check-and-revert-buffer ()
-  (unless (verify-visited-file-modtime (current-buffer))
-    (save-excursion
-      (remove-hook 'window-configuration-change-hook 'check-and-revert-buffer)
-      (revert-buffer t nil))))
-(add-hook 'window-configuration-change-hook 'check-and-revert-buffer)
+;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
+(setq auto-revert-check-vc-info t)
+(setq auto-revert-interval 1)
+(add-hook 'find-file-hook
+	  '(lambda ()
+	     (when (and buffer-file-name
+			(vc-backend buffer-file-name))
+	       (auto-revert-mode))))
 
 ;; リージョンの行数を表示
 (defun count-lines-and-chars ()
@@ -456,14 +459,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(defun revert-buffer-force ()
-  (interactive)
-  (revert-buffer t t))
-(define-key global-map "\C-c\C-x\C-j" 'revert-buffer-force)
-(define-key global-map "\C-c\C-x\ j" 'revert-buffer-force)
-(define-key global-map "\C-x\C-j" 'revert-buffer)
-(define-key global-map "\C-x\ j" 'revert-buffer)
-
 ;Elisp Installer
 (require 'install-elisp)
 (setq install-elisp-repository-directory (expand-file-name "~/.emacs.d/"))
@@ -475,12 +470,24 @@
 
 ;; Anything
 (require 'anything-config)
-(setq anything-sources (list anything-c-source-buffers
-                             anything-c-source-bookmarks
-                             anything-c-source-recentf
-                             anything-c-source-file-name-history
-			     anything-c-source-emacs-commands
-                             anything-c-source-locate))
+(if (eq window-system 'ns)
+    (setq anything-sources (list anything-c-source-buffers
+				 anything-c-source-bookmarks
+				 anything-c-source-recentf
+				 anything-c-source-file-name-history
+				 anything-c-source-emacs-commands
+				 anything-c-source-mac-spotlight
+;                                anything-c-source-locate)
+				 )))
+(if (eq window-system 'win32)
+    (setq anything-sources (list anything-c-source-buffers
+				 anything-c-source-bookmarks
+				 anything-c-source-recentf
+				 anything-c-source-file-name-history
+				 anything-c-source-emacs-commands
+;				 anything-c-source-mac-spotlight
+;                                anything-c-source-locate)
+				 )))
 ;(define-key anything-map (kbd "\C-p") 'anything-previous-line)
 ;(define-key anything-map (kbd "\C-n") 'anything-next-line)
 ;(define-key anything-map (kbd "\C-v") 'anything-next-source)
@@ -752,6 +759,8 @@
                             (setq indent-tabs-mode t)
                             (setq c-basic-offset 4)
                             (setq tab-width 4)
+			    (make-local-variable 'ac-sources)
+			    (setq ac-sources '(ac-source-words-in-same-mode-buffers))
                             ) t)
 (defun flymake-php-init ()
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -761,7 +770,6 @@
 		      (file-name-directory buffer-file-name))))
     (list "php" (list "-c" local-file))))
 (push '(".+\\.php$" flymake-php-init) flymake-allowed-file-name-masks)
-(push '("Rakefile$" flymake-php-init) flymake-allowed-file-name-masks)
 
 
 ;; YAML-mode
@@ -778,6 +786,11 @@
 	     (setq css-indent-offset 2)
 	     (indent-tabs-mode nil)
 	     (setq css-indent-offset 2)))
+
+;; scss-mode
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(custom-set-variables '(scss-compile-at-save nil))
 
 ;; html-mode
 (add-hook 'html-mode-hook
