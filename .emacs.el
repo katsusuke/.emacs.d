@@ -370,7 +370,7 @@
 ;; 自動でrevert-buffer
 ;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
 (setq auto-revert-check-vc-info t)
-(setq auto-revert-interval 1)
+(setq auto-revert-interval 30)
 (add-hook 'find-file-hook
 	  '(lambda ()
 	     (when (and buffer-file-name
@@ -726,7 +726,6 @@
            ))
     ;; gtags
     (gtags-mode 1)
-    (gtags-make-complete-list)
     (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
