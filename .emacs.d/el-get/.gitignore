@@ -3,3 +3,4 @@
 recipes/emacswiki/*
 recipes/elpa/*
 dir
+.status.el.old
