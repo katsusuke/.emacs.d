@@ -34,9 +34,6 @@
 [submodule ".emacs.d/auto-complete"]
 	path = .emacs.d/auto-complete
 	url = https://github.com/auto-complete/auto-complete.git
-[submodule ".emacs.d/el-get"]
-	path = .emacs.d/el-get
-	url = https://github.com/dimitri/el-get.git
 [submodule ".emacs.d/flymake-haml"]
 	path = .emacs.d/flymake-haml
 	url = https://github.com/purcell/flymake-haml.git
