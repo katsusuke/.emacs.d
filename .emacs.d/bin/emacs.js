@@ -1,7 +1,15 @@
 var EMACS_HOME = "C:\\Program Files (x86)\\Emacs";
 var EMACSCLIENT = "\"" + EMACS_HOME + "\\bin\\emacsclient" + "\"";
 var RUNEMACS = EMACS_HOME + "\\bin\\runemacs";
-var PC_NAME = "K-SHIMIZU-PC";
+
+function GetPCName(){
+    var objNetWork = new ActiveXObject("WScript.Network");
+    var res = objNetWork.ComputerName;
+    objNetWork = null
+    return res;
+}
+
+var PC_NAME = GetPCName();
 var shell = WScript.CreateObject("WScript.Shell");
 var appDataDir = shell.ExpandEnvironmentStrings("%APPDATA%");
 var serverFile = appDataDir + "\\.emacs.d\\server\\server";
