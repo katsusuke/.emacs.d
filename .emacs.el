@@ -39,6 +39,10 @@
       ;; 静的検証作業用
       (setenv "PATH" (format "c:\\cygwin\\bin;%s" (getenv "PATH")))
       (setenv "PATH" (format "c:\\cygwin\\usr\\local\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\usr\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\usr\\local\\bin;%s" (getenv "PATH")))
+
       (setenv "CYGWIN" "nodosfilewarning")
 ;      (setq find-grep-options " | sed 's/^\\/cygdrive\\/\\([a-z]\\)/\\1:/g'")
       (setq grep-command "grep -n -e ")
@@ -297,8 +301,18 @@
 (add-load-path "~/.emacs.d/el-get")
 
 (if (eq window-system 'w32)
-    (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
+    (if (file-accessible-directory-p "c:/cygwin")
+	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
+      (if (file-accessible-directory-p "c:/cygwin64")
+	  (add-load-path "c:/cygwin64/usr/share/emacs/site-lisp")))
   (add-load-path "/opt/local/share/emacs/site-lisp"))
+
+(if (eq window-system 'w32)
+    (progn
+      (setenv "SHELL" "C:/cygwin64/bin/bash.exe")
+      (setq shell-file-name "C:/cygwin64/bin/bash.exe")
+      (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")))
+
 
 ;; el-get パッケージマネージャ
 (require 'el-get)
@@ -511,12 +525,14 @@
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
-;; (defun my-csharp-mode-fn ()
-;;   "function that runs when csharp-mode is initialized for a buffer."
-;;   ...insert your code here...
-;;   ...most commonly, your custom key bindings ...
-;;   )
-(add-hook  'csharp-mode-hook 'my-csharp-mode-fn t)
+(add-hook
+ 'csharp-mode-hook
+ '(lambda ()
+    (c-set-offset 'substatement-open '0)
+    (setq tab-width  4
+          c-basic-offset 4
+          indent-tabs-mode nil)))
+
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
@@ -734,8 +750,25 @@
 (add-hook
  'c++-mode-hook
  '(lambda ()
-    (c-set-offset 'substatement-open '0)
-    (setq tab-width  4
+    ;; cedit
+    (load-library "cedet")
+    (global-ede-mode 1)
+    (semantic-mode 1)
+    (cpp-highlight-buffer t)
+    (setq semantic-default-submodes
+         '(
+           global-semantic-idle-scheduler-mode
+           global-semantic-idle-completions-mode
+           global-semanticdb-minor-mode
+           global-semantic-decoration-mode
+           global-semantic-highlight-func-mode
+           global-semantic-stickyfunc-mode
+           global-semantic-mru-bookmark-mode
+           ))
+    ;; gtags
+    (gtags-mode 1)
+    (gtags-make-complete-list)
+    (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
 
