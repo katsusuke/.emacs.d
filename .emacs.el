@@ -840,15 +840,15 @@
 ;; (add-to-list 'fume-function-name-regexp-alist
 ;; 	     '(delphi-mode . fume-function-name-regexp-delphi))
 
-(defun fume-find-next-delphi-function-name (buffer)
-  "Search for the next Delphi procedure in BUFFER."
-  (set-buffer buffer)
-  (if (re-search-forward fume-function-name-regexp nil t)
-      (let ((beg (match-beginning 3))
-	    (end (match-end 3)))
-	(cons (buffer-substring beg end) beg))))
-(add-to-list 'fume-find-function-name-method-alist
-	     '(delphi-mode . fume-find-next-delphi-function-name))
+;; (defun fume-find-next-delphi-function-name (buffer)
+;;   "Search for the next Delphi procedure in BUFFER."
+;;   (set-buffer buffer)
+;;   (if (re-search-forward fume-function-name-regexp nil t)
+;;       (let ((beg (match-beginning 3))
+;; 	    (end (match-end 3)))
+;; 	(cons (buffer-substring beg end) beg))))
+;; (add-to-list 'fume-find-function-name-method-alist
+;; 	     '(delphi-mode . fume-find-next-delphi-function-name))
 
 (add-hook 'delphi-mode-hook
 	  #'(lambda ()
