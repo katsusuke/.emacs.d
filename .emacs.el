@@ -852,6 +852,9 @@
 
 (add-hook 'delphi-mode-hook
 	  #'(lambda ()
+	      (custom-set-variables
+	       '(delphi-indent-level 2)
+	       '(delphi-case-label-indent 2))
 	      (setq comment-start "// ")
 	      (loop for c from ?! to ?' do (modify-syntax-entry  c "."))
 	      (loop for c from ?* to ?/ do (modify-syntax-entry  c "."))
@@ -866,8 +869,7 @@
 				 (interactive)
 				 (indent-according-to-mode)
 				 (newline-and-indent)))
-	      (turn-on-lazy-lock)
-	      (setq delphi-indent-level 2)
+                 ;; (turn-on-lazy-lock)
 	      (add-hook 'compilation-mode-hook
 			#'(lambda ()
 			    (add-to-list 'compilation-error-regexp-alist
