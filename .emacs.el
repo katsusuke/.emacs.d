@@ -515,6 +515,9 @@
 ;; See docs
 ;(define-key anything-map "\C-z" 'anything-execute-persistent-action)
 
+;; リモートのファイルを編集するTRAMP
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
