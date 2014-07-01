@@ -516,12 +516,6 @@
 ;(define-key anything-map "\C-z" 'anything-execute-persistent-action)
 
 
-;; (load "emacs256color-hack.el")
-;; (require 'color-theme)
-;; (color-theme-initialize)
-;; (color-theme-calm-forest)
-;; (global-font-lock-mode t)
-
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
