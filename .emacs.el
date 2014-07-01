@@ -39,6 +39,10 @@
       ;; 静的検証作業用
       (setenv "PATH" (format "c:\\cygwin\\bin;%s" (getenv "PATH")))
       (setenv "PATH" (format "c:\\cygwin\\usr\\local\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\usr\\bin;%s" (getenv "PATH")))
+      (setenv "PATH" (format "c:\\cygwin64\\usr\\local\\bin;%s" (getenv "PATH")))
+
       (setenv "CYGWIN" "nodosfilewarning")
 ;      (setq find-grep-options " | sed 's/^\\/cygdrive\\/\\([a-z]\\)/\\1:/g'")
       (setq grep-command "grep -n -e ")
@@ -276,7 +280,10 @@
 
 (add-load-path "~/.emacs.d")
 (add-load-path "~/.emacs.d/rinari")
+(add-load-path "~/.emacs.d/scss-mode")
 (add-load-path "~/.emacs.d/haml-mode")
+(add-load-path "~/.emacs.d/flymake-easy")
+(add-load-path "~/.emacs.d/flymake-haml")
 (add-load-path "~/.emacs.d/rhtml")
 (add-load-path "~/.emacs.d/coffee-mode/")
 (add-load-path "~/.emacs.d/js2-mode")
@@ -294,8 +301,18 @@
 (add-load-path "~/.emacs.d/el-get")
 
 (if (eq window-system 'w32)
-    (add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
+    (if (file-accessible-directory-p "c:/cygwin")
+	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
+      (if (file-accessible-directory-p "c:/cygwin64")
+	  (add-load-path "c:/cygwin64/usr/share/emacs/site-lisp")))
   (add-load-path "/opt/local/share/emacs/site-lisp"))
+
+(if (eq window-system 'w32)
+    (progn
+      (setenv "SHELL" "C:/cygwin64/bin/bash.exe")
+      (setq shell-file-name "C:/cygwin64/bin/bash.exe")
+      (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")))
+
 
 ;; el-get パッケージマネージャ
 (require 'el-get)
@@ -365,12 +382,14 @@
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
 ;; 自動でrevert-buffer
-(defun check-and-revert-buffer ()
-  (unless (verify-visited-file-modtime (current-buffer))
-    (save-excursion
-      (remove-hook 'window-configuration-change-hook 'check-and-revert-buffer)
-      (revert-buffer t nil))))
-(add-hook 'window-configuration-change-hook 'check-and-revert-buffer)
+;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
+(setq auto-revert-check-vc-info t)
+(setq auto-revert-interval 30)
+(add-hook 'find-file-hook
+	  '(lambda ()
+	     (when (and buffer-file-name
+			(vc-backend buffer-file-name))
+	       (auto-revert-mode))))
 
 ;; リージョンの行数を表示
 (defun count-lines-and-chars ()
@@ -465,12 +484,24 @@
 
 ;; Anything
 (require 'anything-config)
-(setq anything-sources (list anything-c-source-buffers
-                             anything-c-source-bookmarks
-                             anything-c-source-recentf
-                             anything-c-source-file-name-history
-			     anything-c-source-emacs-commands
-                             anything-c-source-locate))
+(if (eq window-system 'ns)
+    (setq anything-sources (list anything-c-source-buffers
+				 anything-c-source-bookmarks
+				 anything-c-source-recentf
+				 anything-c-source-file-name-history
+				 anything-c-source-emacs-commands
+				 anything-c-source-mac-spotlight
+;                                anything-c-source-locate)
+				 )))
+(if (eq window-system 'win32)
+    (setq anything-sources (list anything-c-source-buffers
+				 anything-c-source-bookmarks
+				 anything-c-source-recentf
+				 anything-c-source-file-name-history
+				 anything-c-source-emacs-commands
+;				 anything-c-source-mac-spotlight
+;                                anything-c-source-locate)
+				 )))
 ;(define-key anything-map (kbd "\C-p") 'anything-previous-line)
 ;(define-key anything-map (kbd "\C-n") 'anything-next-line)
 ;(define-key anything-map (kbd "\C-v") 'anything-next-source)
@@ -494,12 +525,14 @@
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
 (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
-;; (defun my-csharp-mode-fn ()
-;;   "function that runs when csharp-mode is initialized for a buffer."
-;;   ...insert your code here...
-;;   ...most commonly, your custom key bindings ...
-;;   )
-(add-hook  'csharp-mode-hook 'my-csharp-mode-fn t)
+(add-hook
+ 'csharp-mode-hook
+ '(lambda ()
+    (c-set-offset 'substatement-open '0)
+    (setq tab-width  4
+          c-basic-offset 4
+          indent-tabs-mode nil)))
+
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
@@ -559,11 +592,16 @@
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
+
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
  'haml-mode-hook
  '(lambda ()
+    ;; flymake-haml
+    (require 'flymake-easy)
+    (require 'flymake-haml)
+    (flymake-haml-load)
     (c-set-offset 'substatement-open '0)
     (setq tab-width  8
           indent-tabs-mode nil)))
@@ -704,7 +742,6 @@
            ))
     ;; gtags
     (gtags-mode 1)
-    (gtags-make-complete-list)
     (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
@@ -713,8 +750,25 @@
 (add-hook
  'c++-mode-hook
  '(lambda ()
-    (c-set-offset 'substatement-open '0)
-    (setq tab-width  4
+    ;; cedit
+    (load-library "cedet")
+    (global-ede-mode 1)
+    (semantic-mode 1)
+    (cpp-highlight-buffer t)
+    (setq semantic-default-submodes
+         '(
+           global-semantic-idle-scheduler-mode
+           global-semantic-idle-completions-mode
+           global-semanticdb-minor-mode
+           global-semantic-decoration-mode
+           global-semantic-highlight-func-mode
+           global-semantic-stickyfunc-mode
+           global-semantic-mru-bookmark-mode
+           ))
+    ;; gtags
+    (gtags-mode 1)
+    (gtags-make-complete-list)
+    (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
 
@@ -737,7 +791,18 @@
                             (setq indent-tabs-mode t)
                             (setq c-basic-offset 4)
                             (setq tab-width 4)
+			    (make-local-variable 'ac-sources)
+			    (setq ac-sources '(ac-source-words-in-same-mode-buffers))
                             ) t)
+(defun flymake-php-init ()
+  (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		     'flymake-create-temp-inplace))
+	 (local-file (file-relative-name
+		      temp-file
+		      (file-name-directory buffer-file-name))))
+    (list "php" (list "-c" local-file))))
+(push '(".+\\.php$" flymake-php-init) flymake-allowed-file-name-masks)
+
 
 ;; YAML-mode
 (autoload 'yaml-mode "yaml-mode" "YAML mode" t)
@@ -754,11 +819,168 @@
 	     (indent-tabs-mode nil)
 	     (setq css-indent-offset 2)))
 
+;; scss-mode
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(custom-set-variables '(scss-compile-at-save nil))
+
 ;; html-mode
 (add-hook 'html-mode-hook
           (lambda()
             (setq sgml-basic-offset 2)
             (setq indent-tabs-mode nil)))
+
+;; delphi-mode
+(add-to-list 'auto-mode-alist '("\\.pas$" . delphi-mode))
+(add-to-list 'auto-mode-alist '("\\.dpr$" . delphi-mode))
+
+;; (defvar fume-function-name-regexp-delphi
+;;   "^[ \t]*\\(function\\|procedure\\|constructor\\|destructor\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\.\\)?\\([_a-zA-Z][_a-zA-Z0-9]*\\)"
+;;   "Expression to get function/procedure names in Delphi.")
+;; (add-to-list 'fume-function-name-regexp-alist
+;; 	     '(delphi-mode . fume-function-name-regexp-delphi))
+
+;; (defun fume-find-next-delphi-function-name (buffer)
+;;   "Search for the next Delphi procedure in BUFFER."
+;;   (set-buffer buffer)
+;;   (if (re-search-forward fume-function-name-regexp nil t)
+;;       (let ((beg (match-beginning 3))
+;; 	    (end (match-end 3)))
+;; 	(cons (buffer-substring beg end) beg))))
+;; (add-to-list 'fume-find-function-name-method-alist
+;; 	     '(delphi-mode . fume-find-next-delphi-function-name))
+
+(add-hook 'delphi-mode-hook
+	  #'(lambda ()
+	      (custom-set-variables
+	       '(delphi-indent-level 2)
+	       '(delphi-case-label-indent 2))
+	      (setq comment-start "// ")
+	      (loop for c from ?! to ?' do (modify-syntax-entry  c "."))
+	      (loop for c from ?* to ?/ do (modify-syntax-entry  c "."))
+	      (loop for c from ?: to ?@ do (modify-syntax-entry  c "."))
+	      (modify-syntax-entry  ?\ ".")
+	      (modify-syntax-entry  ?^ ".")
+	      (modify-syntax-entry  ?` ".")
+	      (modify-syntax-entry  ?~ ".")
+	      (modify-syntax-entry  ?| ".")
+	      (local-set-key (kbd "<RET>")
+			     #'(lambda ()
+				 (interactive)
+				 (indent-according-to-mode)
+				 (newline-and-indent)))
+                 ;; (turn-on-lazy-lock)
+	      (add-hook 'compilation-mode-hook
+			#'(lambda ()
+			    (add-to-list 'compilation-error-regexp-alist
+					 '("^\\([^(]+\\)(\\([0-9]+\\)" 1 2))))
+	      (add-hook 'speedbar-mode-hook
+			#'(lambda ()
+			    (setq speedbar-file-unshown-regexp
+				  (concat
+				   speedbar-file-unshown-regexp
+				   "\\|\\.dfm\\|\\.ddp\\|\\.dcu\\|\\.dof"))
+			    (speedbar-add-supported-extension ".pas")))
+	      
+	      (abbrev-mode 1)
+	      (define-abbrev local-abbrev-table
+		"beg" t #'(lambda ()
+			    (skeleton-insert '(nil "in" > \n
+						   _ \n
+						   "end;" > \n))
+			    (setq skeleton-abbrev-cleanup (point))
+			    (add-hook 'post-command-hook
+				      'skeleton-abbrev-cleanup
+				      nil t)))
+	      (define-abbrev local-abbrev-table
+		"bege" t #'(lambda ()
+			     (skeleton-insert '(nil -1 "in" > \n
+						    _ \n
+						    "end" > \n
+						    "else" > \n
+						    "begin" > \n \n
+						    "end;" > \n))
+			     (setq skeleton-abbrev-cleanup (point))
+			     (add-hook 'post-command-hook
+				       'skeleton-abbrev-cleanup
+				       nil t)))
+	      (define-abbrev local-abbrev-table
+		"if" t #'(lambda ()
+			   (skeleton-insert '(nil _ " then" > \n))))
+	      (define-abbrev local-abbrev-table
+		"ife" t #'(lambda ()
+			    (skeleton-insert '(nil -1 _ " then" > \n \n
+						   "else" > \n))))
+	      (define-abbrev local-abbrev-table
+		"ifb" t #'(lambda ()
+			    (skeleton-insert '(nil -1 _ " then" > \n
+						   "begin" > \n \n
+						   "end;" > \n))))
+	      (define-abbrev local-abbrev-table
+		"ifbe" t #'(lambda ()
+			     (backward-delete-char 1)
+			     (skeleton-insert '(nil -1 _ " then" > \n
+						    "begin" > \n \n
+						    "end" > \n
+						    "else" > \n
+						    "begin" > \n \n
+						    "end;" > \n))))
+	      (define-abbrev local-abbrev-table
+		"proc" t #'(lambda ()
+			     (skeleton-insert '(nil "edure" _ ";" > \n
+						    "var" > \n \n
+						    "begin" > \n \n
+						    "end;" > \n))))
+	      (define-abbrev local-abbrev-table
+		"func" t #'(lambda ()
+			     (skeleton-insert '(nil "tion" _ " : ;" > \n
+						    "var" > \n \n
+						    "begin" > \n \n
+						    "end;" > \n))))
+	      (define-abbrev local-abbrev-table
+		"for" t #'(lambda ()
+			    (skeleton-insert '(nil _ " to do" > \n))))
+	      (define-abbrev local-abbrev-table
+		"forb" t #'(lambda ()
+			     (skeleton-insert '(nil -1 _ " to do" > \n
+						    "begin" > \n \n
+						    "end;" > \n))))
+	      ))
+
+(defvar imenu--function-name-regexp-delphi
+  (concat
+   "^[ \t]*\\(function\\|procedure\\|constructor\\|destructor\\)[ \t]+"
+   "\\([_a-zA-Z][_a-zA-Z0-9]*\\.\\)?"   ; class?
+   "\\([_a-zA-Z][_a-zA-Z0-9]*\\)")
+  "Re to get function/procedure names in Delphi.")
+
+(defun imenu--create-delphi-index (&optional regexp)
+  (let ((index-alist '())
+	(progress-prev-pos 0)
+	(case-fold-search t))
+    (goto-char (point-min))
+    (imenu-progress-message progress-prev-pos 0)
+    (save-match-data
+      (while (re-search-forward
+	      (or regexp imenu--function-name-regexp-delphi)
+	      nil t)
+	(imenu-progress-message progress-prev-pos)
+	(let ((pos (save-excursion
+		     (beginning-of-line)
+		     (if imenu-use-markers (point-marker) (point))))
+	      (function-name (match-string-no-properties 3)))
+	  (push (cons function-name pos)
+		index-alist))))
+    (imenu-progress-message progress-prev-pos 100)
+    (nreverse index-alist)))
+
+(add-hook 'delphi-mode-hook
+	  #'(lambda ()
+	      (require 'imenu)
+	      (setq imenu-create-index-function
+		    #'imenu--create-delphi-index)
+	      (imenu-add-menubar-index)))
+ 
 
 
 ;; refe
