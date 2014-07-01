@@ -454,14 +454,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(defun revert-buffer-force ()
-  (interactive)
-  (revert-buffer t t))
-(define-key global-map "\C-c\C-x\C-j" 'revert-buffer-force)
-(define-key global-map "\C-c\C-x\ j" 'revert-buffer-force)
-(define-key global-map "\C-x\C-j" 'revert-buffer)
-(define-key global-map "\C-x\ j" 'revert-buffer)
-
 ;Elisp Installer
 (require 'install-elisp)
 (setq install-elisp-repository-directory (expand-file-name "~/.emacs.d/"))
