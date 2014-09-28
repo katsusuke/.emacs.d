@@ -478,11 +478,14 @@
       (require 'rvm)
       (rvm-use-default)))
 
-(autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
-(setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
+(autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
+(setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
   interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
 
@@ -492,7 +495,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ruby-insert-encoding-magic-comment nil))
-(require 'ruby-mode)
 (defun ruby-mode-set-encoding () nil)
 
 ;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
