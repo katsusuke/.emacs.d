@@ -285,7 +285,6 @@
     (add-to-list 'load-path path)))
 
 (add-load-path "~/.emacs.d")
-(add-load-path "~/.emacs.d/scss-mode")
 (add-load-path "~/.emacs.d/foreign-regexp")
 (add-load-path "~/.emacs.d/cscope")
 (add-load-path "~/.emacs.d/el-get")
