@@ -1,6 +1,10 @@
 *~
 #*#
 *.elc
-.emacs.d/anything-c-adaptive-history
-.emacs.d/semanticdb
-.emacs.d/server
+/.emacs.d/anything-c-adaptive-history
+/.emacs.d/el-get-packages/
+/.emacs.d/semanticdb
+/.emacs.d/server
+/.emacs.d/el-get-user/
+/.emacs.d/el-get/.loaddefs.el
+/.emacs.d/el-get/.status.el

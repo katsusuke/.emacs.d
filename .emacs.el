@@ -506,10 +506,12 @@
 ;(define-key anything-map (kbd "\C-n") 'anything-next-line)
 ;(define-key anything-map (kbd "\C-v") 'anything-next-source)
 ;(define-key anything-map (kbd "\M-v") 'anything-previous-source)
-(global-set-key "\C-ca" 'anything)
+(global-set-key "\M-x" 'anything)
 
 (require 'anything)
 (require 'anything-rcodetools)
+(require 'anything-git-files)
+
 ;; Command to get all RI entries.
 ;(setq rct-get-all-methods-command "refe -l")
 ;; See docs
@@ -566,6 +568,16 @@
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ruby-insert-encoding-magic-comment nil))
+(require 'ruby-mode)
+(defun ruby-mode-set-encoding () nil)
+
 ;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
 (add-hook 'ruby-mode-hook
 	  '(lambda ()
