@@ -574,7 +574,7 @@
 
 ;; yasnippet
 (require 'yasnippet)
-(setq yas-snippet-dirs (expand-file-name  "~/.emacs.d/yasnippet/"))
+(setq yas-snippet-dirs (expand-file-name  "~/.emacs.d/el-get-packages/yasnippet/"))
 (yas-global-mode 1)
 (yas-load-directory (expand-file-name "~/.emacs.d/yasnippets-rails/rails-snippets/"))
 (yas--initialize)
