@@ -333,7 +333,8 @@
 (el-get 'sync)
 
 ;(require 'helm-config)
-(global-set-key "\M-x" 'helm-mini)
+(define-key global-map (kbd "M-x")     'helm-M-x)
+(define-key global-map (kbd "C-x C-f") 'helm-find-files)
 
 
 ;; リージョンをハイライト
