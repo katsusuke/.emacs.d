@@ -320,15 +320,20 @@
  '(column-number-mode t)
  '(ede-project-directories (quote ("/Users/k-shimizu/Desktop/Sample/Src")))
  '(el-get-dir "~/.emacs.d/el-get-packages/")
- '(foreign-regexp/regexp-type (quote ruby))
+ '(foreign-regexp/regexp-type 'ruby)
+ '(reb-re-syntax 'foreign-regexp)
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
  '(reb-re-syntax (quote foreign-regexp))
  '(safe-local-variable-values (quote ((ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
+
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (el-get 'sync)
+
+;(require 'helm-config)
+(global-set-key "\M-x" 'helm-mini)
 
 
 ;; リージョンをハイライト
@@ -422,9 +427,9 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-;Elisp Installer
-(require 'install-elisp)
-(setq install-elisp-repository-directory (expand-file-name "~/.emacs.d/"))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
+(package-initialize)
 
 ;; auto-complete
 (require 'auto-complete-config)
