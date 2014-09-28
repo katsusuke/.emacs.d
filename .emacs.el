@@ -517,12 +517,9 @@
 ;; See docs
 ;(define-key anything-map "\C-z" 'anything-execute-persistent-action)
 
-
-;; (load "emacs256color-hack.el")
-;; (require 'color-theme)
-;; (color-theme-initialize)
-;; (color-theme-calm-forest)
-;; (global-font-lock-mode t)
+;; リモートのファイルを編集するTRAMP
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
@@ -864,6 +861,9 @@
 
 (add-hook 'delphi-mode-hook
 	  #'(lambda ()
+	      (custom-set-variables
+	       '(delphi-indent-level 2)
+	       '(delphi-case-label-indent 2))
 	      (setq comment-start "// ")
 	      (loop for c from ?! to ?' do (modify-syntax-entry  c "."))
 	      (loop for c from ?* to ?/ do (modify-syntax-entry  c "."))
@@ -878,8 +878,7 @@
 				 (interactive)
 				 (indent-according-to-mode)
 				 (newline-and-indent)))
-	      (turn-on-lazy-lock)
-	      (setq delphi-indent-level 2)
+                 ;; (turn-on-lazy-lock)
 	      (add-hook 'compilation-mode-hook
 			#'(lambda ()
 			    (add-to-list 'compilation-error-regexp-alist
