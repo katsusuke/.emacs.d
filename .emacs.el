@@ -532,7 +532,6 @@
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
-
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
@@ -774,22 +773,6 @@
 (add-to-list 'auto-mode-alist '("\\.pas$" . delphi-mode))
 (add-to-list 'auto-mode-alist '("\\.dpr$" . delphi-mode))
 
-;; (defvar fume-function-name-regexp-delphi
-;;   "^[ \t]*\\(function\\|procedure\\|constructor\\|destructor\\)[ \t]+\\([_a-zA-Z][_a-zA-Z0-9]*\\.\\)?\\([_a-zA-Z][_a-zA-Z0-9]*\\)"
-;;   "Expression to get function/procedure names in Delphi.")
-;; (add-to-list 'fume-function-name-regexp-alist
-;; 	     '(delphi-mode . fume-function-name-regexp-delphi))
-
-;; (defun fume-find-next-delphi-function-name (buffer)
-;;   "Search for the next Delphi procedure in BUFFER."
-;;   (set-buffer buffer)
-;;   (if (re-search-forward fume-function-name-regexp nil t)
-;;       (let ((beg (match-beginning 3))
-;; 	    (end (match-end 3)))
-;; 	(cons (buffer-substring beg end) beg))))
-;; (add-to-list 'fume-find-function-name-method-alist
-;; 	     '(delphi-mode . fume-find-next-delphi-function-name))
-
 (add-hook 'delphi-mode-hook
 	  #'(lambda ()
 	      (custom-set-variables
@@ -953,10 +936,6 @@
 
 ;;web-mode
 (require 'web-mode)
-
-;;; emacs 23以下の互換
-(when (< emacs-major-version 24)
-  (defalias 'prog-mode 'fundamental-mode))
 
 ;;; 適用する拡張子
 (add-to-list 'auto-mode-alist '("\\.phtml$"     . web-mode))
