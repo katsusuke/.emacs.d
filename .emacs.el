@@ -412,28 +412,6 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
-;;汎用機の SPF (mule みたいなやつ) には
-;;画面を 2 分割したときの 上下を入れ替える swap screen
-;;というのが PF 何番かにわりあてられていました。
-(defun swap-screen()
-  "Swap two screen,leaving cursor at current window."
-  (interactive)
-  (let ((thiswin (selected-window))
-        (nextbuf (window-buffer (next-window))))
-    (set-window-buffer (next-window) (window-buffer))
-    (set-window-buffer thiswin nextbuf)))
-(defun swap-screen-with-cursor()
-  "Swap two screen,with cursor in same buffer."
-  (interactive)
-  (let ((thiswin (selected-window))
-        (thisbuf (window-buffer)))
-    (other-window 1)
-    (set-window-buffer thiswin (window-buffer))
-    (set-window-buffer (selected-window) thisbuf)))
-;(global-set-key [f2] 'swap-screen)
-;(global-set-key [S-f2] 'swap-screen-with-cursor)
-
-
 ;; Don't show Welcome Page
 (setq inhibit-startup-message t)
 ;; Stop beep and flush
@@ -441,9 +419,6 @@
 
  ;Show column number
 (column-number-mode t)
-;Show line number on left.
-;; (require 'wb-line-number)
-;; (wb-line-number-toggle)
 
 ;; ウインドウ分割のundo redo C-x Left, C-x Right
 (winner-mode)
@@ -481,41 +456,6 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
 (ac-config-default)
-
-;; Anything
-(require 'anything-config)
-(if (eq window-system 'ns)
-    (setq anything-sources (list anything-c-source-buffers
-				 anything-c-source-bookmarks
-				 anything-c-source-recentf
-				 anything-c-source-file-name-history
-				 anything-c-source-emacs-commands
-				 anything-c-source-mac-spotlight
-;                                anything-c-source-locate)
-				 )))
-(if (eq window-system 'win32)
-    (setq anything-sources (list anything-c-source-buffers
-				 anything-c-source-bookmarks
-				 anything-c-source-recentf
-				 anything-c-source-file-name-history
-				 anything-c-source-emacs-commands
-;				 anything-c-source-mac-spotlight
-;                                anything-c-source-locate)
-				 )))
-;(define-key anything-map (kbd "\C-p") 'anything-previous-line)
-;(define-key anything-map (kbd "\C-n") 'anything-next-line)
-;(define-key anything-map (kbd "\C-v") 'anything-next-source)
-;(define-key anything-map (kbd "\M-v") 'anything-previous-source)
-(global-set-key "\M-x" 'anything)
-
-(require 'anything)
-(require 'anything-rcodetools)
-(require 'anything-git-files)
-
-;; Command to get all RI entries.
-;(setq rct-get-all-methods-command "refe -l")
-;; See docs
-;(define-key anything-map "\C-z" 'anything-execute-persistent-action)
 
 ;; リモートのファイルを編集するTRAMP
 (require 'tramp)
