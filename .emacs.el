@@ -904,11 +904,6 @@
 		    #'imenu--create-delphi-index)
 	      (imenu-add-menubar-index)))
  
-
-
-;; refe
-;; (require 'refe)
-
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
