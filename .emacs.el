@@ -270,6 +270,12 @@
 ;			     (getenv "PATH")))
 
 ))
+; X用
+(if (eq window-system 'x)
+    (progn
+      (define-key function-key-map [backspace] [8])
+      (put 'backspace 'ascii-character 8)))
+
 
 
 ;; load-path の追加
@@ -420,21 +426,6 @@
  ;Show column number
 (column-number-mode t)
 
-;; ウインドウ分割のundo redo C-x Left, C-x Right
-(winner-mode)
-(global-set-key (kbd "C-x <left>") 'winner-undo)
-(global-set-key (kbd "C-x <right>") 'winner-redo)
-
-;; もとからあるバッファのswitch を退避
-(global-set-key "\M-p" 'previous-buffer)
-(global-set-key "\M-n" 'next-buffer)
-
-
-;; 全環境共通 key-bindings
-(if (eq window-system 'x)
-    (progn
-      (define-key function-key-map [backspace] [8])
-      (put 'backspace 'ascii-character 8)))
 ;; (global-set-key "\C-h" 'backward-delete-char)
 ;; (global-set-key "\177" 'delete-char)
 ;goto-line はデフォルトでは M-g g
