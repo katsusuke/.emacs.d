@@ -445,9 +445,16 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-;(require 'helm-config)
-(define-key global-map (kbd "M-x")     'helm-M-x)
-(define-key global-map (kbd "C-x C-f") 'helm-find-files)
+(when (require 'helm-config nil t)
+  (helm-mode 1)
+  ;(require 'helm-config)
+  (define-key global-map (kbd "M-x")     'helm-M-x)
+  (define-key global-map (kbd "C-x C-f") 'helm-find-files)
+  ;; For find-file etc.
+  ;(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+  ;; For helm-find-files etc.
+  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+
 
 ;; auto-complete
 (require 'auto-complete-config)
