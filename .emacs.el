@@ -332,11 +332,6 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (el-get 'sync)
 
-;(require 'helm-config)
-(define-key global-map (kbd "M-x")     'helm-M-x)
-(define-key global-map (kbd "C-x C-f") 'helm-find-files)
-
-
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
 ;; C-x C-x でリージョンを復活
@@ -431,6 +426,28 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
 (package-initialize)
+;; パッケージ情報の更新
+(package-refresh-contents)
+;; インストールするパッケージ
+(defvar my/favorite-packages
+  '(
+    auto-complete
+    helm
+    rvm
+    yasnippet
+    rinari
+    rhtml-mode
+    web-mode
+    ))
+
+;; my/favorite-packagesからインストールしていないパッケージをインストール
+(dolist (package my/favorite-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+;(require 'helm-config)
+(define-key global-map (kbd "M-x")     'helm-M-x)
+(define-key global-map (kbd "C-x C-f") 'helm-find-files)
 
 ;; auto-complete
 (require 'auto-complete-config)
