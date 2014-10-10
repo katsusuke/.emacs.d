@@ -597,7 +597,7 @@
 (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
 (push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3) flymake-err-line-patterns)
 (add-hook
- 'ruby-mode-hook
+ 'enh-ruby-mode-hook
  '(lambda ()
     ;; Don't want flymake mode for ruby regions in rhtml files
     (if (not (null buffer-file-name)) (flymake-mode))))
@@ -621,7 +621,7 @@
 	)
       (setq count (1- count)))))
 (add-hook
- 'ruby-mode-hook
+ 'enh-ruby-mode-hook
  '(lambda ()
     (define-key ruby-mode-map "\C-cd" 'flymake-display-err-menu-for-current-line)))
 
@@ -633,16 +633,9 @@
 ;(message "after-yasnippet")
 
 (require 'rhtml-mode)
-;(message "after-rhtml")
-(add-hook 'rhtml-mode-hook
-	  (lambda () (rinari-launch)))
 (add-hook 'haml-mode-hook
 	  (lambda ()
-	    (rinari-launch)
 	    (setq indent-tabs-mode nil)))
-(add-hook 'ruby-mode-hook
-	  (lambda ()
-	    (rinari-launch)))
 
 (require 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
