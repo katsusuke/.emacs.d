@@ -551,6 +551,7 @@
 ;	     (inf-ruby-keys)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
+	     (flymake-mode)
 	     ))
 
 (add-hook 'robe-mode-hook 'ac-robe-setup)
