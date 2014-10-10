@@ -433,11 +433,14 @@
   '(
     auto-complete
     helm
+    helm-rails
     rvm
     yasnippet
-    rinari
     rhtml-mode
     web-mode
+    flymake
+    flymake-haml
+    js2-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -454,11 +457,18 @@
   ;(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
   ;; For helm-find-files etc.
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+;; helm-rails
+(when (require 'helm-rails nil t)
+  (define-key global-map (kbd "s-t") 'helm-rails-controllers)
+  (define-key global-map (kbd "s-y") 'helm-rails-models)
+  (define-key global-map (kbd "s-u") 'helm-rails-views)
+  (define-key global-map (kbd "s-o") 'helm-rails-specs)
+  (define-key global-map (kbd "s-r") 'helm-rails-all))
 
 
 ;; auto-complete
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
+;(add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
 (ac-config-default)
 
 ;; リモートのファイルを編集するTRAMP
@@ -522,8 +532,9 @@
 (defun ruby-mode-set-encoding () nil)
 
 ;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
-(add-hook 'ruby-mode-hook
+(add-hook 'enh-ruby-mode-hook
 	  '(lambda ()
+	     (auto-complete-mode)
 ;	     (message "dbg1:%s\n" ruby-mode-map)
 	     (define-key ruby-mode-map "{" nil);ここの設定はEmacs24.3のバグ?
 	     (define-key ruby-mode-map "}" nil);
@@ -609,31 +620,6 @@
 
 ;(message "after-yasnippet")
 
-;; rinari
-;; ちなみに閉じタグを出すのは C-c /
-;; キーバインド	findするディレクトリ
-;; C-c ; f f	RAILS_ROOT/
-;; C-c ; f c	app/controller/
-;; C-c ; f m	app/models/
-;; C-c ; f v	app/views/
-;; C-c ; f h	app/helper/
-;; C-c ; f i	db/migrate/
-;; C-c ; f n	config/
-;; C-c ; f e	config/environment/
-;; C-c ; f j	pubic/javascript/
-;; C-c ; f l	vendor/plugin/
-;; C-c ; f o	log/
-;; C-c ; f p	public/
-;; C-c ; f s	script/
-;; C-c ; f t	test/
-;; C-c ; f w	lib/workers/
-;; C-c ; f x	test/fixtures/
-;; C-c ; f y	public/stylesheets/
-;; C-c ; f r	spec/
-;; C-c ; f z	spec/fixtures
-;; C-c ; g      grep
-(require 'rinari)
-;(message "after-rinari-req")
 (require 'rhtml-mode)
 ;(message "after-rhtml")
 (add-hook 'rhtml-mode-hook
@@ -645,8 +631,6 @@
 (add-hook 'ruby-mode-hook
 	  (lambda ()
 	    (rinari-launch)))
-(message "after-rinari")
-
 
 (require 'smart-compile)
 (define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
