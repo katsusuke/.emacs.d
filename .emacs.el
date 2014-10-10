@@ -6,6 +6,12 @@
 ;; .emacs.el を再読み込みするには
 ;; C-x C-s または Command + s
 ;; M-x load-file RET ~/.emacs.el RET
+;;
+;; Dependencies
+;;    pry
+;;    pry-doc >= 0.6.0 (on MRI)
+;;    method_source >= 0.8.2 (for compatibility with the latest Rubinius)
+
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
@@ -432,6 +438,7 @@
 (defvar my/favorite-packages
   '(
     auto-complete
+    robe
     helm
     helm-rails
     rvm
@@ -534,7 +541,9 @@
 ;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
 (add-hook 'enh-ruby-mode-hook
 	  '(lambda ()
+	     (inf-ruby-minor-mode)
 	     (auto-complete-mode)
+	     (robe-mode)
 ;	     (message "dbg1:%s\n" ruby-mode-map)
 	     (define-key ruby-mode-map "{" nil);ここの設定はEmacs24.3のバグ?
 	     (define-key ruby-mode-map "}" nil);
@@ -543,6 +552,8 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     ))
+
+(add-hook 'robe-mode-hook 'ac-robe-setup)
 
 ;; hash-rocket を1.9記法に変換する
 (defun ruby-anti-hash-rocket ()
