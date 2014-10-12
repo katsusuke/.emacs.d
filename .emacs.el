@@ -449,6 +449,8 @@
     flymake-haml
     js2-mode
     foreign-regexp
+    yaml-mode
+    haml-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
