@@ -751,7 +751,6 @@
 
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
-	     (rinari-launch)
 	     (indent-tabs-mode nil)))
 ;; css-mode
 (add-hook 'css-mode-hook
