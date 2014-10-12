@@ -441,6 +441,7 @@
     robe
     helm
     helm-rails
+    enh-ruby-mode
     rvm
     yasnippet
     rhtml-mode
