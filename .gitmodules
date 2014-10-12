@@ -1,6 +1,3 @@
-[submodule ".emacs.d/foreign-regexp"]
-	path = .emacs.d/foreign-regexp
-	url = https://github.com/k-talo/foreign-regexp.el.git
 [submodule ".emacs.d/yasnippets-rails"]
 	path = .emacs.d/yasnippets-rails
 	url = https://github.com/eschulte/yasnippets-rails.git
