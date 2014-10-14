@@ -440,7 +440,6 @@
     robe
     helm
     helm-rails
-    enh-ruby-mode
     rvm
     yasnippet
     rhtml-mode
@@ -522,14 +521,14 @@
       (require 'rvm)
       (rvm-use-default)))
 
-(autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
-(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+(autoload 'ruby-mode "ruby-mode" "Major mode for ruby files" t)
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
 
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
-(setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
   interpreter-mode-alist))
 (autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
 
@@ -542,7 +541,7 @@
 (defun ruby-mode-set-encoding () nil)
 
 ;(autoload 'inf-ruby-keys "inf-ruby" "Set local key defs for inf-ruby in ruby-mode")
-(add-hook 'enh-ruby-mode-hook
+(add-hook 'ruby-mode-hook
 	  '(lambda ()
 	     (inf-ruby-minor-mode)
 	     (auto-complete-mode)
@@ -600,7 +599,7 @@
 (push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
 (push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3) flymake-err-line-patterns)
 (add-hook
- 'enh-ruby-mode-hook
+ 'ruby-mode-hook
  '(lambda ()
     ;; Don't want flymake mode for ruby regions in rhtml files
     (if (not (null buffer-file-name)) (flymake-mode))))
@@ -624,7 +623,7 @@
 	)
       (setq count (1- count)))))
 (add-hook
- 'enh-ruby-mode-hook
+ 'ruby-mode-hook
  '(lambda ()
     (define-key ruby-mode-map "\C-cd" 'flymake-display-err-menu-for-current-line)))
 
