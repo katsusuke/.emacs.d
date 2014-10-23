@@ -451,6 +451,7 @@
     foreign-regexp
     yaml-mode
     haml-mode
+    coffee-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
