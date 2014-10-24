@@ -268,6 +268,16 @@
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 
+      ;; disable x-popup-dialog
+      (defadvice yes-or-no-p (around prevent-dialog activate)
+	"Prevent yes-or-no-p from activating a dialog"
+	(let ((use-dialog-box nil))
+	  ad-do-it))
+      (defadvice y-or-n-p (around prevent-dialog-yorn activate)
+	"Prevent y-or-n-p from (and )ctivating a dialog"
+	(let ((use-dialog-box nil))
+	  ad-do-it))
+
       ;; grep のコマンドは find -print0 |xargs grep を使う
 ;      (require 'grep)
 ;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
@@ -440,6 +450,7 @@
     robe
     helm
     helm-rails
+    helm-ag
     rvm
     yasnippet
     enh-ruby-mode
