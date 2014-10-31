@@ -300,7 +300,7 @@
   (unless (member path load-path)
     (add-to-list 'load-path path)))
 
-(add-load-path "~/.emacs.d")
+(add-load-path "~/.emacs.d/lisp")
 (add-load-path "~/.emacs.d/cscope")
 (add-load-path "~/.emacs.d/el-get")
 
