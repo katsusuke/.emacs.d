@@ -463,6 +463,8 @@
     yaml-mode
     haml-mode
     coffee-mode
+    scss-mode
+    sass-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -775,8 +777,15 @@
 
 ;; scss-mode
 (autoload 'scss-mode "scss-mode")
-(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
-(custom-set-variables '(scss-compile-at-save nil))
+(add-hook 'scss-mode-hook
+	  '(lambda ()
+	     (custom-set-variables '(scss-compile-at-save nil))
+	     (custom-set-variables '(css-indent-offset 2))
+	     (flymake-mode)))
+
+(autoload 'sass-mode "sass-mode")
+(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+
 
 ;; html-mode
 (add-hook 'html-mode-hook
