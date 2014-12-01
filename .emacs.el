@@ -153,7 +153,7 @@
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 ))
-;; MacPorts emacs-app 24用
+;; Homebrew emacs-app 24用
 (if (eq window-system 'ns)
     (progn
       (defun set-frame-default ()
@@ -278,13 +278,8 @@
 	(let ((use-dialog-box nil))
 	  ad-do-it))
 
-      ;; grep のコマンドは find -print0 |xargs grep を使う
-;      (require 'grep)
-;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
-;      (setenv "PATH" (format "%s:%s"
-;			     (expand-file-name "~/.rvm/rubies/ruby-2.0.0-p247/bin")
-;			     (getenv "PATH")))
-
+      (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
+      (setq exec-path (split-string (getenv "PATH") ":"))
 ))
 ; X用
 (if (eq window-system 'x)
@@ -301,7 +296,6 @@
     (add-to-list 'load-path path)))
 
 (add-load-path "~/.emacs.d/lisp")
-(add-load-path "~/.emacs.d/cscope")
 (add-load-path "~/.emacs.d/el-get")
 
 (if (eq window-system 'w32)
@@ -333,7 +327,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(ede-project-directories (quote ("/Users/k-shimizu/Desktop/Sample/Src")))
  '(el-get-dir "~/.emacs.d/el-get-packages/")
  '(foreign-regexp/regexp-type 'ruby)
  '(reb-re-syntax 'foreign-regexp)
@@ -467,6 +460,7 @@
     coffee-mode
     scss-mode
     sass-mode
+    ggtags
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -666,27 +660,29 @@
 (autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
 
 
-(autoload 'gtags-mode "gtags" "" t)
-(setq gtags-mode-hook
+(autoload 'ggtags-mode "ggtags" "" t)
+(setq ggtags-mode-hook
       '(lambda ()
-         (local-set-key "\M-t" 'gtags-find-tag)     ;; 定義にジャンプ
-         (local-set-key "\M-r" 'gtags-find-rtag)    ;; 参照を検索
-         (local-set-key "\M-s" 'gtags-find-symbol)));; 定義にジャンプ
-(global-set-key "\M-e" 'gtags-pop-stack)            ;; スタックを戻る
+         (local-set-key "\M-t" 'ggtags-find-definition) ;; 定義にジャンプ
+         (local-set-key "\M-r" 'ggtags-find-reference)  ;; 参照を検索
+         (local-set-key "\M-s" 'ggtags-find-symbol)     ;; 定義にジャンプ
+	 (setq ggtags-completing-read-function nil)
+	 (helm-mode)
+	 ))
+(global-set-key "\M-e" 'ggtags-pop-stack)               ;; スタックを戻る
 
-;; C Scope
-;; タグ作成は cscope -bR
-(require 'xcscope)
-(setq cscope-do-not-update-database t)
-(setq cscope-truncate-lines t)
+;; c-mode-common
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'web-mode)
+              (ggtags-mode 1))))
+
 
 ;; c-mod
 (add-hook
  'c-mode-hook
  '(lambda ()
     ;; cedit
-    (load-library "cedet")
-    (global-ede-mode 1)
     (semantic-mode 1)
     (cpp-highlight-buffer t)
     (setq semantic-default-submodes
@@ -699,8 +695,6 @@
            global-semantic-stickyfunc-mode
            global-semantic-mru-bookmark-mode
            ))
-    ;; gtags
-    (gtags-mode 1)
     (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
@@ -710,8 +704,6 @@
  'c++-mode-hook
  '(lambda ()
     ;; cedit
-    (load-library "cedet")
-    (global-ede-mode 1)
     (semantic-mode 1)
     (cpp-highlight-buffer t)
     (setq semantic-default-submodes
@@ -725,8 +717,6 @@
            global-semantic-mru-bookmark-mode
            ))
     ;; gtags
-    (gtags-mode 1)
-    (gtags-make-complete-list)
     (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)))
