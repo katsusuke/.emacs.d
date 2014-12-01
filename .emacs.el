@@ -451,6 +451,8 @@
     foreign-regexp
     yaml-mode
     haml-mode
+    markdown-mode
+    web-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -726,12 +728,12 @@
 
 
 ;; PHP-mode
-(autoload 'php-mode "php-mode" "PHP mode" t)
-(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . php-mode))
-(add-hook 'php-mode-hook '(lambda ()
+(autoload 'php-mode "web-mode" "web-mode" t)
+(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode))
+(add-hook 'web-mode-hook '(lambda ()
                             (setq php-intelligent-tab nil)
                             (setq intelligent-tab nil)
-                            (setq indent-tabs-mode t)
+                            (setq indent-tabs-mode nil)
                             (setq c-basic-offset 4)
                             (setq tab-width 4)
 			    (make-local-variable 'ac-sources)
