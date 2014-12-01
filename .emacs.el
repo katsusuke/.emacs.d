@@ -268,6 +268,16 @@
       ;; Show filename on titlebar
       (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 
+      ;; disable x-popup-dialog
+      (defadvice yes-or-no-p (around prevent-dialog activate)
+	"Prevent yes-or-no-p from activating a dialog"
+	(let ((use-dialog-box nil))
+	  ad-do-it))
+      (defadvice y-or-n-p (around prevent-dialog-yorn activate)
+	"Prevent y-or-n-p from (and )ctivating a dialog"
+	(let ((use-dialog-box nil))
+	  ad-do-it))
+
       ;; grep のコマンドは find -print0 |xargs grep を使う
 ;      (require 'grep)
 ;      (grep-apply-setting 'grep-find-use-xargs 'gnu)
@@ -290,7 +300,7 @@
   (unless (member path load-path)
     (add-to-list 'load-path path)))
 
-(add-load-path "~/.emacs.d")
+(add-load-path "~/.emacs.d/lisp")
 (add-load-path "~/.emacs.d/cscope")
 (add-load-path "~/.emacs.d/el-get")
 
@@ -440,6 +450,7 @@
     robe
     helm
     helm-rails
+    helm-ag
     rvm
     yasnippet
     enh-ruby-mode
@@ -453,6 +464,9 @@
     haml-mode
     markdown-mode
     web-mode
+    coffee-mode
+    scss-mode
+    sass-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -765,8 +779,15 @@
 
 ;; scss-mode
 (autoload 'scss-mode "scss-mode")
-(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
-(custom-set-variables '(scss-compile-at-save nil))
+(add-hook 'scss-mode-hook
+	  '(lambda ()
+	     (custom-set-variables '(scss-compile-at-save nil))
+	     (custom-set-variables '(css-indent-offset 2))
+	     (flymake-mode)))
+
+(autoload 'sass-mode "sass-mode")
+(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+
 
 ;; html-mode
 (add-hook 'html-mode-hook
