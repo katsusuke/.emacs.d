@@ -568,7 +568,7 @@
          (local-set-key "\M-r" 'ggtags-find-reference)  ;; 参照を検索
          (local-set-key "\M-s" 'ggtags-find-symbol)     ;; 定義にジャンプ
 	 (setq ggtags-completing-read-function nil)
-	 (helm-mode)
+	 (helm-mode 1)
 	 ))
 (global-set-key "\M-e" 'ggtags-pop-stack)               ;; スタックを戻る
 
