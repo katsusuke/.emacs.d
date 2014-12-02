@@ -277,6 +277,9 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
+;; シンボリックファイルはリンク先を自動で開く
+(custom-set-variables '(vc-follow-link t))
+
 ;; 自動でrevert-buffer
 ;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
 (setq auto-revert-check-vc-info t)
