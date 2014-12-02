@@ -229,11 +229,8 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(el-get-dir "~/.emacs.d/el-get-packages/")
- '(foreign-regexp/regexp-type 'ruby)
- '(reb-re-syntax 'foreign-regexp)
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
- '(reb-re-syntax (quote foreign-regexp))
  '(safe-local-variable-values (quote ((ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
@@ -347,7 +344,7 @@
     helm-ag
     helm-ls-git
     rvm
-    yasnippet
+;    yasnippet
     enh-ruby-mode
     rhtml-mode
     web-mode
@@ -565,8 +562,8 @@
 
 
 ;; yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
+;(require 'yasnippet)
+;(yas-global-mode 1)
 
 ;(message "after-yasnippet")
 
@@ -868,7 +865,10 @@
 
 ;; foreign-regexp
 (require 'foreign-regexp)
- ;; Tell re-builder to use foreign regexp.
+(custom-set-variables
+ '(foreign-regexp/regexp-type 'ruby)
+ '(reb-re-syntax 'foreign-regexp)
+ )
 
 ;;web-mode
 (require 'web-mode)
