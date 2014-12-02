@@ -345,6 +345,7 @@
     helm
     helm-rails
     helm-ag
+    helm-ls-git
     rvm
     yasnippet
     enh-ruby-mode
@@ -370,13 +371,37 @@
 
 (when (require 'helm-config nil t)
   (helm-mode 1)
+  ;(custom-set-variables '(helm-ff-transformer-show-only-basename nil))
+
+  ;; helm-mini のカスタマイズ
+  (defun helm-my-buffers ()
+     (interactive)
+     (helm-other-buffer '(helm-c-source-buffers-list
+			  helm-c-source-files-in-current-dir
+			  helm-c-source-recentf
+			  helm-c-source-ls-git)
+			"*helm-my-buffers*"))
   ;(require 'helm-config)
   (define-key global-map (kbd "M-x")     'helm-M-x)
   (define-key global-map (kbd "C-x C-f") 'helm-find-files)
+  (define-key global-map (kbd "C-q") 'helm-my-buffers)
   ;; For find-file etc.
   ;(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
   ;; For helm-find-files etc.
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  ;helm でC-k の挙動を通常のバッファと同等にする
+  (setq helm-delete-minibuffer-contents-from-point t)
+  (defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
+    "Emulate `kill-line' in helm minibuffer"
+    (kill-new (buffer-substring (point) (field-end))))
+
+  )
+
+(when (require 'helm-ls-git nil t)
+  (custom-set-variables '(helm-ls-git-show-abs-or-relative 'relative)))
+
+
 ;; helm-rails
 (when (require 'helm-rails nil t)
   (define-key global-map (kbd "s-t") 'helm-rails-controllers)
