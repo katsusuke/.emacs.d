@@ -357,7 +357,6 @@
     yaml-mode
     haml-mode
     markdown-mode
-    web-mode
     coffee-mode
     scss-mode
     sass-mode
