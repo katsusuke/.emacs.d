@@ -407,6 +407,10 @@
   (define-key global-map (kbd "s-o") 'helm-rails-specs)
   (define-key global-map (kbd "s-r") 'helm-rails-all))
 
+;; helm-ag
+(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+(setq helm-ag-command-option "--all-text")
+(setq helm-ag-insert-at-point 'symbol)
 
 ;; auto-complete
 (require 'auto-complete-config)
