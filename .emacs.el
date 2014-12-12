@@ -50,6 +50,7 @@
     sass-mode
     ggtags
     projectile
+    helm-projectile
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -419,6 +420,9 @@
 (defun projectile-helm-ag ()
   (interactive)
   (helm-ag (projectile-project-root)))
+
+;; projectile
+(helm-projectile-on)
 
 ;; auto-complete
 (require 'auto-complete-config)
