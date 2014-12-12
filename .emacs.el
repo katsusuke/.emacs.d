@@ -336,7 +336,7 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
 (package-initialize)
 ;; パッケージ情報の更新
-(package-refresh-contents)
+;(package-refresh-contents)
 ;; インストールするパッケージ
 (defvar my/favorite-packages
   '(
