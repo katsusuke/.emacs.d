@@ -12,6 +12,51 @@
 ;;    pry-doc >= 0.6.0 (on MRI)
 ;;    method_source >= 0.8.2 (for compatibility with the latest Rubinius)
 
+;; load-path の追加
+(defun add-load-path (path)
+  (setq path (expand-file-name path))
+  (unless (member path load-path)
+    (add-to-list 'load-path path)))
+
+(add-load-path "~/.emacs.d/lisp")
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
+(package-initialize)
+;; パッケージ情報の更新
+;(package-refresh-contents)
+;; インストールするパッケージ
+(defvar my/favorite-packages
+  '(
+    auto-complete
+    robe
+    helm
+    helm-rails
+    helm-ag
+    helm-ls-git
+    rvm
+;    yasnippet
+    enh-ruby-mode
+    rhtml-mode
+    web-mode
+    flymake
+    flymake-haml
+    js2-mode
+    foreign-regexp
+    yaml-mode
+    haml-mode
+    markdown-mode
+    coffee-mode
+    scss-mode
+    sass-mode
+    ggtags
+    ))
+
+;; my/favorite-packagesからインストールしていないパッケージをインストール
+(dolist (package my/favorite-packages)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
@@ -188,16 +233,6 @@
       (define-key function-key-map [backspace] [8])
       (put 'backspace 'ascii-character 8)))
 
-
-
-;; load-path の追加
-(defun add-load-path (path)
-  (setq path (expand-file-name path))
-  (unless (member path load-path)
-    (add-to-list 'load-path path)))
-
-(add-load-path "~/.emacs.d/lisp")
-
 (if (eq window-system 'w32)
     (if (file-accessible-directory-p "c:/cygwin")
 	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -331,43 +366,6 @@
 ;ファイルの先頭に #! が含まれているとき、自動的に chmod +x を行ってくれます。
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
-(package-initialize)
-;; パッケージ情報の更新
-;(package-refresh-contents)
-;; インストールするパッケージ
-(defvar my/favorite-packages
-  '(
-    auto-complete
-    robe
-    helm
-    helm-rails
-    helm-ag
-    helm-ls-git
-    rvm
-;    yasnippet
-    enh-ruby-mode
-    rhtml-mode
-    web-mode
-    flymake
-    flymake-haml
-    js2-mode
-    foreign-regexp
-    yaml-mode
-    haml-mode
-    markdown-mode
-    coffee-mode
-    scss-mode
-    sass-mode
-    ggtags
-    ))
-
-;; my/favorite-packagesからインストールしていないパッケージをインストール
-(dolist (package my/favorite-packages)
-  (unless (package-installed-p package)
-    (package-install package)))
 
 (when (require 'helm-config nil t)
   (helm-mode 1)
