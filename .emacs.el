@@ -49,6 +49,7 @@
     scss-mode
     sass-mode
     ggtags
+    projectile
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -415,6 +416,9 @@
 (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
 (setq helm-ag-command-option "--all-text")
 (setq helm-ag-insert-at-point 'symbol)
+(defun projectile-helm-ag ()
+  (interactive)
+  (helm-ag (projectile-project-root)))
 
 ;; auto-complete
 (require 'auto-complete-config)
@@ -492,6 +496,7 @@
 	     (define-key ruby-mode-map "}" nil);
 ;	     (message "dbg2:%s\n" ruby-mode-map)
 ;	     (inf-ruby-keys)
+	     (projectile-mode)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (flymake-mode)
@@ -611,6 +616,7 @@
     ;; cedit
     (semantic-mode 1)
     (cpp-highlight-buffer t)
+    (projectile-mode)
     (setq semantic-default-submodes
          '(
            global-semantic-idle-scheduler-mode
