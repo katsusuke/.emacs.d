@@ -7,8 +7,6 @@
 ;; C-x C-s または Command + s
 ;; M-x load-file RET ~/.emacs.el RET
 ;;
-;; gitから取ってきた直後は、package-refresh-contents を実行しないとダメなハズ...
-;;
 ;; Dependencies
 ;;    pry
 ;;    pry-doc >= 0.6.0 (on MRI)
@@ -25,8 +23,7 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
 (package-initialize)
-;; パッケージ情報の更新
-;(package-refresh-contents)
+
 ;; インストールするパッケージ
 (defvar my/favorite-packages
   '(
@@ -55,8 +52,12 @@
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
+(setq my-packages-loaded nil)
 (dolist (package my/favorite-packages)
   (unless (package-installed-p package)
+    (unless my-packages-loaded
+      (package-refresh-contents);; パッケージ情報の更新
+      (setq my-packages-loaded t))
     (package-install package)))
 
 
