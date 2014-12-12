@@ -7,6 +7,8 @@
 ;; C-x C-s または Command + s
 ;; M-x load-file RET ~/.emacs.el RET
 ;;
+;; gitから取ってきた直後は、package-refresh-contents を実行しないとダメなハズ...
+;;
 ;; Dependencies
 ;;    pry
 ;;    pry-doc >= 0.6.0 (on MRI)
@@ -576,10 +578,6 @@
 (add-hook 'haml-mode-hook
 	  (lambda ()
 	    (setq indent-tabs-mode nil)))
-
-(require 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
 
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")
