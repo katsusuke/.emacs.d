@@ -12,6 +12,56 @@
 ;;    pry-doc >= 0.6.0 (on MRI)
 ;;    method_source >= 0.8.2 (for compatibility with the latest Rubinius)
 
+;; load-path の追加
+(defun add-load-path (path)
+  (setq path (expand-file-name path))
+  (unless (member path load-path)
+    (add-to-list 'load-path path)))
+
+(add-load-path "~/.emacs.d/lisp")
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
+(package-initialize)
+
+;; インストールするパッケージ
+(defvar my/favorite-packages
+  '(
+    auto-complete
+    robe
+    helm
+    helm-rails
+    helm-ag
+    helm-ls-git
+    rvm
+;    yasnippet
+    enh-ruby-mode
+    rhtml-mode
+    web-mode
+    flymake
+    flymake-haml
+    js2-mode
+    foreign-regexp
+    yaml-mode
+    haml-mode
+    markdown-mode
+    coffee-mode
+    scss-mode
+    sass-mode
+    ggtags
+    projectile
+    helm-projectile
+    ))
+
+;; my/favorite-packagesからインストールしていないパッケージをインストール
+(setq my-packages-loaded nil)
+(dolist (package my/favorite-packages)
+  (unless (package-installed-p package)
+    (unless my-packages-loaded
+      (package-refresh-contents);; パッケージ情報の更新
+      (setq my-packages-loaded t))
+    (package-install package)))
+
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
@@ -188,17 +238,6 @@
       (define-key function-key-map [backspace] [8])
       (put 'backspace 'ascii-character 8)))
 
-
-
-;; load-path の追加
-(defun add-load-path (path)
-  (setq path (expand-file-name path))
-  (unless (member path load-path)
-    (add-to-list 'load-path path)))
-
-(add-load-path "~/.emacs.d/lisp")
-(add-load-path "~/.emacs.d/el-get")
-
 (if (eq window-system 'w32)
     (if (file-accessible-directory-p "c:/cygwin")
 	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
@@ -212,31 +251,35 @@
       (setq shell-file-name "C:/cygwin64/bin/bash.exe")
       (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")))
 
-
-;; el-get パッケージマネージャ
-(require 'el-get)
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(el-get-dir "~/.emacs.d/el-get-packages/")
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
- '(safe-local-variable-values (quote ((ruby-compilation-executable . "ruby") (ruby-compilation-executable . "ruby1.8") (ruby-compilation-executable . "ruby1.9") (ruby-compilation-executable . "rbx") (ruby-compilation-executable . "jruby") (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t))))
+ '(safe-local-variable-values
+   (quote ((ruby-compilation-executable . "ruby") 
+	   (ruby-compilation-executable . "ruby1.8")
+	   (ruby-compilation-executable . "ruby1.9")
+	   (ruby-compilation-executable . "rbx")
+	   (ruby-compilation-executable . "jruby")
+	   (eval
+	    ignore-errors
+	    "Write-contents-functions is a buffer-local alternative to before-save-hook"
+	    (add-hook
+	     (quote write-contents-functions)
+	     (lambda nil (delete-trailing-whitespace) nil))
+	    (require (quote whitespace))
+	    "Sometimes the mode needs to be toggled off and on."
+	    (whitespace-mode 0)
+	    (whitespace-mode 1))
+	   (whitespace-line-column . 80)
+	   (whitespace-style face trailing lines-tail)
+	   (require-final-newline . t))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(el-get 'sync)
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -357,43 +400,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
-(package-initialize)
-;; パッケージ情報の更新
-(package-refresh-contents)
-;; インストールするパッケージ
-(defvar my/favorite-packages
-  '(
-    auto-complete
-    robe
-    helm
-    helm-rails
-    helm-ag
-    helm-ls-git
-    rvm
-;    yasnippet
-    enh-ruby-mode
-    rhtml-mode
-    web-mode
-    flymake
-    flymake-haml
-    js2-mode
-    foreign-regexp
-    yaml-mode
-    haml-mode
-    markdown-mode
-    coffee-mode
-    scss-mode
-    sass-mode
-    ggtags
-    ))
-
-;; my/favorite-packagesからインストールしていないパッケージをインストール
-(dolist (package my/favorite-packages)
-  (unless (package-installed-p package)
-    (package-install package)))
-
 (when (require 'helm-config nil t)
   (helm-mode 1)
   ;(custom-set-variables '(helm-ff-transformer-show-only-basename nil))
@@ -435,6 +441,16 @@
   (define-key global-map (kbd "s-o") 'helm-rails-specs)
   (define-key global-map (kbd "s-r") 'helm-rails-all))
 
+;; helm-ag
+(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+(setq helm-ag-command-option "--all-text")
+(setq helm-ag-insert-at-point 'symbol)
+(defun projectile-helm-ag ()
+  (interactive)
+  (helm-ag (projectile-project-root)))
+
+;; projectile
+(helm-projectile-on)
 
 ;; auto-complete
 (require 'auto-complete-config)
@@ -512,6 +528,7 @@
 	     (define-key ruby-mode-map "}" nil);
 ;	     (message "dbg2:%s\n" ruby-mode-map)
 ;	     (inf-ruby-keys)
+	     (projectile-mode)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (flymake-mode)
@@ -600,10 +617,6 @@
 	  (lambda ()
 	    (setq indent-tabs-mode nil)))
 
-(require 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c c") 'smart-compile)
-(define-key ruby-mode-map (kbd "C-c C-c") (kbd "C-c c C-m"))
-
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")
 (autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
@@ -635,6 +648,7 @@
     ;; cedit
     (semantic-mode 1)
     (cpp-highlight-buffer t)
+    (projectile-mode)
     (setq semantic-default-submodes
          '(
            global-semantic-idle-scheduler-mode

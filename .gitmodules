@@ -1,3 +1,0 @@
-[submodule ".emacs.d/yasnippets-rails"]
-	path = .emacs.d/yasnippets-rails
-	url = https://github.com/eschulte/yasnippets-rails.git
