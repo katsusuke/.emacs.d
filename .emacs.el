@@ -49,6 +49,7 @@
     scss-mode
     sass-mode
     ggtags
+    ag ; projectile-ag で必要
     projectile
     helm-projectile
     ))
