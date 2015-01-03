@@ -478,8 +478,9 @@
 ;; コンパイルの結果画面は画面端で折り返す
 (add-hook 'compilation-mode-hook
           '(lambda ()
-	     (cond ((eq major-mode 'grep-mode)
-		    (setq truncate-lines t)))))
+	     (prin1 major-mode)
+	     (if (member major-mode (list 'grep-mode 'ag-mode))
+		    (setq truncate-lines t))))
 
 ;; Coffee-mode
 (autoload 'coffee-mode "coffee-mode" "Major mode for editing Coffeescript." t)
