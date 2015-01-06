@@ -11,6 +11,9 @@
 ;;    pry
 ;;    pry-doc >= 0.6.0 (on MRI)
 ;;    method_source >= 0.8.2 (for compatibility with the latest Rubinius)
+;;
+;;    cmigemo (日本語検索)
+;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 
 ;; load-path の追加
 (defun add-load-path (path)
@@ -33,6 +36,7 @@
     helm-rails
     helm-ag
     helm-ls-git
+    migemo
     rvm
 ;    yasnippet
     enh-ruby-mode
@@ -302,6 +306,18 @@
 (require 'auto-highlight-symbol)
 (global-auto-highlight-symbol-mode t)
 
+;; 日本語インクリメンタル検索
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+
+;; Set your installed path
+(setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD/share/migemo/utf-8/migemo-dict")
+
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(migemo-init)
 
 ;; バックアップ関係
 
