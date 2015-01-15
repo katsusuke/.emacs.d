@@ -523,6 +523,11 @@
 (require 'auto-complete-config)
 ;(add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
 (ac-config-default)
+;; これを設定するとC-n C-p で候補の選択ができるようになる.
+(setq ac-use-menu-map t)
+
+;(define-key ac-menu-map "\C-n" 'ac-next)
+;(define-key ac-menu-map "\C-p" 'ac-previous)
 
 ;; リモートのファイルを編集するTRAMP
 (require 'tramp)
