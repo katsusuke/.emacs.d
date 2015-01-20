@@ -1,4 +1,5 @@
-var EMACS_HOME = "C:\\Program Files (x86)\\Emacs";
+var EMACS_HOME = "C:\\Program Files\\Emacs";
+
 var EMACSCLIENT = "\"" + EMACS_HOME + "\\bin\\emacsclient" + "\"";
 var RUNEMACS = EMACS_HOME + "\\bin\\runemacs";
 var EMACS_EXE = EMACS_HOME + "\\bin\\emacs.exe";
@@ -6,7 +7,7 @@ var EMACS_EXE = EMACS_HOME + "\\bin\\emacs.exe";
 function GetPCName(){
     var objNetWork = new ActiveXObject("WScript.Network");
     var res = objNetWork.ComputerName;
-    objNetWork = null
+    objNetWork = null;
     return res;
 }
 
