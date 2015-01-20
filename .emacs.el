@@ -315,7 +315,10 @@
 (setq migemo-options '("-q" "--emacs"))
 
 ;; Set your installed path
-(setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD/share/migemo/utf-8/migemo-dict")
+(if (eq window-system 'w32)
+    (setq migemo-dictionary (expand-file-name "~/.emacs.d/share/migemo/dict/utf-8/migemo-dict")))
+(if (eq window-system 'ns)
+    (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD/share/migemo/utf-8/migemo-dict"))
 
 (setq migemo-user-dictionary nil)
 (setq migemo-regex-dictionary nil)
