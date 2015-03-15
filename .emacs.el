@@ -59,6 +59,7 @@
     ag ; projectile-ag で必要
     projectile
     helm-projectile
+    hiwin
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -964,6 +965,12 @@
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-hook 'js2-mode-hook
+	  '(lambda ()
+	     (setq c-basic-offset 2)
+	     (setq indent-tabs-mode nil)
+	     (setq js2-basic-offset 2)))
+
 
 (if (or (eq window-system 'w32) (eq window-system 'mac) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -989,6 +996,10 @@
  '(reb-re-syntax 'foreign-regexp)
  )
 
+;; 選択中のフレームを強調
+(hiwin-activate)  
+(set-face-background 'hiwin-face "gray8")
+
 ;;web-mode
 (require 'web-mode)
 
@@ -1004,8 +1015,8 @@
 (defun web-mode-hook ()
   "Hooks for Web mode."
   (setq indent-tabs-mode nil)
-  (setq web-mode-html-offset   2)
-  (setq web-mode-css-offset    2)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
   (setq web-mode-script-offset 2)
   (setq web-mode-php-offset    2)
   (setq web-mode-java-offset   2)
