@@ -475,6 +475,7 @@
 
 ;; projectile
 (helm-projectile-on)
+(define-key global-map (kbd "\C-cph") 'helm-projectile)
 
 ;; helm-migemo
 (require 'helm-migemo)
@@ -529,6 +530,7 @@
 (ac-config-default)
 ;; これを設定するとC-n C-p で候補の選択ができるようになる.
 (setq ac-use-menu-map t)
+
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
