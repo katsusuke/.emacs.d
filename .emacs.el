@@ -809,19 +809,17 @@
 	  '(lambda ()
 	     (setq css-indent-offset 2)
 	     (indent-tabs-mode nil)
-	     (setq css-indent-offset 2)))
+	     (setq css-indent-offset 2)
+	     (setq scss-compile-at-save nil) ;; scss-mode ではcss-mode-hook が呼ばれる
+	     ))
 
 ;; scss-mode
 (autoload 'scss-mode "scss-mode")
-(add-hook 'scss-mode-hook
-	  '(lambda ()
-	     (custom-set-variables '(scss-compile-at-save nil))
-	     (custom-set-variables '(css-indent-offset 2))
-	     (flymake-mode)))
+(add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
 
+;; sass-mode
 (autoload 'sass-mode "sass-mode")
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
-
 
 ;; html-mode
 (add-hook 'html-mode-hook
