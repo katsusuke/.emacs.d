@@ -810,12 +810,12 @@
 	     (setq css-indent-offset 2)
 	     (indent-tabs-mode nil)
 	     (setq css-indent-offset 2)
-	     (setq scss-compile-at-save nil) ;; scss-mode ではcss-mode-hook が呼ばれる
 	     ))
 
 ;; scss-mode
 (autoload 'scss-mode "scss-mode")
 (add-to-list 'auto-mode-alist '("\\.scss$" . scss-mode))
+(setq scss-compile-at-save nil)
 
 ;; sass-mode
 (autoload 'sass-mode "sass-mode")
