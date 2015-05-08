@@ -1,5 +1,8 @@
 ;; .emacs.el
 ;; last update 2012/4/17
+;; ↓等幅フォントチェック用
+;; 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
+;; あいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえお
 ;; メモ
 ;; 現在有効なキーボードショートカットを表示するには<F1> b
 ;;
@@ -117,6 +120,13 @@
 (if (eq window-system 'ns)
     (progn
       (defun set-frame-default ()
+	(set-face-attribute 'default nil :family "monaco" :height 120)
+	(set-fontset-font (frame-parameter nil 'font)
+			  'japanese-jisx0208
+			  (font-spec :family "Hiragino Maru Gothic ProN"))
+	(add-to-list 'face-font-rescale-alist
+		     '(".*Hiragino Kaku Gothic ProN.*" . 1.292))
+	
 	;; フレームのディフォルトの設定。
 	(custom-set-variables
 	 '(column-number-mode t)
@@ -137,12 +147,6 @@
 		       '(alpha . 85)
 		       )default-frame-alist))
 
-	(set-face-attribute 'default nil :family "Menlo" :height 140)
-	(set-fontset-font (frame-parameter nil 'font)
-			  'japanese-jisx0208
-			  (font-spec :family "Hiragino Kaku Gothic ProN"))
-	(add-to-list 'face-font-rescale-alist
-		     '(".*Hiragino Kaku Gothic ProN.*" . 1.2))
 	)
       (set-frame-default)
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
