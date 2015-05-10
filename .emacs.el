@@ -125,7 +125,7 @@
 			  'japanese-jisx0208
 			  (font-spec :family "Hiragino Maru Gothic ProN"))
 	(add-to-list 'face-font-rescale-alist
-		     '(".*Hiragino Kaku Gothic ProN.*" . 1.292))
+		     '(".*Hiragino Maru Gothic ProN.*" . 1.292))
 	
 	;; フレームのディフォルトの設定。
 	(custom-set-variables
