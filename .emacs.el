@@ -117,7 +117,8 @@
       (setq grep-program "grep")))
 
 ;; Homebrew emacs-app 24用
-(if (eq window-system 'ns)
+(if (or (eq window-system 'ns)
+	(eq window-system 'mac))
     (progn
       (defun set-frame-default ()
 	(set-face-attribute 'default nil :family "monaco" :height 120)
@@ -186,12 +187,12 @@
       (define-key function-key-map [201330012] [?\C-\M-\\])
 
       ;; スクロールゆっくり
-      (global-set-key [wheel-up] '(lambda () "" (interactive) (scroll-down 1)))
-      (global-set-key [wheel-down] '(lambda () "" (interactive) (scroll-up 1)))
-      (global-set-key [double-wheel-up] '(lambda () "" (interactive) (scroll-down 2)))
-      (global-set-key [double-wheel-down] '(lambda () "" (interactive) (scroll-up 2)))
-      (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
-      (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
+      ;; (global-set-key [wheel-up] '(lambda () "" (interactive) (scroll-down 1)))
+      ;; (global-set-key [wheel-down] '(lambda () "" (interactive) (scroll-up 1)))
+      ;; (global-set-key [double-wheel-up] '(lambda () "" (interactive) (scroll-down 2)))
+      ;; (global-set-key [double-wheel-down] '(lambda () "" (interactive) (scroll-up 2)))
+      ;; (global-set-key [triple-wheel-up] '(lambda () "" (interactive) (scroll-down 3)))
+      ;; (global-set-key [triple-wheel-down] '(lambda () "" (interactive) (scroll-up 3)))
 
       ;; カーソル行ハイライト
       (defface hlline-face
