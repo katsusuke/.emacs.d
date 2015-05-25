@@ -63,6 +63,7 @@
     projectile
     helm-projectile
     hiwin
+    haskell-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -1001,3 +1002,13 @@
   (setq web-mode-java-offset   2)
   (setq web-mode-asp-offset    2))
 (add-hook 'web-mode-hook 'web-mode-hook)
+
+;; haskell-mode
+(autoload 'haskell-mode "haskell-mode" nil t)
+(autoload 'haskell-cabal "haskell-cabal" nil t)
+ 
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
+;; indent の有効.
+(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
