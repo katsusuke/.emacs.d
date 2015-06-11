@@ -162,8 +162,15 @@
       ;; MacPorts のemacs-app はデフォルトでMacのキーバインド使える
       ;; C-zで最小化してうざいので無効に
       (global-unset-key "\C-z")
-      ;; Option キーを Meta キーとして使う
-      (setq mac-option-modifier 'meta)
+
+      (setq mac-option-modifier 'meta)   ;; Option キーを Meta キーとして使う
+      (setq mac-command-modifier 'super) ;; Command キーを Super キーとして使う
+
+      ;; Mac 標準キーバインド
+      (global-set-key [(super v)] 'yank)
+      (global-set-key [(super c)] 'kill-ring-save)
+      (global-set-key [(super s)] 'save-buffer)
+      (global-set-key [(super x)] 'kill-region)
 
       ;; バックスラッシュ入力
       (define-key global-map [2213] nil)
