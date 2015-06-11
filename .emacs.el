@@ -164,10 +164,6 @@
       (global-unset-key "\C-z")
       ;; Option キーを Meta キーとして使う
       (setq mac-option-modifier 'meta)
-      ;; C-x <left/right>でバッファの切り替え（これはデフォルト動作）
-      ;; C-x <up/down>でフレームの切り替え
-      (global-set-key [?\C-x up] '(lambda () "" (interactive) (other-frame -1)))
-      (global-set-key [?\C-x down] '(lambda () "" (interactive) (other-frame 1)))
 
       ;; バックスラッシュ入力
       (define-key global-map [2213] nil)
