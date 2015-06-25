@@ -49,7 +49,6 @@
     flymake
     flymake-haml
     js2-mode
-    foreign-regexp
     yaml-mode
     haml-mode
     markdown-mode
@@ -969,13 +968,6 @@
 	(progn
 	  (server-start)
 	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
-
-;; foreign-regexp
-(require 'foreign-regexp)
-(custom-set-variables
- '(foreign-regexp/regexp-type 'ruby)
- '(reb-re-syntax 'foreign-regexp)
- )
 
 ;; 選択中のフレームを強調
 (hiwin-activate)  
