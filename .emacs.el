@@ -305,7 +305,7 @@
 ;; Set your installed path
 (if (eq window-system 'w32)
     (setq migemo-dictionary (expand-file-name "~/.emacs.d/share/migemo/dict/utf-8/migemo-dict")))
-(if (eq window-system 'ns)
+(if (or (eq window-system 'ns) (eq window-system 'mac))
     (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD/share/migemo/utf-8/migemo-dict"))
 
 (setq migemo-user-dictionary nil)
@@ -560,7 +560,7 @@
      (coffee-custom)))
 
 ;; ruby-mode
-(if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
+(if (or (eq window-system 'ns) (eq window-system 'mac)) ;;何故かターミナルで動かない そのうち調べる
     (progn
       (require 'rvm)
       (rvm-use-default)))
