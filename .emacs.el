@@ -88,7 +88,7 @@
 	 ((t (:foreground "white" :background "LightBlue2")))))
       (set-frame-parameter nil 'alpha 85)
       (setq default-frame-alist
-	    (append (list 
+	    (append (list
 ;; 		     '(foreground-color . "white")
 ;; 		     '(background-color . "black")
 ;; 		     '(border-color . "black")
@@ -125,7 +125,7 @@
 			  (font-spec :family "Hiragino Maru Gothic ProN"))
 	(add-to-list 'face-font-rescale-alist
 		     '(".*Hiragino Maru Gothic ProN.*" . 1.292))
-	
+
 	;; フレームのディフォルトの設定。
 	(custom-set-variables
 	 '(column-number-mode t)
@@ -135,7 +135,7 @@
 	 '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
 	;(set-frame-parameter nil 'alpha 85)
 	(setq default-frame-alist
-	      (append (list 
+	      (append (list
 		       ;; 		     '(foreground-color . "white")
 		       ;; 		     '(background-color . "black")
 		       ;; 		     '(border-color . "black")
@@ -150,7 +150,7 @@
       (set-frame-default)
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
-      
+
       ;; 最近使ったファイル
       (recentf-mode t)
       (setq recentf-max-menu-items 10)
@@ -256,7 +256,7 @@
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
  '(safe-local-variable-values
-   (quote ((ruby-compilation-executable . "ruby") 
+   (quote ((ruby-compilation-executable . "ruby")
 	   (ruby-compilation-executable . "ruby1.8")
 	   (ruby-compilation-executable . "ruby1.9")
 	   (ruby-compilation-executable . "rbx")
@@ -344,7 +344,7 @@
 ;; 			(vc-backend buffer-file-name))
 ;; 	       (auto-revert-mode))))
 
- 	
+
 
 ;; http://namazu.org/~satoru/diary/?200203c&to=200203272#200203272
 ;; 編集中のファイルを開き直す
@@ -438,6 +438,13 @@
     "Emulate `kill-line' in helm minibuffer"
     (kill-new (buffer-substring (point) (field-end))))
 
+  (defadvice ffap-file-at-point (after ffap-file-at-point-after-advice ())
+    (if (string= ad-return-value "/")
+	(setq ad-return-value nil)))
+  (ad-activate 'ffap-file-at-point)
+  ;; (ad-deactivate 'ffap-file-at-point)
+
+
   )
 
 (when (require 'helm-ls-git nil t)
@@ -509,6 +516,48 @@
 (global-ace-isearch-mode 1)
 
 ;;; ここまで
+(require 'whitespace)
+(setq whitespace-style '(face           ; faceで可視化
+                         trailing       ; 行末
+                         tabs           ; タブ
+                         spaces         ; スペース
+                         empty          ; 先頭/末尾の空行
+                         space-mark     ; 表示のマッピング
+                         tab-mark
+                         ))
+
+(setq whitespace-display-mappings
+      '((space-mark ?\u3000 [?\u25a1])
+        ;; WARNING: the mapping below has a problem.
+        ;; When a TAB occupies exactly one column, it will display the
+        ;; character ?\xBB at that column followed by a TAB which goes to
+        ;; the next TAB column.
+        ;; If this is a problem for you, please, comment the line below.
+        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+
+;; スペースは全角のみを可視化
+(setq whitespace-space-regexp "\\(\u3000+\\)")
+
+;; 保存前に自動でクリーンアップ
+(setq whitespace-action '(auto-cleanup))
+
+(global-whitespace-mode 1)
+
+(let ((my/bg-color "black"))
+  (set-face-attribute 'whitespace-trailing nil
+		      :background my/bg-color
+		      :foreground "DeepPink"
+		      :underline t)
+  (set-face-attribute 'whitespace-tab nil
+		      :background my/bg-color
+		      :foreground "LightSkyBlue"
+		      :underline t)
+  (set-face-attribute 'whitespace-space nil
+		      :background my/bg-color
+		      :foreground "GreenYellow"
+		      :weight 'bold)
+  (set-face-attribute 'whitespace-empty nil
+		      :background my/bg-color))
 
 
 ;; auto-complete
@@ -849,7 +898,7 @@
 				   speedbar-file-unshown-regexp
 				   "\\|\\.dfm\\|\\.ddp\\|\\.dcu\\|\\.dof"))
 			    (speedbar-add-supported-extension ".pas")))
-	      
+
 	      (abbrev-mode 1)
 	      (define-abbrev local-abbrev-table
 		"beg" t #'(lambda ()
@@ -948,7 +997,7 @@
 	      (setq imenu-create-index-function
 		    #'imenu--create-delphi-index)
 	      (imenu-add-menubar-index)))
- 
+
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -970,7 +1019,7 @@
 	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
 
 ;; 選択中のフレームを強調
-(hiwin-activate)  
+(hiwin-activate)
 (set-face-background 'hiwin-face "gray8")
 
 ;;web-mode
@@ -999,7 +1048,7 @@
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
 (autoload 'haskell-cabal "haskell-cabal" nil t)
- 
+
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
