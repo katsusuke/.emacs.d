@@ -25,7 +25,7 @@
 (add-load-path "~/.emacs.d/lisp")
 
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t) ;; MELPAを追加
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
 (package-initialize)
 
 ;; インストールするパッケージ
