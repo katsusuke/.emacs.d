@@ -255,25 +255,6 @@
  '(column-number-mode t)
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
- '(safe-local-variable-values
-   (quote ((ruby-compilation-executable . "ruby")
-	   (ruby-compilation-executable . "ruby1.8")
-	   (ruby-compilation-executable . "ruby1.9")
-	   (ruby-compilation-executable . "rbx")
-	   (ruby-compilation-executable . "jruby")
-	   (eval
-	    ignore-errors
-	    "Write-contents-functions is a buffer-local alternative to before-save-hook"
-	    (add-hook
-	     (quote write-contents-functions)
-	     (lambda nil (delete-trailing-whitespace) nil))
-	    (require (quote whitespace))
-	    "Sometimes the mode needs to be toggled off and on."
-	    (whitespace-mode 0)
-	    (whitespace-mode 1))
-	   (whitespace-line-column . 80)
-	   (whitespace-style face trailing lines-tail)
-	   (require-final-newline . t))))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -541,8 +522,6 @@
 ;; 保存前に自動でクリーンアップ
 (setq whitespace-action '(auto-cleanup))
 
-(global-whitespace-mode 1)
-
 (let ((my/bg-color "black"))
   (set-face-attribute 'whitespace-trailing nil
 		      :background my/bg-color
@@ -648,6 +627,7 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (flymake-mode)
+	     (whitespace-mode)
 	     ))
 
 (add-hook 'robe-mode-hook 'ac-robe-setup)
