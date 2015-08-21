@@ -61,6 +61,9 @@
     helm-projectile
     hiwin
     haskell-mode
+    dockerfile-mode
+    nginx-mode
+    rubocop
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -628,6 +631,7 @@
 	     (add-to-list 'ac-ignores "end")
 	     (flymake-mode)
 	     (whitespace-mode)
+	     (rubocop-mode)
 	     ))
 
 (add-hook 'robe-mode-hook 'ac-robe-setup)
@@ -1034,3 +1038,7 @@
 (add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
 ;; indent の有効.
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+
+;; dockerfile-mode
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
