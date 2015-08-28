@@ -426,9 +426,10 @@
     (if (string= ad-return-value "/")
 	(setq ad-return-value nil)))
   (ad-activate 'ffap-file-at-point)
-  ;; (ad-deactivate 'ffap-file-at-point)
 
-
+  (require 'helm-buffers)
+  (defadvice helm-buffers-sort-transformer (around ignore activate)
+  (setq ad-return-value (ad-get-arg 0)))
   )
 
 (when (require 'helm-ls-git nil t)
