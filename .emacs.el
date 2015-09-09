@@ -59,6 +59,7 @@
     ag ; projectile-ag で必要
     projectile
     helm-projectile
+    helm-ghq
     hiwin
     haskell-mode
     dockerfile-mode
