@@ -230,6 +230,7 @@
 	  ad-do-it))
 
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
+      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setq exec-path (split-string (getenv "PATH") ":"))
 ))
 ; X用
