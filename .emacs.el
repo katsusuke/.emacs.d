@@ -22,8 +22,6 @@
   (unless (member path load-path)
     (add-to-list 'load-path path)))
 
-(add-load-path "~/.emacs.d/lisp")
-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
 (package-initialize)
@@ -44,6 +42,7 @@
     rvm
 ;    yasnippet
     enh-ruby-mode
+    inf-ruby
     rhtml-mode
     web-mode
     flymake
@@ -245,7 +244,7 @@
 	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
       (if (file-accessible-directory-p "c:/cygwin64")
 	  (add-load-path "c:/cygwin64/usr/share/emacs/site-lisp")))
-  (add-load-path "/opt/local/share/emacs/site-lisp"))
+  (add-load-path "/usr/local/share/emacs/site-lisp"))
 
 (if (eq window-system 'w32)
     (progn
