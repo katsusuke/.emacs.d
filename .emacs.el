@@ -10,9 +10,10 @@
 ;;
 ;; Dependencies
 ;;    pry
-;;    pry-doc >= 0.6.0 (on MRI)
-;;    method_source >= 0.8.2 (for compatibility with the latest Rubinius)
-;;
+;;    pry-doc
+;;    method_source
+;;    rubocop
+;;    ruby-lint
 ;;    cmigemo (日本語検索)
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 
@@ -45,8 +46,6 @@
     inf-ruby
     rhtml-mode
     web-mode
-    flymake
-    flymake-haml
     js2-mode
     yaml-mode
     haml-mode
@@ -64,6 +63,8 @@
     dockerfile-mode
     nginx-mode
     rubocop
+    flycheck
+    flycheck-pos-tip
     auto-highlight-symbol
     ))
 
@@ -555,6 +556,12 @@
 ;; これを設定するとC-n C-p で候補の選択ができるようになる.
 (setq ac-use-menu-map t)
 
+;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(eval-after-load 'flycheck
+  '(custom-set-variables
+   '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages)))
+
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -627,17 +634,14 @@
 	     (inf-ruby-minor-mode)
 	     (auto-complete-mode)
 	     (robe-mode)
-;	     (message "dbg1:%s\n" ruby-mode-map)
 	     (define-key ruby-mode-map "{" nil);ここの設定はEmacs24.3のバグ?
 	     (define-key ruby-mode-map "}" nil);
-;	     (message "dbg2:%s\n" ruby-mode-map)
-;	     (inf-ruby-keys)
 	     (projectile-mode)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
-	     (flymake-mode)
 	     (whitespace-mode)
-	     (rubocop-mode)
+	     (setq flycheck-checker 'ruby-rubocop)
+             (flycheck-mode 1)
 	     ))
 
 (add-hook 'robe-mode-hook 'ac-robe-setup)
@@ -661,56 +665,9 @@
 (add-hook
  'haml-mode-hook
  '(lambda ()
-    ;; flymake-haml
-    (require 'flymake-easy)
-    (require 'flymake-haml)
-    (flymake-haml-load)
     (c-set-offset 'substatement-open '0)
     (setq tab-width  8
           indent-tabs-mode nil)))
-
-;; flymake for ruby
-(require 'flymake)
-;; Invoke ruby with '-c' to get syntax checking
-(defun flymake-ruby-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		     'flymake-create-temp-inplace))
-	 (local-file (file-relative-name
-		      temp-file
-		      (file-name-directory buffer-file-name))))
-    (list "ruby" (list "-c" local-file))))
-(push '(".+\\.rb$" flymake-ruby-init) flymake-allowed-file-name-masks)
-(push '("Rakefile$" flymake-ruby-init) flymake-allowed-file-name-masks)
-(push '("^\\(.*\\):\\([0-9]+\\): \\(.*\\)$" 1 2 nil 3) flymake-err-line-patterns)
-(add-hook
- 'enh-ruby-mode-hook
- '(lambda ()
-    ;; Don't want flymake mode for ruby regions in rhtml files
-    (if (not (null buffer-file-name)) (flymake-mode))))
-
-;; エラー行で C-c d するとエラーの内容をミニバッファで表示する
-(defun credmp/flymake-display-err-minibuf ()
-  "Displays the error/warning for the current line in the minibuffer"
-  (interactive)
-  (let* ((line-no (flymake-current-line-no))
-	 (line-err-info-list (nth 0 (flymake-find-err-info flymake-err-info line-no)))
-	 (count (length line-err-info-list))
-	 )
-    (while (> count 0)
-      (when line-err-info-list
-	(let* ((file (flymake-ler-file (nth (1- count) line-err-info-list)))
-	       (full-file (flymake-ler-full-file (nth (1- count) line-err-info-list)))
-	       (text (flymake-ler-text (nth (1- count) line-err-info-list)))
-	       (line (flymake-ler-line (nth (1- count) line-err-info-list))))
-	  (message "[%s] %s" line text)
-	  )
-	)
-      (setq count (1- count)))))
-(add-hook
- 'enh-ruby-mode-hook
- '(lambda ()
-    (define-key ruby-mode-map "\C-cd" 'flymake-display-err-menu-for-current-line)))
-
 
 ;; yasnippet
 ;(require 'yasnippet)
@@ -813,15 +770,6 @@
 			    (make-local-variable 'ac-sources)
 			    (setq ac-sources '(ac-source-words-in-same-mode-buffers))
                             ) t)
-(defun flymake-php-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		     'flymake-create-temp-inplace))
-	 (local-file (file-relative-name
-		      temp-file
-		      (file-name-directory buffer-file-name))))
-    (list "php" (list "-c" local-file))))
-(push '(".+\\.php$" flymake-php-init) flymake-allowed-file-name-masks)
-
 
 ;; YAML-mode
 (autoload 'yaml-mode "yaml-mode" "YAML mode" t)
