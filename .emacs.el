@@ -65,6 +65,7 @@
     dockerfile-mode
     nginx-mode
     rubocop
+    auto-highlight-symbol
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
