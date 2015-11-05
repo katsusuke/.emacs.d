@@ -17,7 +17,7 @@
 ;;    cmigemo (日本語検索)
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 
-;; load-path の追加
+;;; load-path の追加
 (defun add-load-path (path)
   (setq path (expand-file-name path))
   (unless (member path load-path)
@@ -432,7 +432,7 @@
 
   (require 'helm-buffers)
   (defadvice helm-buffers-sort-transformer (around ignore activate)
-  (setq ad-return-value (ad-get-arg 0)))
+    (setq ad-return-value (ad-get-arg 0)))
   )
 
 (when (require 'helm-ls-git nil t)
@@ -640,6 +640,28 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (whitespace-mode)
+	     ;; flycheck とrubocop で Rails を有効にする
+	     (setq rubocop-check-command "rubocop --format emacs -R")
+	     (flycheck-define-checker ruby-rubocop
+	       "A Ruby syntax and style checker using the RuboCop tool.
+
+See URL `http://batsov.com/rubocop/'."
+	       :command ("rubocop" "--display-cop-names" "--format" "emacs" "-R"
+			 (config-file "--config" flycheck-rubocoprc)
+			 (option-flag "--lint" flycheck-rubocop-lint-only)
+			 source)
+	       :error-patterns
+	       ((info line-start (file-name) ":" line ":" column ": C: "
+		      (optional (id (one-or-more (not (any ":")))) ": ") (message) line-end)
+		(warning line-start (file-name) ":" line ":" column ": W: "
+			 (optional (id (one-or-more (not (any ":")))) ": ") (message)
+			 line-end)
+		(error line-start (file-name) ":" line ":" column ": " (or "E" "F") ": "
+		       (optional (id (one-or-more (not (any ":")))) ": ") (message)
+		       line-end))
+	       :modes (enh-ruby-mode ruby-mode)
+	       :next-checkers ((warning . ruby-rubylint)))
+	     
 	     (setq flycheck-checker 'ruby-rubocop)
              (flycheck-mode 1)
 	     ))
