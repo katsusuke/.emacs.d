@@ -66,6 +66,7 @@
     flycheck
     flycheck-pos-tip
     auto-highlight-symbol
+    csharp-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
