@@ -9,6 +9,7 @@
 ;; M-x load-file RET ~/.emacs.el RET
 ;;
 ;; Dependencies
+;;    marked (npmで入れる)
 ;;    pry
 ;;    pry-doc
 ;;    method_source
@@ -582,6 +583,13 @@
           c-basic-offset 4
           indent-tabs-mode nil)))
 
+;; markdown-mode
+(autoload 'markdown-mode "markdown-mode"
+  "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+(add-hook 'markdown-mode-hook
+	  '(lambda()
+	     (setq markdown-command "/usr/local/bin/marked")))
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
@@ -611,10 +619,9 @@
       (rvm-use-default)))
 
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
-(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
 
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\)$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\)$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
