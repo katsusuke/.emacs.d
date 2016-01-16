@@ -644,6 +644,7 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (whitespace-mode)
+	     (rvm-activate-corresponding-ruby)
 	     ;; flycheck とrubocop で Rails を有効にする
 	     (setq rubocop-check-command "rubocop --format emacs -R")
 	     (flycheck-define-checker ruby-rubocop
