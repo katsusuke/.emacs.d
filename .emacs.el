@@ -559,9 +559,8 @@
 (setq ac-use-menu-map t)
 
 ;; flycheck
-(with-eval-after-load 'flycheck
-  (flycheck-pos-tip-mode))
 (global-flycheck-mode)
+(flycheck-pos-tip-mode)
 
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
@@ -641,8 +640,6 @@
 	     (inf-ruby-minor-mode)
 	     (auto-complete-mode)
 	     (robe-mode)
-	     (define-key ruby-mode-map "{" nil);ここの設定はEmacs24.3のバグ?
-	     (define-key ruby-mode-map "}" nil);
 	     (projectile-mode)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
