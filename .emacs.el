@@ -68,6 +68,7 @@
     flycheck-pos-tip
     auto-highlight-symbol
     csharp-mode
+    visual-regexp
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -274,6 +275,9 @@
 
 ;; ウインドウ移動をShift+矢印で
 (windmove-default-keybindings)
+
+;; visual-regexp
+(global-set-key (kbd "M-%") 'vr/query-replace)
 
 ;; カーソル位置の単語をハイライト
 ;; M-<left>	ahs-backward	前のシンボルへ移動
