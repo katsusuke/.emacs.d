@@ -697,6 +697,7 @@ See URL `http://batsov.com/rubocop/'."
  'haml-mode-hook
  '(lambda ()
     (c-set-offset 'substatement-open '0)
+    (rvm-activate-corresponding-ruby)
     (setq tab-width  8
           indent-tabs-mode nil)))
 
@@ -812,8 +813,9 @@ See URL `http://batsov.com/rubocop/'."
 ;; css-mode
 (add-hook 'css-mode-hook
 	  '(lambda ()
+	     (rvm-activate-corresponding-ruby)
 	     (setq css-indent-offset 2)
-	     (indent-tabs-mode nil)
+	     (setq indent-tabs-mode nil)
 	     (setq css-indent-offset 2)
 	     ))
 
