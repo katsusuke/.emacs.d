@@ -394,10 +394,10 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(setq helm-ff-guess-ffap-urls nil)
-
 (when (require 'helm-config nil t)
   (helm-mode 1)
+  (define-key global-map (kbd "M-x")     'helm-M-x)
+  (define-key global-map (kbd "C-x C-f") 'helm-find-files)
   ;; For helm-find-files etc.
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
