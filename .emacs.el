@@ -80,7 +80,6 @@
       (setq my-packages-loaded t))
     (package-install package)))
 
-
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
 (if (eq window-system 'w32)
@@ -90,10 +89,7 @@
        '(show-paren-mode t)
        '(tool-bar-mode nil))
       (custom-set-faces
-       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅"))))
-       '(wb-line-number-face ((t (:foreground "LightGrey"))))
-       '(wb-line-number-scroll-bar-face
-	 ((t (:foreground "white" :background "LightBlue2")))))
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))
       (set-frame-parameter nil 'alpha 85)
       (setq default-frame-alist
 	    (append (list
