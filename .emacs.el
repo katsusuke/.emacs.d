@@ -34,9 +34,7 @@
     auto-complete
     robe
     helm
-    helm-rails
     helm-ag
-    helm-ls-git
     helm-migemo
     helm-swoop
     ace-isearch
@@ -79,6 +77,9 @@
       (package-refresh-contents);; パッケージ情報の更新
       (setq my-packages-loaded t))
     (package-install package)))
+
+(defun set-font-size (height)
+  (set-face-attribute 'default (selected-frame) :height height))
 
 ;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
@@ -437,18 +438,6 @@
     (setq ad-return-value (ad-get-arg 0)))
   )
 
-(when (require 'helm-ls-git nil t)
-  (custom-set-variables '(helm-ls-git-show-abs-or-relative 'relative)))
-
-
-;; helm-rails
-(when (require 'helm-rails nil t)
-  (define-key global-map (kbd "s-t") 'helm-rails-controllers)
-  (define-key global-map (kbd "s-y") 'helm-rails-models)
-  (define-key global-map (kbd "s-u") 'helm-rails-views)
-  (define-key global-map (kbd "s-o") 'helm-rails-specs)
-  (define-key global-map (kbd "s-r") 'helm-rails-all))
-
 ;; helm-ag
 (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
 (setq helm-ag-command-option "--all-text")
@@ -457,7 +446,7 @@
   (interactive)
   (helm-ag (projectile-project-root)))
 
-;; projectile
+;; helm-projectile
 (helm-projectile-on)
 (define-key global-map (kbd "\C-cph") 'helm-projectile)
 
