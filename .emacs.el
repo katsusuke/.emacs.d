@@ -428,11 +428,6 @@
     "Emulate `kill-line' in helm minibuffer"
     (kill-new (buffer-substring (point) (field-end))))
 
-  (defadvice ffap-file-at-point (after ffap-file-at-point-after-advice ())
-    (if (string= ad-return-value "/")
-	(setq ad-return-value nil)))
-  (ad-activate 'ffap-file-at-point)
-
   (require 'helm-buffers)
   (defadvice helm-buffers-sort-transformer (around ignore activate)
     (setq ad-return-value (ad-get-arg 0)))
