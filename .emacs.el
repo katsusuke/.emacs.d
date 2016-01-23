@@ -401,6 +401,8 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+(setq helm-ff-guess-ffap-urls nil)
+
 (when (require 'helm-config nil t)
   (helm-mode 1)
   ;(custom-set-variables '(helm-ff-transformer-show-only-basename nil))
