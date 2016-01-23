@@ -79,6 +79,7 @@
     (package-install package)))
 
 (defun set-font-size (height)
+  (interactive "nHeight:")
   (set-face-attribute 'default (selected-frame) :height height))
 
 ;; Emacs
