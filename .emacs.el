@@ -405,22 +405,6 @@
 
 (when (require 'helm-config nil t)
   (helm-mode 1)
-  ;(custom-set-variables '(helm-ff-transformer-show-only-basename nil))
-
-  ;; helm-mini のカスタマイズ
-  (defun helm-my-buffers ()
-     (interactive)
-     (helm-other-buffer '(helm-c-source-buffers-list
-			  helm-c-source-files-in-current-dir
-			  helm-c-source-recentf
-			  helm-c-source-ls-git)
-			"*helm-my-buffers*"))
-  ;(require 'helm-config)
-  (define-key global-map (kbd "M-x")     'helm-M-x)
-  (define-key global-map (kbd "C-x C-f") 'helm-find-files)
-  (define-key global-map (kbd "C-q") 'helm-my-buffers)
-  ;; For find-file etc.
-  ;(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
   ;; For helm-find-files etc.
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
@@ -433,68 +417,66 @@
   (require 'helm-buffers)
   (defadvice helm-buffers-sort-transformer (around ignore activate)
     (setq ad-return-value (ad-get-arg 0)))
+
+  ;; helm-ag
+  (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+  (setq helm-ag-command-option "--all-text")
+  (setq helm-ag-insert-at-point 'symbol)
+  (defun projectile-helm-ag ()
+    (interactive)
+    (helm-ag (projectile-project-root)))
+
+  ;; helm-projectile
+  (helm-projectile-on)
+  (define-key global-map (kbd "\C-cph") 'helm-projectile)
+
+  ;; helm-migemo
+  (require 'helm-migemo)
+  ;; http://rubikitch.com/2014/12/19/helm-migemo/
+  (with-eval-after-load "helm-migemo"
+    (defun helm-compile-source--candidates-in-buffer (source)
+      (helm-aif (assoc 'candidates-in-buffer source)
+	  (append source
+		  `((candidates
+		     . ,(or (cdr it)
+			    (lambda ()
+			      ;; Do not use `source' because other plugins
+			      ;; (such as helm-migemo) may change it
+			      (helm-candidates-in-buffer (helm-get-current-source)))))
+		    (volatile) (match identity)))
+	source))
+    ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
+    (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
+    (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
+
+  ;; http://rubikitch.com/2014/12/25/helm-swoop/
+  (require 'helm-swoop)
+  ;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
+  (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+  (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+
+  ;; 検索結果をcycleしない、お好みで
+  (setq helm-swoop-move-to-line-cycle nil)
+
+  (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
+    "シンボル検索用Migemo無効版helm-swoop"
+    (interactive)
+    (let ((helm-swoop-pre-input-function
+	   (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
+      (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
+		  :$query $query :$multiline $multiline)))
+  ;; C-M-:に割り当て
+  (global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
+  (when (featurep 'helm-anything)
+    (defadvice helm-resume (around helm-swoop-resume activate)
+      "helm-anything-resumeで復元できないのでその場合に限定して無効化"
+      ad-do-it))
+  ;; ace-isearch
+  (global-ace-isearch-mode 1)
+  ;; helm-migemo end
+
   )
 
-;; helm-ag
-(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
-(setq helm-ag-command-option "--all-text")
-(setq helm-ag-insert-at-point 'symbol)
-(defun projectile-helm-ag ()
-  (interactive)
-  (helm-ag (projectile-project-root)))
-
-;; helm-projectile
-(helm-projectile-on)
-(define-key global-map (kbd "\C-cph") 'helm-projectile)
-
-;; helm-migemo
-(require 'helm-migemo)
-;;; http://rubikitch.com/2014/12/19/helm-migemo/
-(with-eval-after-load "helm-migemo"
-  (defun helm-compile-source--candidates-in-buffer (source)
-    (helm-aif (assoc 'candidates-in-buffer source)
-        (append source
-                `((candidates
-                   . ,(or (cdr it)
-                          (lambda ()
-                            ;; Do not use `source' because other plugins
-                            ;; (such as helm-migemo) may change it
-                            (helm-candidates-in-buffer (helm-get-current-source)))))
-                  (volatile) (match identity)))
-      source))
-  ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
-  (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
-  (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
-
-;;; http://rubikitch.com/2014/12/25/helm-swoop/
-(require 'helm-swoop)
-;;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
-(define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-(define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
-
-;;; 検索結果をcycleしない、お好みで
-(setq helm-swoop-move-to-line-cycle nil)
-
-(cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
-  "シンボル検索用Migemo無効版helm-swoop"
-  (interactive)
-  (let ((helm-swoop-pre-input-function
-         (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
-    (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
-                :$query $query :$multiline $multiline)))
-;;; C-M-:に割り当て
-(global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
-
-;;; [2014-11-25 Tue]
-(when (featurep 'helm-anything)
-  (defadvice helm-resume (around helm-swoop-resume activate)
-    "helm-anything-resumeで復元できないのでその場合に限定して無効化"
-    ad-do-it))
-
-;;; ace-isearch
-(global-ace-isearch-mode 1)
-
-;;; ここまで
 (require 'whitespace)
 (setq whitespace-style '(face           ; faceで可視化
                          trailing       ; 行末
