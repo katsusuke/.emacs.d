@@ -766,7 +766,7 @@ See URL `http://batsov.com/rubocop/'."
 
 (add-hook 'yaml-mode-hook
 	  '(lambda ()
-	     (indent-tabs-mode nil)))
+	     (setq indent-tabs-mode nil)))
 ;; css-mode
 (add-hook 'css-mode-hook
 	  '(lambda ()
