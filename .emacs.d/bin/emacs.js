@@ -1,4 +1,4 @@
-var EMACS_HOME = "C:\\Program Files\\Emacs";
+var EMACS_HOME = "C:\\ProgramData\\chocolatey\\lib\\\Emacs\\tools";
 
 var EMACSCLIENT = "\"" + EMACS_HOME + "\\bin\\emacsclient" + "\"";
 var RUNEMACS = EMACS_HOME + "\\bin\\runemacs";
