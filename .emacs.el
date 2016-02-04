@@ -108,15 +108,6 @@
       (set-default-coding-systems 'utf-8)
       (prefer-coding-system 'utf-8-unix)
 
-      ;; 静的検証作業用
-      (setenv "PATH" (format "c:\\cygwin\\bin;%s" (getenv "PATH")))
-      (setenv "PATH" (format "c:\\cygwin\\usr\\local\\bin;%s" (getenv "PATH")))
-      (setenv "PATH" (format "c:\\cygwin64\\bin;%s" (getenv "PATH")))
-      (setenv "PATH" (format "c:\\cygwin64\\usr\\bin;%s" (getenv "PATH")))
-      (setenv "PATH" (format "c:\\cygwin64\\usr\\local\\bin;%s" (getenv "PATH")))
-
-      (setenv "CYGWIN" "nodosfilewarning")
-;      (setq find-grep-options " | sed 's/^\\/cygdrive\\/\\([a-z]\\)/\\1:/g'")
       (setq grep-command "grep -n -e ")
       (setq grep-program "grep")))
 
@@ -233,18 +224,8 @@
       (define-key function-key-map [backspace] [8])
       (put 'backspace 'ascii-character 8)))
 
-(if (eq window-system 'w32)
-    (if (file-accessible-directory-p "c:/cygwin")
-	(add-load-path "c:/cygwin/usr/share/emacs/site-lisp")
-      (if (file-accessible-directory-p "c:/cygwin64")
-	  (add-load-path "c:/cygwin64/usr/share/emacs/site-lisp")))
+(if (not(eq window-system 'w32))
   (add-load-path "/usr/local/share/emacs/site-lisp"))
-
-(if (eq window-system 'w32)
-    (progn
-      (setenv "SHELL" "C:/cygwin64/bin/bash.exe")
-      (setq shell-file-name "C:/cygwin64/bin/bash.exe")
-      (setq explicit-shell-file-name "C:/cygwin64/bin/bash.exe")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -412,7 +393,11 @@
     (setq ad-return-value (ad-get-arg 0)))
 
   ;; helm-ag
-  (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+  (if (eq window-system 'w32)
+      (setq helm-ag-base-command "pt -e --nocolor --nogroup")) ;; Windows はShift-JISとか来るのでpt
+  (if (eq window-system 'ns)
+      (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"))
+
   (setq helm-ag-command-option "--all-text")
   (setq helm-ag-insert-at-point 'symbol)
   (defun projectile-helm-ag ()
