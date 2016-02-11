@@ -54,6 +54,7 @@
     sass-mode
     ggtags
     ag ; projectile-ag で必要
+    pt
     projectile
     helm-projectile
     helm-ghq
