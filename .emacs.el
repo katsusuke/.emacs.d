@@ -149,11 +149,6 @@
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
 
-      ;; 最近使ったファイル
-      (recentf-mode t)
-      (setq recentf-max-menu-items 10)
-      (setq recentf-max-saved-items 20)
-      ;; (setq recentf-exclude '("^/[^/:]+:")) ;除外するファイル名
       ;; MacPorts のemacs-app はデフォルトでMacのキーバインド使える
       ;; C-zで最小化してうざいので無効に
       (global-unset-key "\C-z")
@@ -250,6 +245,15 @@
 
 ;; visual-regexp
 (global-set-key (kbd "M-%") 'vr/query-replace)
+
+;; 最近使ったファイルを時々保存
+(when (require 'recentf nil t)
+  (setq recentf-max-saved-items 2000)
+  (setq recentf-exclude '(".recentf"))
+  (setq recentf-auto-cleanup 10)
+  (setq recentf-auto-save-timer
+        (run-with-idle-timer 30 t 'recentf-save-list))
+  (recentf-mode 1))
 
 ;; カーソル位置の単語をハイライト
 ;; M-<left>	ahs-backward	前のシンボルへ移動
