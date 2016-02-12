@@ -5,4 +5,5 @@
 /.emacs.d/server
 /.emacs.d/elpa
 /.emacs.d/projectile.cache
+/.emacs.d/recentf
 
