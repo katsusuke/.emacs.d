@@ -737,19 +737,6 @@ See URL `http://batsov.com/rubocop/'."
     (indent-tabs-mode 1)))
 
 
-;; PHP-mode
-(autoload 'php-mode "web-mode" "web-mode" t)
-(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode))
-(add-hook 'web-mode-hook '(lambda ()
-                            (setq php-intelligent-tab nil)
-                            (setq intelligent-tab nil)
-                            (setq indent-tabs-mode nil)
-                            (setq c-basic-offset 4)
-                            (setq tab-width 4)
-			    (make-local-variable 'ac-sources)
-			    (setq ac-sources '(ac-source-words-in-same-mode-buffers))
-                            ) t)
-
 ;; YAML-mode
 (autoload 'yaml-mode "yaml-mode" "YAML mode" t)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
@@ -919,6 +906,7 @@ See URL `http://batsov.com/rubocop/'."
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
 	     (setq c-basic-offset 2)
@@ -942,26 +930,27 @@ See URL `http://batsov.com/rubocop/'."
 
 ;;web-mode
 (require 'web-mode)
-
-;;; 適用する拡張子
+;; PHP-mode
+(autoload 'php-mode "web-mode" "web-mode" t)
+(add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml$"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp$"       . web-mode))
 (add-to-list 'auto-mode-alist '("\\.as[cp]x$"   . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$"       . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
-
-;;; インデント数
-(defun web-mode-hook ()
-  "Hooks for Web mode."
-  (setq indent-tabs-mode nil)
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-script-offset 2)
-  (setq web-mode-php-offset    2)
-  (setq web-mode-java-offset   2)
-  (setq web-mode-asp-offset    2))
-(add-hook 'web-mode-hook 'web-mode-hook)
+(add-to-list 'auto-mode-alist '("\\.ctp$"     . web-mode))
+(add-hook
+ 'web-mode-hook
+ '(lambda ()
+    (setq-default indent-tabs-mode nil)
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-style-padding 0)
+    (setq web-mode-script-padding 0)
+    (setq web-mode-block-padding 0)
+    (setq web-mode-comment-style 2)))
 
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
