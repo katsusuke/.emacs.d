@@ -116,36 +116,21 @@
 (if (or (eq window-system 'ns)
 	(eq window-system 'mac))
     (progn
-      (defun set-frame-default ()
-	(set-face-attribute 'default nil :family "monaco" :height 120)
-	(set-fontset-font (frame-parameter nil 'font)
-			  'japanese-jisx0208
-			  (font-spec :family "Hiragino Maru Gothic ProN"))
-	(add-to-list 'face-font-rescale-alist
-		     '(".*Hiragino Maru Gothic ProN.*" . 1.292))
-
-	;; フレームのディフォルトの設定。
-	(custom-set-variables
-	 '(column-number-mode t)
-	 '(show-paren-mode t)
-	 '(tool-bar-mode nil))
-	(custom-set-faces
-	 '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline")))))
-	;(set-frame-parameter nil 'alpha 85)
-	(setq default-frame-alist
-	      (append (list
-		       ;; 		     '(foreground-color . "white")
-		       ;; 		     '(background-color . "black")
-		       ;; 		     '(border-color . "black")
-		       ;; 		     '(mouse-color . "red")    ; ???
-		       ;; 		     '(cursor-color . "white") ;
-		       '(width . 120)     ; フレームの横幅
-		       '(height . 50)    ; フレームの高さ
-		       '(alpha . 85)
-		       )default-frame-alist))
-
-	)
-      (set-frame-default)
+      ;; フレームのディフォルトの設定。
+      (custom-set-variables
+       '(column-number-mode t)
+       '(show-paren-mode t)
+       '(tool-bar-mode nil))
+      (setq default-frame-alist
+	    (append (list
+		     '(foreground-color . "white")
+		     '(background-color . "black")
+		     '(width . 120)     ; フレームの横幅
+		     '(height . 50)    ; フレームの高さ
+		     '(alpha . 85)
+		     '(font . "ricty-15")
+		     )default-frame-alist))
+      
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
 
@@ -212,8 +197,8 @@
 
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
-      (setq exec-path (split-string (getenv "PATH") ":"))
-))
+      (setq exec-path (split-string (getenv "PATH") ":"))))
+
 ; X用
 (if (eq window-system 'x)
     (progn
