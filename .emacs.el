@@ -366,6 +366,7 @@
 
 (when (require 'helm-config nil t)
   (helm-mode 1)
+  (define-key global-map (kbd "C-;") 'helm-mini)
   (define-key global-map (kbd "M-x")     'helm-M-x)
   (define-key global-map (kbd "C-x C-f") 'helm-find-files)
   ;; For helm-find-files etc.
@@ -395,7 +396,15 @@
 
   ;; helm-projectile
   (helm-projectile-on)
-  (define-key global-map (kbd "\C-cph") 'helm-projectile)
+  
+  (setq helm-mini-default-sources '(
+				    helm-source-projectile-buffers-list
+				    helm-source-buffers-list
+				    helm-source-recentf
+				    helm-source-projectile-files-list
+				    helm-source-projectile-projects
+				    helm-source-buffer-not-found
+				    ))
 
   ;; helm-migemo
   (require 'helm-migemo)
