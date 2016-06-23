@@ -37,7 +37,6 @@
     helm-ag
     helm-migemo
     helm-swoop
-    ace-isearch
     migemo
     rvm
 ;    yasnippet
@@ -128,7 +127,7 @@
 		     '(width . 120)     ; フレームの横幅
 		     '(height . 50)    ; フレームの高さ
 		     '(alpha . 85)
-		     '(font . "ricty-15")
+		     '(font . "ricty-12")
 		     )default-frame-alist))
       
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
@@ -439,8 +438,6 @@
     (defadvice helm-resume (around helm-swoop-resume activate)
       "helm-anything-resumeで復元できないのでその場合に限定して無効化"
       ad-do-it))
-  ;; ace-isearch
-  (global-ace-isearch-mode 1)
   ;; helm-migemo end
 
   )
@@ -891,6 +888,7 @@ See URL `http://batsov.com/rubocop/'."
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.es6$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
