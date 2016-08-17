@@ -39,6 +39,7 @@
     helm-swoop
     migemo
     rvm
+    rbenv
 ;    yasnippet
     enh-ruby-mode
     inf-ruby
@@ -555,8 +556,13 @@
 ;; ruby-mode
 (if (or (eq window-system 'ns) (eq window-system 'mac)) ;;何故かターミナルで動かない そのうち調べる
     (progn
-      (require 'rvm)
-      (rvm-use-default)))
+      (if (string-match "not found" (shell-command-to-string "which rbenva"))
+          (progn
+            (require 'rvm)
+            (rvm-use-default))
+        (progn
+          (require 'rbenv)
+          (global-rbenv-mode)))))
 
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
