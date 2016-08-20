@@ -121,6 +121,14 @@
        '(column-number-mode t)
        '(show-paren-mode t)
        '(tool-bar-mode nil))
+
+      (set-fontset-font "fontset-standard"
+                        'ascii
+                        (font-spec :family "ricty" :size 13) nil 'prepend)  ;; ここでサイズを指定
+      (set-fontset-font "fontset-standard"
+                        'japanese-jisx0213.2004-1
+                        (font-spec :family "ricty") nil 'prepend)
+      
       (setq default-frame-alist
 	    (append (list
 		     '(foreground-color . "white")
@@ -128,7 +136,7 @@
 		     '(width . 120)     ; フレームの横幅
 		     '(height . 50)    ; フレームの高さ
 		     '(alpha . 85)
-		     '(font . "ricty-12")
+		     '(font . "fontset-standard")
 		     )default-frame-alist))
       
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
@@ -929,6 +937,7 @@ See URL `http://batsov.com/rubocop/'."
 ;;web-mode
 (require 'web-mode)
 ;; PHP-mode
+(setq web-mode-indent 4)
 (autoload 'php-mode "web-mode" "web-mode" t)
 (add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml$"     . web-mode))
@@ -941,14 +950,16 @@ See URL `http://batsov.com/rubocop/'."
 (add-hook
  'web-mode-hook
  '(lambda ()
-    (setq-default indent-tabs-mode nil)
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
+    ;(setq-default indent-tabs-mode nil)
+    (setq indent-tabs-mode t)
+    (setq-default tab-width 4)
+    (setq web-mode-markup-indent-offset web-mode-indent)
+    (setq web-mode-css-indent-offset web-mode-indent)
+    (setq web-mode-code-indent-offset web-mode-indent)
     (setq web-mode-style-padding 0)
     (setq web-mode-script-padding 0)
     (setq web-mode-block-padding 0)
-    (setq web-mode-comment-style 2)))
+    (setq web-mode-comment-style web-mode-indent)))
 
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
