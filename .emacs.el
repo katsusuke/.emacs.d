@@ -653,12 +653,6 @@ See URL `http://batsov.com/rubocop/'."
     (setq tab-width  8
           indent-tabs-mode nil)))
 
-;; yasnippet
-;(require 'yasnippet)
-;(yas-global-mode 1)
-
-;(message "after-yasnippet")
-
 (require 'rhtml-mode)
 (add-hook 'haml-mode-hook
 	  (lambda ()
