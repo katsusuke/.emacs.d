@@ -406,14 +406,12 @@
   ;; helm-projectile
   (helm-projectile-on)
   
-  (setq helm-mini-default-sources '(
-				    helm-source-projectile-buffers-list
-				    helm-source-buffers-list
-				    helm-source-projectile-files-list
-				    helm-source-projectile-projects
-				    helm-source-recentf
-				    helm-source-buffer-not-found
-				    ))
+  (defvar helm-mini-default-sources
+    '(helm-source-buffers-list
+      helm-source-projectile-files-list
+      helm-source-projectile-projects
+      helm-source-recentf
+      helm-source-buffer-not-found))
 
   ;; helm-migemo
   (require 'helm-migemo)
