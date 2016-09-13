@@ -536,7 +536,9 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
 (add-hook 'markdown-mode-hook
 	  '(lambda()
-	     (setq markdown-command "/usr/local/bin/marked")))
+	     (setq markdown-command "/usr/local/bin/multimarkdown")
+	     (setq markdown-open-command "marked2")))
+
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
