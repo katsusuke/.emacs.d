@@ -406,9 +406,8 @@
   ;; helm-projectile
   (helm-projectile-on)
   
-  (defvar helm-mini-default-sources
-    '(helm-source-buffers-list
-      helm-source-projectile-files-list
+  (setq helm-mini-default-sources
+    '(helm-source-projectile-files-list
       helm-source-projectile-projects
       helm-source-recentf
       helm-source-buffer-not-found))
