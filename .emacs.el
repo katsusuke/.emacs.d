@@ -413,47 +413,47 @@
       helm-source-buffer-not-found))
 
   ;; helm-migemo
-  (require 'helm-migemo)
-  ;; http://rubikitch.com/2014/12/19/helm-migemo/
-  (with-eval-after-load "helm-migemo"
-    (defun helm-compile-source--candidates-in-buffer (source)
-      (helm-aif (assoc 'candidates-in-buffer source)
-	  (append source
-		  `((candidates
-		     . ,(or (cdr it)
-			    (lambda ()
-			      ;; Do not use `source' because other plugins
-			      ;; (such as helm-migemo) may change it
-			      (helm-candidates-in-buffer (helm-get-current-source)))))
-		    (volatile) (match identity)))
-	source))
-    ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
-    (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
-    (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
+  ;; (require 'helm-migemo)
+  ;; ;; http://rubikitch.com/2014/12/19/helm-migemo/
+  ;; (with-eval-after-load "helm-migemo"
+  ;;   (defun helm-compile-source--candidates-in-buffer (source)
+  ;;     (helm-aif (assoc 'candidates-in-buffer source)
+  ;; 	  (append source
+  ;; 		  `((candidates
+  ;; 		     . ,(or (cdr it)
+  ;; 			    (lambda ()
+  ;; 			      ;; Do not use `source' because other plugins
+  ;; 			      ;; (such as helm-migemo) may change it
+  ;; 			      (helm-candidates-in-buffer (helm-get-current-source)))))
+  ;; 		    (volatile) (match identity)))
+  ;; 	source))
+  ;;   ;; [2015-09-06 Sun]helm-match-plugin -> helm-multi-match変更の煽りを受けて
+  ;;   (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
+  ;;   (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
 
-  ;; http://rubikitch.com/2014/12/25/helm-swoop/
-  (require 'helm-swoop)
-  ;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
-  (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
-  (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
+  ;; ;; http://rubikitch.com/2014/12/25/helm-swoop/
+  ;; (require 'helm-swoop)
+  ;; ;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
+  ;; (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+  ;; (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
 
-  ;; 検索結果をcycleしない、お好みで
-  (setq helm-swoop-move-to-line-cycle nil)
+  ;; ;; 検索結果をcycleしない、お好みで
+  ;; (setq helm-swoop-move-to-line-cycle nil)
 
-  (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
-    "シンボル検索用Migemo無効版helm-swoop"
-    (interactive)
-    (let ((helm-swoop-pre-input-function
-	   (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
-      (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
-		  :$query $query :$multiline $multiline)))
-  ;; C-M-:に割り当て
-  (global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
-  (when (featurep 'helm-anything)
-    (defadvice helm-resume (around helm-swoop-resume activate)
-      "helm-anything-resumeで復元できないのでその場合に限定して無効化"
-      ad-do-it))
-  ;; helm-migemo end
+  ;; (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
+  ;;   "シンボル検索用Migemo無効版helm-swoop"
+  ;;   (interactive)
+  ;;   (let ((helm-swoop-pre-input-function
+  ;; 	   (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
+  ;;     (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
+  ;; 		  :$query $query :$multiline $multiline)))
+  ;; ;; C-M-:に割り当て
+  ;; (global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
+  ;; (when (featurep 'helm-anything)
+  ;;   (defadvice helm-resume (around helm-swoop-resume activate)
+  ;;     "helm-anything-resumeで復元できないのでその場合に限定して無効化"
+  ;;     ad-do-it))
+  ;; ;; helm-migemo end
 
   )
 
@@ -647,6 +647,7 @@ See URL `http://batsov.com/rubocop/'."
 (add-hook
  'haml-mode-hook
  '(lambda ()
+    (add-to-list 'write-file-functions 'delete-trailing-whitespace)
     (c-set-offset 'substatement-open '0)
     (rvm-activate-corresponding-ruby)
     (setq tab-width  8
