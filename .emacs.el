@@ -509,7 +509,9 @@
 ;; flycheck
 (global-flycheck-mode)
 (flycheck-pos-tip-mode)
-
+(flycheck-add-mode 'javascript-eslint 'js2-mode)
+(custom-set-variables
+ '(flycheck-disabled-checkers '(javascript-jshint javascript-jscs)))
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -909,6 +911,7 @@ See URL `http://batsov.com/rubocop/'."
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
+	     (flycheck-mode 1)
 	     (setq c-basic-offset 2)
 	     (setq indent-tabs-mode nil)
 	     (setq js2-basic-offset 2)))
