@@ -127,7 +127,7 @@
       (set-fontset-font "fontset-standard"
                         'japanese-jisx0213.2004-1
                         (font-spec :family "ricty") nil 'prepend)
-      
+
       (setq default-frame-alist
 	    (append (list
 		     '(foreground-color . "white")
@@ -137,7 +137,7 @@
 		     '(alpha . 85)
 		     '(font . "fontset-standard")
 		     )default-frame-alist))
-      
+
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
 
@@ -382,7 +382,7 @@
   (global-set-key (kbd "M-i") 'helm-swoop)
   (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
   (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-  
+
   ;; For helm-find-files etc.
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
@@ -410,13 +410,13 @@
 
   ;; helm-projectile
   (helm-projectile-on)
-  
+
   (setq helm-mini-default-sources
     '(helm-source-projectile-files-list
       helm-source-projectile-projects
       helm-source-recentf
       helm-source-buffer-not-found))
-  
+
   )
 
 (require 'whitespace)
@@ -585,7 +585,7 @@ See URL `http://batsov.com/rubocop/'."
 		       line-end))
 	       :modes (enh-ruby-mode ruby-mode)
 	       :next-checkers ((warning . ruby-rubylint)))
-	     
+
 	     (setq flycheck-checker 'ruby-rubocop)
              (flycheck-mode 1)
 	     ))
@@ -874,6 +874,11 @@ See URL `http://batsov.com/rubocop/'."
 (add-hook 'js2-mode-hook
 	  '(lambda ()
 	     (flycheck-mode 1)
+	     (setq js2-include-browser-externs nil)
+	     (setq js2-mode-show-parse-errors nil)
+	     (setq js2-mode-show-strict-warnings nil)
+	     (setq js2-highlight-external-variables nil)
+	     (setq js2-include-jslint-globals nil)
 	     (setq c-basic-offset 2)
 	     (setq indent-tabs-mode nil)
 	     (setq js2-basic-offset 2)))
