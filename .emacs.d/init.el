@@ -527,7 +527,7 @@
 ;; ruby-mode
 (if (or (eq window-system 'ns) (eq window-system 'mac)) ;;何故かターミナルで動かない そのうち調べる
     (progn
-      (if (string-match "not found" (shell-command-to-string "which rbenva"))
+      (if (string-match "not found" (shell-command-to-string "which rbenv"))
           (progn
             (require 'rvm)
             (rvm-use-default))
