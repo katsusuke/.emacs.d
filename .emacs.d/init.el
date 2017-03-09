@@ -221,10 +221,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(flycheck-disabled-checkers (quote (javascript-jshint javascript-jscs)))
  '(gud-gdb-command-name "gdb --annotate=1")
  '(large-file-warning-threshold nil)
+ '(package-selected-packages
+   (quote
+    (yaml-mode web-mode visual-regexp scss-mode sass-mode rvm rubocop robe rhtml-mode rbenv pt nginx-mode markdown-mode js2-mode hiwin helm-swoop helm-projectile helm-migemo helm-ghq helm-ag haskell-mode ggtags flycheck-pos-tip enh-ruby-mode dockerfile-mode csharp-mode coffee-mode auto-highlight-symbol auto-complete ag)))
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(vc-follow-link t))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -293,7 +298,7 @@
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
 ;; シンボリックファイルはリンク先を自動で開く
-(custom-set-variables '(vc-follow-link t))
+
 
 ;; 自動でrevert-buffer
 ;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
@@ -472,8 +477,7 @@
 (global-flycheck-mode)
 (flycheck-pos-tip-mode)
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
-(custom-set-variables
- '(flycheck-disabled-checkers '(javascript-jshint javascript-jscs)))
+
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -938,6 +942,3 @@ See URL `http://batsov.com/rubocop/'."
 ;; dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
-
-(if (file-exists-p "~/.custom.el")
-    (load "~/.custom.el"))
