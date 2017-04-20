@@ -67,6 +67,7 @@
     auto-highlight-symbol
     csharp-mode
     visual-regexp
+    groovy-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -226,7 +227,7 @@
  '(large-file-warning-threshold nil)
  '(package-selected-packages
    (quote
-    (yaml-mode web-mode visual-regexp scss-mode sass-mode rvm rubocop robe rhtml-mode rbenv pt nginx-mode markdown-mode js2-mode hiwin helm-swoop helm-projectile helm-migemo helm-ghq helm-ag haskell-mode ggtags flycheck-pos-tip enh-ruby-mode dockerfile-mode csharp-mode coffee-mode auto-highlight-symbol auto-complete ag)))
+    (groovy-mode yaml-mode web-mode visual-regexp scss-mode sass-mode rvm rubocop robe rhtml-mode rbenv pt nginx-mode markdown-mode js2-mode hiwin helm-swoop helm-projectile helm-migemo helm-ghq helm-ag haskell-mode ggtags flycheck-pos-tip enh-ruby-mode dockerfile-mode csharp-mode coffee-mode auto-highlight-symbol auto-complete ag)))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(vc-follow-link t))
@@ -942,3 +943,14 @@ See URL `http://batsov.com/rubocop/'."
 ;; dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
