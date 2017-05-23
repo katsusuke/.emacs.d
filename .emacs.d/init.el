@@ -592,7 +592,6 @@ See URL `http://batsov.com/rubocop/'."
 	       :next-checkers ((warning . ruby-rubylint)))
 
 	     (setq flycheck-checker 'ruby-rubocop)
-             (flycheck-mode 1)
 	     ))
 
 (add-hook 'robe-mode-hook 'ac-robe-setup)
@@ -611,7 +610,10 @@ See URL `http://batsov.com/rubocop/'."
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
+(require 'rhtml-mode)
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
+
+(add-to-list 'flycheck-checkers 'haml-lint)
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
  'haml-mode-hook
@@ -620,12 +622,19 @@ See URL `http://batsov.com/rubocop/'."
     (c-set-offset 'substatement-open '0)
     (rvm-activate-corresponding-ruby)
     (setq tab-width  8
-          indent-tabs-mode nil)))
-
-(require 'rhtml-mode)
-(add-hook 'haml-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode nil)))
+          indent-tabs-mode nil)
+    (setq indent-tabs-mode nil)
+    (flycheck-def-config-file-var flycheck-haml-lintrc haml-lint ".haml-lint.yml" :safe #'stringp)
+    (flycheck-define-checker haml-lint
+      "A haml-lint syntax checker"
+      :command ("haml-lint"
+		(config-file "--config" flycheck-haml-lintrc)
+		source)
+      :error-patterns ((warning line-start
+				(file-name) ":" line " [W] "  (message)
+				line-end))
+      :modes (haml-mode))
+    ))
 
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")
@@ -876,9 +885,9 @@ See URL `http://batsov.com/rubocop/'."
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.es6$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
-	     (flycheck-mode 1)
 	     (setq js2-include-browser-externs nil)
 	     (setq js2-mode-show-parse-errors nil)
 	     (setq js2-mode-show-strict-warnings nil)
