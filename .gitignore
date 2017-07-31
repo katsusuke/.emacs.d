@@ -7,3 +7,4 @@
 /.emacs.d/projectile.cache
 /.emacs.d/recentf
 /.emacs.d/image-dired
+/.emacs.d/.env.el

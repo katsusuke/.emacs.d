@@ -17,6 +17,7 @@
 ;;    ruby-lint
 ;;    cmigemo (日本語検索)
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
+;;    wakatime (pyenv + pipで入れる)
 
 ;;; load-path の追加
 (defun add-load-path (path)
@@ -69,6 +70,7 @@
     visual-regexp
     groovy-mode
     dash-at-point
+    wakatime-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -79,6 +81,9 @@
       (package-refresh-contents);; パッケージ情報の更新
       (setq my-packages-loaded t))
     (package-install package)))
+
+(if (file-exists-p "~/.emacs.d/.env.el")
+    (load "~/.emacs.d/.env.el"))
 
 (defun set-font-size (height)
   (interactive "nHeight:")
@@ -205,6 +210,7 @@
 
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
+      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
       (setq exec-path (split-string (getenv "PATH") ":"))))
 
 ; X用
@@ -956,6 +962,10 @@ See URL `http://batsov.com/rubocop/'."
 ;; dash-at-point
 (global-set-key "\C-cd" 'dash-at-point)
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
+
+;; wakatime-mode
+(if wakatime-api-key
+    (global-wakatime-mode t))
 
 (require 'ansi-color)
 (defun display-ansi-colors ()
