@@ -68,6 +68,7 @@
     csharp-mode
     visual-regexp
     groovy-mode
+    dash-at-point
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -83,7 +84,6 @@
   (interactive "nHeight:")
   (set-face-attribute 'default (selected-frame) :height height))
 
-;; Emacs
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
 (if (eq window-system 'w32)
     (progn
@@ -543,7 +543,7 @@
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
 
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\)$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\)$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
@@ -929,7 +929,7 @@ See URL `http://batsov.com/rubocop/'."
  'web-mode-hook
  '(lambda ()
     ;(setq-default indent-tabs-mode nil)
-    (setq indent-tabs-mode t)
+    (setq indent-tabs-mode nil)
     (setq-default tab-width 4)
     (setq web-mode-markup-indent-offset web-mode-indent)
     (setq web-mode-css-indent-offset web-mode-indent)
@@ -952,6 +952,10 @@ See URL `http://batsov.com/rubocop/'."
 ;; dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+;; dash-at-point
+(global-set-key "\C-cd" 'dash-at-point)
+(global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 (require 'ansi-color)
 (defun display-ansi-colors ()
