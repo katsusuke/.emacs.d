@@ -71,6 +71,7 @@
     groovy-mode
     dash-at-point
     wakatime-mode
+    slim-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -416,6 +417,7 @@
 
   (setq helm-ag-command-option "--all-text")
   (setq helm-ag-insert-at-point 'symbol)
+  (setq helm-ag-use-agignore t)
   (defun projectile-helm-ag ()
     (interactive)
     (helm-ag (projectile-project-root)))
@@ -549,7 +551,7 @@
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
 
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\)$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\)$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
@@ -576,12 +578,12 @@
 	     (whitespace-mode)
 	     (rvm-activate-corresponding-ruby)
 	     ;; flycheck とrubocop で Rails を有効にする
-	     (setq rubocop-check-command "rubocop --format emacs -R")
+	     (setq rubocop-check-command "rubocop --force-exclusion --format emacs -R")
 	     (flycheck-define-checker ruby-rubocop
 	       "A Ruby syntax and style checker using the RuboCop tool.
 
 See URL `http://batsov.com/rubocop/'."
-	       :command ("rubocop" "--display-cop-names" "--format" "emacs" "-R"
+	       :command ("rubocop" "--force-exclusion" "--display-cop-names" "--format"  "emacs" "-R"
 			 (config-file "--config" flycheck-rubocoprc)
 			 (option-flag "--lint" flycheck-rubocop-lint-only)
 			 source)
@@ -964,7 +966,7 @@ See URL `http://batsov.com/rubocop/'."
 (global-set-key "\C-ce" 'dash-at-point-with-docset)
 
 ;; wakatime-mode
-(if wakatime-api-key
+(if (and (executable-find "wakatime") (boundp 'wakatime-api-key))
     (global-wakatime-mode t))
 
 (require 'ansi-color)
