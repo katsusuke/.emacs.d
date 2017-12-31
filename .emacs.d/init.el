@@ -289,6 +289,9 @@
 
 ;; バックアップ関係
 
+;; ロックファイルを作らない
+(setq create-lockfiles nil)
+
 ;; backup-directory-alist は以下の構造を持つ
 ;; (regexp . directory)
 ;; regexp に一致したファイルのバックアップが directory に作られる
