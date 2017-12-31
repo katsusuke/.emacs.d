@@ -21,9 +21,9 @@
 
 ;;; load-path の追加
 (defun add-load-path (path)
-  (setq path (expand-file-name path))
-  (unless (member path load-path)
-    (add-to-list 'load-path path)))
+  (let ((epath (expand-file-name path)))
+    (unless (member epath load-path)
+      (add-to-list 'load-path epath))))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
