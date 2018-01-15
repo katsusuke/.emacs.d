@@ -41,7 +41,6 @@
     helm-pt
     helm-swoop
     migemo
-    rvm
     rbenv
 ;    yasnippet
     enh-ruby-mode
@@ -244,6 +243,11 @@
 
 (if (not(eq window-system 'w32))
   (add-load-path "/usr/local/share/emacs/site-lisp"))
+
+; custom-set-variables 変数更新のためにinit.el が上書きされるのを防ぐ
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -533,13 +537,10 @@
 ;; ruby-mode
 (if (or (eq window-system 'ns) (eq window-system 'mac)) ;;何故かターミナルで動かない そのうち調べる
     (progn
-      (if (string-match "not found" (shell-command-to-string "which rbenv"))
-          (progn
-            (require 'rvm)
-            (rvm-use-default))
-        (progn
-          (require 'rbenv)
-          (global-rbenv-mode)))))
+      (if (not(string-match "not found" (shell-command-to-string "which rbenv")))
+	  (progn
+	    (require 'rbenv)
+	    (global-rbenv-mode)))))
 
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
@@ -569,7 +570,6 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (whitespace-mode)
-	     (rvm-activate-corresponding-ruby)
 	     ;; flycheck とrubocop で Rails を有効にする
 	     (setq rubocop-check-command "rubocop --force-exclusion --format emacs -R")
 	     (flycheck-define-checker ruby-rubocop
@@ -621,7 +621,6 @@ See URL `http://batsov.com/rubocop/'."
  '(lambda ()
     (add-to-list 'write-file-functions 'delete-trailing-whitespace)
     (c-set-offset 'substatement-open '0)
-    (rvm-activate-corresponding-ruby)
     (setq tab-width  8
           indent-tabs-mode nil)
     (setq indent-tabs-mode nil)
@@ -725,7 +724,6 @@ See URL `http://batsov.com/rubocop/'."
 ;; css-mode
 (add-hook 'css-mode-hook
 	  '(lambda ()
-	     (rvm-activate-corresponding-ruby)
 	     (setq css-indent-offset 2)
 	     (setq indent-tabs-mode nil)
 	     (setq css-indent-offset 2)
