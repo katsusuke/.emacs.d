@@ -36,6 +36,7 @@
     robe
     helm
     helm-ag
+    helm-pt
     helm-swoop
     migemo
     rvm
