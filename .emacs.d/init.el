@@ -117,7 +117,12 @@
       (prefer-coding-system 'utf-8-unix)
 
       (setq grep-command "grep -n -e ")
-      (setq grep-program "grep")))
+      (setq grep-program "grep")
+      (defun open-filer()
+	"Open current directory by filer"
+	(interactive)
+	(shell-command "explorer /e,."))
+      ))
 
 ;; Homebrew emacs-app 24用
 (if (or (eq window-system 'ns)
