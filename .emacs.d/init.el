@@ -19,6 +19,8 @@
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 ;;    wakatime (pyenv + pipで入れる)
 
+(setq custom-file (locate-user-emacs-file "custom.el"))
+
 ;;; load-path の追加
 (defun add-load-path (path)
   (let ((epath (expand-file-name path)))
@@ -35,7 +37,6 @@
     auto-complete
     robe
     helm
-    helm-ag
     helm-pt
     helm-swoop
     migemo
@@ -54,7 +55,6 @@
     scss-mode
     sass-mode
     ggtags
-    ag ; projectile-ag で必要
     pt
     projectile
     helm-projectile
@@ -101,17 +101,6 @@
       (custom-set-faces
        '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))
       (set-frame-parameter nil 'alpha 85)
-      (setq default-frame-alist
-	    (append (list
-;; 		     '(foreground-color . "white")
-;; 		     '(background-color . "black")
-;; 		     '(border-color . "black")
-;; 		     '(mouse-color . "red")    ; ???
-;; 		     '(cursor-color . "white") ;
- 		     '(width . 120)     ; フレームの横幅
- 		     '(height . 50)    ; フレームの高さ
-;; 		     '(alpha . 85)
- 		     )default-frame-alist))
       ;; デフォルトの文字コードはUTF-8にする
       (set-default-coding-systems 'utf-8)
       (prefer-coding-system 'utf-8-unix)
@@ -229,22 +218,6 @@
 (if (not(eq window-system 'w32))
   (add-load-path "/usr/local/share/emacs/site-lisp"))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(flycheck-disabled-checkers (quote (javascript-jshint javascript-jscs)))
- '(gud-gdb-command-name "gdb --annotate=1")
- '(large-file-warning-threshold nil)
- '(package-selected-packages
-   (quote
-    (groovy-mode yaml-mode web-mode visual-regexp scss-mode sass-mode rvm rubocop robe rhtml-mode rbenv pt nginx-mode markdown-mode js2-mode hiwin helm-swoop helm-projectile helm-migemo helm-ghq helm-ag haskell-mode ggtags flycheck-pos-tip enh-ruby-mode dockerfile-mode csharp-mode coffee-mode auto-highlight-symbol auto-complete ag)))
- '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(vc-follow-link t))
-
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
 ;; C-x C-x でリージョンを復活
@@ -313,9 +286,6 @@
   (let ((buffer-backed-up nil))
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
-
-;; シンボリックファイルはリンク先を自動で開く
-
 
 ;; 自動でrevert-buffer
 ;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
@@ -418,19 +388,6 @@
   (defadvice helm-buffers-sort-transformer (around ignore activate)
     (setq ad-return-value (ad-get-arg 0)))
 
-  ;; helm-ag
-  (if (eq window-system 'w32)
-      (setq helm-ag-base-command "pt -e --nocolor --nogroup")) ;; Windows はShift-JISとか来るのでpt
-  (if (eq window-system 'ns)
-      (setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case"))
-
-  (setq helm-ag-command-option "--all-text")
-  (setq helm-ag-insert-at-point 'symbol)
-  (setq helm-ag-use-agignore t)
-  (defun projectile-helm-ag ()
-    (interactive)
-    (helm-ag (projectile-project-root)))
-
   ;; helm-projectile
   (helm-projectile-on)
 
@@ -530,7 +487,7 @@
 (add-hook 'compilation-mode-hook
           '(lambda ()
 	     (prin1 major-mode)
-	     (if (member major-mode (list 'grep-mode 'ag-mode))
+	     (if (member major-mode (list 'grep-mode 'ag-mode 'pt-mode))
 		    (setq truncate-lines t))))
 
 ;; Coffee-mode
@@ -982,9 +939,4 @@ See URL `http://batsov.com/rubocop/'."
 (defun display-ansi-colors ()
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
