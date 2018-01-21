@@ -118,7 +118,7 @@
       (w32-ime-initialize)
       ;; 日本語入力時にカーソルの色を変える設定 (色は適宜変えてください)
       (add-hook 'w32-ime-on-hook '(lambda () (set-cursor-color "coral4")))
-      (add-hook 'w32-ime-off-hook '(lambda () (set-cursor-color "black")))
+      (add-hook 'w32-ime-off-hook '(lambda () (set-cursor-color "white")))
 
       ;; 以下はお好みで設定してください
       ;; 全てバッファ内で日本語入力中に特定のコマンドを実行した際の日本語入力無効化処理です
