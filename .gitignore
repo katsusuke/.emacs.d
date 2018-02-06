@@ -8,3 +8,4 @@
 /.emacs.d/recentf
 /.emacs.d/image-dired
 /.emacs.d/.env.el
+/.emacs.d/custom.el
