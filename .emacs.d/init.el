@@ -402,6 +402,7 @@
   (define-key global-map (kbd "M-x")     'helm-M-x)
   (define-key global-map (kbd "C-x C-f") 'helm-find-files)
   ;; helm-swoop
+  (setq helm-swoop-pattern "") ;; TODO:delte me. hotfix helm-swoop-from-isearch
   (global-set-key (kbd "M-i") 'helm-swoop)
   (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
   (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
