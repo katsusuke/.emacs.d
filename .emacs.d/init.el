@@ -37,8 +37,11 @@
   '(
     auto-complete
     robe
+    ag
+    pt
     helm
     helm-pt
+    helm-ag
     helm-swoop
     migemo
     rbenv
@@ -55,7 +58,6 @@
     scss-mode
     sass-mode
     ggtags
-    pt
     projectile
     helm-projectile
     helm-ghq
@@ -73,6 +75,7 @@
     dash-at-point
     wakatime-mode
     slim-mode
+    jsx-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -419,6 +422,8 @@
   (require 'helm-buffers)
   (defadvice helm-buffers-sort-transformer (around ignore activate)
     (setq ad-return-value (ad-get-arg 0)))
+  
+  (setq helm-ag-insert-at-point 'symbol)
 
   ;; helm-projectile
   (helm-projectile-on)
@@ -484,6 +489,7 @@
 (global-flycheck-mode)
 (flycheck-pos-tip-mode)
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
+(flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
@@ -885,7 +891,6 @@ See URL `http://batsov.com/rubocop/'."
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.es6$" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
 	     (setq js2-include-browser-externs nil)
@@ -965,4 +970,3 @@ See URL `http://batsov.com/rubocop/'."
 (defun display-ansi-colors ()
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
-
