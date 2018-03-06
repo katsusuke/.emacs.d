@@ -76,6 +76,7 @@
     wakatime-mode
     slim-mode
     jsx-mode
+    terraform-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
