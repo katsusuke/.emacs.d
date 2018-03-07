@@ -1,9 +1,5 @@
 var EMACS_HOME = "C:\\ProgramData\\chocolatey\\lib\\\Emacs64\\tools\\\emacs";
 
-var EMACSCLIENT = "\"" + EMACS_HOME + "\\bin\\emacsclient" + "\"";
-var RUNEMACS = EMACS_HOME + "\\bin\\runemacs";
-var EMACS_EXE = EMACS_HOME + "\\bin\\emacs.exe";
-
 function GetPCName(){
     var objNetWork = new ActiveXObject("WScript.Network");
     var res = objNetWork.ComputerName;
@@ -13,6 +9,14 @@ function GetPCName(){
 
 var PC_NAME = GetPCName();
 var shell = WScript.CreateObject("WScript.Shell");
+var emacsHomeEnv = shell.ExpandEnvironmentStrings("%EMACS_HOME%");
+if (emacsHomeEnv != "") {
+    EMACS_HOME = emacsHomeEnv;
+}
+var EMACSCLIENT = "\"" + EMACS_HOME + "\\bin\\emacsclient" + "\"";
+var RUNEMACS = EMACS_HOME + "\\bin\\runemacs";
+var EMACS_EXE = EMACS_HOME + "\\bin\\emacs.exe";
+
 var appDataDir = shell.ExpandEnvironmentStrings("%APPDATA%");
 var serverFile = appDataDir + "\\.emacs.d\\server\\server";
 
