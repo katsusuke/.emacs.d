@@ -77,6 +77,10 @@
     slim-mode
     jsx-mode
     terraform-mode
+    elixir-mode
+    alchemist
+    ac-alchemist
+    flycheck-elixir 
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -169,7 +173,7 @@
 		     '(height . 50)    ; フレームの高さ
 		     '(alpha . 85)
 		     '(font . "fontset-standard")
-		     )default-frame-alist))
+		     ) default-frame-alist))
 
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
@@ -423,7 +427,7 @@
   (require 'helm-buffers)
   (defadvice helm-buffers-sort-transformer (around ignore activate)
     (setq ad-return-value (ad-get-arg 0)))
-  
+
   (setq helm-ag-insert-at-point 'symbol)
 
   ;; helm-projectile
@@ -553,7 +557,7 @@
 (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
 (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
 
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\)$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
 (setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
@@ -958,6 +962,13 @@
 ;; dockerfile-mode
 (require 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+;; elixir-mode
+(autoload 'elixir-mode "elixir-mode" "Major mode for editing Elixir files" t)
+(add-hook 'elixir-mode-hook '(lambda ()
+			       (alchemist-mode)
+			       (ac-alchemist-setup)
+			       ))
 
 ;; dash-at-point
 (global-set-key "\C-cd" 'dash-at-point)
