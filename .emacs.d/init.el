@@ -95,6 +95,8 @@
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
 
+(require 'use-package)
+
 (defun set-font-size (height)
   (interactive "nHeight:")
   (set-face-attribute 'default (selected-frame) :height height))
@@ -516,14 +518,13 @@
           indent-tabs-mode nil)))
 
 ;; markdown-mode
-(autoload 'markdown-mode "markdown-mode"
-  "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
-(add-hook 'markdown-mode-hook
-	  '(lambda()
-	     (setq markdown-command "/usr/local/bin/multimarkdown")
-	     (setq markdown-open-command "marked2")))
-
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("\\.md\\'" . gfm-mode))
+  :init (lambda()
+	  (setq markdown-command "/usr/local/bin/multimarkdown")
+	  (setq markdown-open-command "marked2")))
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
