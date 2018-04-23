@@ -35,6 +35,7 @@
 ;; インストールするパッケージ
 (defvar my/favorite-packages
   '(
+    use-package
     auto-complete
     robe
     ag
@@ -80,7 +81,8 @@
     elixir-mode
     alchemist
     ac-alchemist
-    flycheck-elixir 
+    flycheck-elixir
+    vue-mode
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -253,6 +255,24 @@
 
 (if (not(eq window-system 'w32))
   (add-load-path "/usr/local/share/emacs/site-lisp"))
+
+(add-load-path "/Users/katsusuke/.emacsd.d")
+
+(autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
+(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
+                                 vbnet-mode)) auto-mode-alist))
+(defun my-vbnet-mode-fn ()
+  "My hook for VB.NET mode"
+  (interactive)
+  (turn-on-font-lock)
+  (turn-on-auto-revert-mode)
+  (setq indent-tabs-mode nil)
+  (setq vbnet-mode-indent 4)
+  (setq vbnet-want-imenu t)
+  ;; (require 'flymake)
+  ;; (flymake-mode 1)
+  )
+(add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
 
 ; custom-set-variables 変数更新のためにinit.el が上書きされるのを防ぐ
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
