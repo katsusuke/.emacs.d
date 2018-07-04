@@ -245,6 +245,7 @@
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
+      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.rbenv/shims"))
       (setq exec-path (split-string (getenv "PATH") ":"))))
 
 ; X用
@@ -453,6 +454,7 @@
   (setq helm-ag-insert-at-point 'symbol)
 
   ;; helm-projectile
+  (projectile-mode)
   (helm-projectile-on)
 
   (setq helm-mini-default-sources
@@ -599,7 +601,6 @@
 	     (inf-ruby-minor-mode)
 	     (auto-complete-mode)
 	     (robe-mode)
-	     (projectile-mode)
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (whitespace-mode)
@@ -700,7 +701,6 @@
     ;; cedit
     (semantic-mode 1)
     (cpp-highlight-buffer t)
-    (projectile-mode)
     (setq semantic-default-submodes
          '(
            global-semantic-idle-scheduler-mode
