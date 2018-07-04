@@ -10,3 +10,5 @@
 /.emacs.d/.env.el
 /.emacs.d/custom.el
 /.emacs.d/tramp
+/.emacs.d/abbrev_defs
+/.emacs.d/url
