@@ -384,17 +384,6 @@
         (fset 'ask-user-about-supersession-threat
               old-supersession-threat)))))
 
-;; リージョンの行数を表示
-(defun count-lines-and-chars ()
-  (if mark-active
-      (format "%d lines,%d chars "
-              (count-lines (region-beginning) (region-end))
-              (- (region-end) (region-beginning)))
-      ;;(count-lines-region (region-beginning) (region-end)) ;; これだとｴｺｰｴﾘｱがﾁﾗつく
-    ""))
-(add-to-list 'default-mode-line-format
-             '(:eval (count-lines-and-chars)))
-
 ;画面端でおりかえす
 (setq truncate-partial-width-windows nil)
 
