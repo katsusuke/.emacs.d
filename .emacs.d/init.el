@@ -153,9 +153,8 @@
 				     (apply orig-fun args))))
       ))
 
-;; Homebrew emacs-app 24用
-(if (or (eq window-system 'ns)
-	(eq window-system 'mac))
+;; ns
+(if (eq window-system 'ns)
     (progn
       ;; フレームのディフォルトの設定。
       (custom-set-variables
@@ -247,7 +246,10 @@
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.rbenv/shims"))
-      (setq exec-path (split-string (getenv "PATH") ":"))))
+      (setq exec-path (split-string (getenv "PATH") ":"))
+      ;; fix drag n drop
+      (global-set-key [C-M-s-drag-n-drop] 'ns-drag-n-drop)
+      ))
 
 ; X用
 (if (eq window-system 'x)
@@ -321,7 +323,7 @@
 ;; Set your installed path
 (if (eq window-system 'w32)
     (setq migemo-dictionary (expand-file-name "~/.emacs.d/share/migemo/dict/utf-8/migemo-dict")))
-(if (or (eq window-system 'ns) (eq window-system 'mac))
+(if (eq window-system 'ns)
     (setq migemo-dictionary "/usr/local/Cellar/cmigemo/HEAD/share/migemo/utf-8/migemo-dict"))
 
 (setq migemo-user-dictionary nil)
@@ -560,7 +562,7 @@
      (coffee-custom)))
 
 ;; ruby-mode
-(if (or (eq window-system 'ns) (eq window-system 'mac)) ;;何故かターミナルで動かない そのうち調べる
+(if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
     (progn
       (if (not(string-match "not found" (shell-command-to-string "which rbenv")))
 	  (progn
@@ -898,7 +900,7 @@
 	     (setq js2-basic-offset 2)))
 
 
-(if (or (eq window-system 'w32) (eq window-system 'mac) (eq window-system 'ns) (eq window-system 'x))
+(if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
       ;; クライアントを終了するとき終了するかどうかを聞かない
       ;; サーバ起動
