@@ -917,7 +917,6 @@
 ;;web-mode
 (require 'web-mode)
 ;; PHP-mode
-(setq web-mode-indent 4)
 (autoload 'php-mode "web-mode" "web-mode" t)
 (add-to-list 'auto-mode-alist '("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml$"     . web-mode))
@@ -930,9 +929,10 @@
 (add-hook
  'web-mode-hook
  '(lambda ()
-    ;(setq-default indent-tabs-mode nil)
+	;(setq-default indent-tabs-mode nil)
+	(setq web-mode-indent 2)
     (setq indent-tabs-mode nil)
-    (setq-default tab-width 4)
+    (setq-default tab-width 8)
     (setq web-mode-markup-indent-offset web-mode-indent)
     (setq web-mode-css-indent-offset web-mode-indent)
     (setq web-mode-code-indent-offset web-mode-indent)
