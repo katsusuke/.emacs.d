@@ -157,28 +157,32 @@
 ;; ns
 (if (eq window-system 'ns)
     (progn
+      ;; custom-set-faces で fontset を使う方法が不明
+      ;; (set-fontset-font "fontset-standard"
+      ;; 			'ascii
+      ;; 			(font-spec :family "ricty" :size 13) nil 'prepend)  ;; ここでサイズを指定
+      ;; (set-fontset-font "fontset-standard"
+      ;; 			'japanese-jisx0213.2004-1
+      ;; 			(font-spec :family "ricty") nil 'prepend)
+      ;; (setq default-frame-alist
+      ;; 	    (append (list
+      ;; 		     '(foreground-color . "white")
+      ;; 		     '(background-color . "black")
+      ;; 		     '(width . 120)     ; フレームの横幅
+      ;; 		     '(height . 50)    ; フレームの高さ
+      ;; 		     '(alpha . 85)
+      ;; 		     '(font . "fontset-standard")
+      ;; 		     ) default-frame-alist))
+
+      
       ;; フレームのディフォルトの設定。
       (custom-set-variables
        '(column-number-mode t)
        '(show-paren-mode t)
        '(tool-bar-mode nil))
 
-      (set-fontset-font "fontset-standard"
-                        'ascii
-                        (font-spec :family "ricty" :size 13) nil 'prepend)  ;; ここでサイズを指定
-      (set-fontset-font "fontset-standard"
-                        'japanese-jisx0213.2004-1
-                        (font-spec :family "ricty") nil 'prepend)
-
-      (setq default-frame-alist
-	    (append (list
-		     '(foreground-color . "white")
-		     '(background-color . "black")
-		     '(width . 120)     ; フレームの横幅
-		     '(height . 50)    ; フレームの高さ
-		     '(alpha . 85)
-		     '(font . "fontset-standard")
-		     ) default-frame-alist))
+      (custom-set-faces
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "outline" :family "Ricty")))))
 
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
