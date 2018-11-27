@@ -84,6 +84,7 @@
     ac-alchemist
     flycheck-elixir
     vue-mode
+    mode-icons
     ))
 
 ;; my/favorite-packagesからインストールしていないパッケージをインストール
@@ -258,8 +259,9 @@
       (put 'backspace 'ascii-character 8)))
 
 (if (not(eq window-system 'w32))
-  (add-load-path "/usr/local/share/emacs/site-lisp"))
+    (add-load-path "/usr/local/share/emacs/site-lisp"))
 
+(mode-icons-mode)
 (add-load-path "/Users/katsusuke/.emacsd.d")
 
 (autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
