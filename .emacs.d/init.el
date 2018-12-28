@@ -22,6 +22,10 @@
 
 ;; custom-set-variables は別ファイルにする
 (setq custom-file (locate-user-emacs-file "custom.el"))
+; custom-set-variables 変数更新のためにinit.el が上書きされるのを防ぐ
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;;; load-path の追加
 (defun add-load-path (path)
@@ -48,9 +52,6 @@
 ;; GUIの設定が後から動くとなんかうざい感じになるので先に動かす
 (if (eq window-system 'w32)
     (progn
-      (custom-set-variables
-       '(show-paren-mode t)
-       '(tool-bar-mode nil))
       (custom-set-faces
        '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))
       (set-frame-parameter nil 'alpha 85)
@@ -112,12 +113,6 @@
       ;; 		     '(alpha . 85)
       ;; 		     '(font . "fontset-standard")
       ;; 		     ) default-frame-alist))
-
-
-      ;; フレームのディフォルトの設定。
-      (custom-set-variables
-       '(show-paren-mode t)
-       '(tool-bar-mode nil))
 
       (custom-set-faces
        '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 136 :width normal :foundry "outline" :family "Ricty")))))
@@ -225,11 +220,6 @@
   )
 (add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
 
-; custom-set-variables 変数更新のためにinit.el が上書きされるのを防ぐ
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
-
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
 ;; C-x C-x でリージョンを復活
@@ -336,9 +326,6 @@
 
 ;画面端でおりかえす
 (setq truncate-partial-width-windows nil)
-
-;; 対応する括弧を光らせる
-(show-paren-mode t)
 
 ;; upcase[C-x C-u] downcase[C-x C-l] を問い合わせなしで実行
 (put 'upcase-region 'disabled nil)
