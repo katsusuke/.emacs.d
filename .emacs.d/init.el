@@ -52,6 +52,7 @@
     helm-rdefs
     rhtml-mode
     web-mode
+    nodenv
     js2-mode
     yaml-mode
     haml-mode
@@ -251,6 +252,7 @@
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.rbenv/shims"))
+      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.nodenv/shims"))
       (setq exec-path (split-string (getenv "PATH") ":"))
       ;; fix drag n drop
       (global-set-key [C-M-s-drag-n-drop] 'ns-drag-n-drop)
@@ -898,6 +900,7 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
 (add-hook 'js2-mode-hook
 	  '(lambda ()
+	     (nodenv-mode)
 	     (setq js2-include-browser-externs nil)
 	     (setq js2-mode-show-parse-errors nil)
 	     (setq js2-mode-show-strict-warnings nil)
@@ -906,6 +909,8 @@
 	     (setq c-basic-offset 2)
 	     (setq indent-tabs-mode nil)
 	     (setq js2-basic-offset 2)))
+
+(autoload 'nodenv-mode "nodenv-mode" "nodenv mode" t)
 
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
