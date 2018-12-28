@@ -32,71 +32,9 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
 (package-initialize)
 
-;; インストールするパッケージ
-(defvar my/favorite-packages
-  '(
-    use-package
-    auto-complete
-    robe
-    ag
-    pt
-    helm
-    helm-pt
-    helm-ag
-    helm-swoop
-    migemo
-    rbenv
-;    yasnippet
-    enh-ruby-mode
-    inf-ruby
-    helm-rdefs
-    rhtml-mode
-    web-mode
-    nodenv
-    js2-mode
-    yaml-mode
-    haml-mode
-    markdown-mode
-    coffee-mode
-    scss-mode
-    sass-mode
-    ggtags
-    projectile
-    helm-projectile
-    helm-ghq
-    hiwin
-    haskell-mode
-    dockerfile-mode
-    nginx-mode
-    rubocop
-    flycheck
-    flycheck-pos-tip
-    auto-highlight-symbol
-    csharp-mode
-    visual-regexp
-    groovy-mode
-    dash-at-point
-    wakatime-mode
-    slim-mode
-    jsx-mode
-    terraform-mode
-    elixir-mode
-    alchemist
-    ac-alchemist
-    flycheck-elixir
-    vue-mode
-    mode-icons
-    ))
-
-;; my/favorite-packagesからインストールしていないパッケージをインストール
-(setq my-packages-loaded nil)
-(dolist (package my/favorite-packages)
-  (unless (package-installed-p package)
-    (unless my-packages-loaded
-      (package-refresh-contents);; パッケージ情報の更新
-      (setq my-packages-loaded t))
-    (package-install package)))
-
+(if (file-exists-p "~/.cask/cask.el")
+    (require "~/.cask/cask.el")
+  (require 'cask))
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
 
