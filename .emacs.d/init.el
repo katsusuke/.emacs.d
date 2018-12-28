@@ -174,7 +174,7 @@
       ;; 		     '(font . "fontset-standard")
       ;; 		     ) default-frame-alist))
 
-      
+
       ;; フレームのディフォルトの設定。
       (custom-set-variables
        '(column-number-mode t)
@@ -182,7 +182,7 @@
        '(tool-bar-mode nil))
 
       (custom-set-faces
-       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "outline" :family "Ricty")))))
+       '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 136 :width normal :foundry "outline" :family "Ricty")))))
 
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
@@ -267,6 +267,8 @@
 
 (mode-icons-mode)
 (add-load-path "/Users/katsusuke/.emacsd.d")
+
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
 (setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
