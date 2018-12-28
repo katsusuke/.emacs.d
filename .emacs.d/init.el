@@ -9,6 +9,7 @@
 ;; M-x load-file RET ~/.emacs.el RET
 ;;
 ;; Dependencies
+;;    cask
 ;;    marked (npmで入れる)
 ;;    pry
 ;;    pry-doc
@@ -48,7 +49,6 @@
 (if (eq window-system 'w32)
     (progn
       (custom-set-variables
-       '(column-number-mode t)
        '(show-paren-mode t)
        '(tool-bar-mode nil))
       (custom-set-faces
@@ -116,7 +116,6 @@
 
       ;; フレームのディフォルトの設定。
       (custom-set-variables
-       '(column-number-mode t)
        '(show-paren-mode t)
        '(tool-bar-mode nil))
 
@@ -349,9 +348,6 @@
 (setq inhibit-startup-message t)
 ;; Stop beep and flush
 (setq ring-bell-function 'ignore)
-
- ;Show column number
-(column-number-mode t)
 
 ;; (global-set-key "\C-h" 'backward-delete-char)
 ;; (global-set-key "\177" 'delete-char)
