@@ -17,6 +17,7 @@
 ;;    rubocop
 ;;    ruby-lint
 ;;    cmigemo (日本語検索)
+;;    aspell
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 ;;    wakatime (pyenv + pipで入れる)
 
@@ -215,8 +216,6 @@
   (setq indent-tabs-mode nil)
   (setq vbnet-mode-indent 4)
   (setq vbnet-want-imenu t)
-  ;; (require 'flymake)
-  ;; (flymake-mode 1)
   )
 (add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
 
@@ -436,6 +435,48 @@
 (ac-config-default)
 ;; これを設定するとC-n C-p で候補の選択ができるようになる.
 (setq ac-use-menu-map t)
+
+;; ispell
+(if (executable-find "aspell")
+    (progn
+      (setq-default ispell-program-name "aspell")
+      
+      (defun flyspell-emacs-popup-textual (event poss word)
+	"A textual flyspell popup menu."
+	(require 'popup)
+	(let* ((corrects (if flyspell-sort-corrections
+                             (sort (car (cdr (cdr poss))) 'string<)
+                           (car (cdr (cdr poss)))))
+	       (cor-menu (if (consp corrects)
+                             (mapcar (lambda (correct)
+				       (list correct correct))
+                                     corrects)
+                           '()))
+	       (affix (car (cdr (cdr (cdr poss)))))
+	       show-affix-info
+	       (base-menu  (let ((save (if (and (consp affix) show-affix-info)
+                                           (list
+                                            (list (concat "Save affix: " (car affix))
+                                                  'save)
+                                            '("Accept (session)" session)
+                                            '("Accept (buffer)" buffer))
+					 '(("Save word" save)
+                                           ("Accept (session)" session)
+                                           ("Accept (buffer)" buffer)))))
+                             (if (consp cor-menu)
+				 (append cor-menu (cons "" save))
+			       save)))
+	       (menu (mapcar
+                      (lambda (arg) (if (consp arg) (car arg) arg))
+                      base-menu)))
+          (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
+      
+      (eval-after-load "ispell"
+	'(progn
+	   (add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))
+	   (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
+      
+      (flyspell-mode 1)))
 
 ;; flycheck
 (global-flycheck-mode)
