@@ -855,6 +855,9 @@
 		    #'imenu--create-delphi-index)
 	      (imenu-add-menubar-index)))
 
+;; nodenv
+(autoload 'nodenv-mode "nodenv-mode" "nodenv mode" t)
+
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -872,7 +875,25 @@
 	     (setq indent-tabs-mode nil)
 	     (setq js2-basic-offset 2)))
 
-(autoload 'nodenv-mode "nodenv-mode" "nodenv mode" t)
+(autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
+(add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
 
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
@@ -901,11 +922,11 @@
 (add-to-list 'auto-mode-alist '("\\.erb$"       . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ctp$"     . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx$"     . web-mode))
 (add-hook
  'web-mode-hook
  '(lambda ()
-	;(setq-default indent-tabs-mode nil)
-	(setq web-mode-indent 2)
+    (setq web-mode-indent 2)
     (setq indent-tabs-mode nil)
     (setq-default tab-width 8)
     (setq web-mode-markup-indent-offset web-mode-indent)
@@ -914,7 +935,11 @@
     (setq web-mode-style-padding 0)
     (setq web-mode-script-padding 0)
     (setq web-mode-block-padding 0)
-    (setq web-mode-comment-style web-mode-indent)))
+    (setq web-mode-comment-style web-mode-indent)
+    (when (string-equal "tsx" (file-name-extension buffer-file-name))
+      '(lambda ()
+	 (flycheck-add-mode 'typescript-tslint 'web-mode)
+	 (setup-tide-mode)))))
 
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
