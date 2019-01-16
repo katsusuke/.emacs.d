@@ -38,13 +38,16 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
 (package-initialize)
 
+(if (file-exists-p "/usr/local/share/emacs/site-lisp/cask/cask.el")
+    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el"))
+
 (if (file-exists-p "~/.cask/cask.el")
     (require "~/.cask/cask.el")
   (require 'cask))
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
 
-(require 'use-package)
+(cask-initialize)
 
 (defun set-font-size (height)
   (interactive "nHeight:")

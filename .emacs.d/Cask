@@ -48,7 +48,7 @@
 (depends-on "alchemist")
 (depends-on "ac-alchemist")
 (depends-on "flycheck-elixir")
-(depends-on "vue-mode")
+;(depends-on "vue-mode")
 (depends-on "mode-icons")
 (depends-on "typescript-mode")
 (depends-on "tide")
