@@ -52,3 +52,5 @@
 (depends-on "mode-icons")
 (depends-on "typescript-mode")
 (depends-on "tide")
+(depends-on "lsp-mode")
+

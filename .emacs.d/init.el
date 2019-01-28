@@ -485,6 +485,7 @@
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 
+(require 'lsp)
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -878,7 +879,8 @@
   ;; company is an optional dependency. You have to
   ;; install it separately via package-install
   ;; `M-x package-install [ret] company`
-  (company-mode +1))
+  ;; (company-mode +1))
+  )
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
@@ -914,10 +916,16 @@
 (add-to-list 'auto-mode-alist '("\\.html?$"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ctp$"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx$"     . web-mode))
+(defun tsx-mode-hook ()
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (setup-tide-mode)
+  (lsp))
+    
 (add-hook
  'web-mode-hook
  '(lambda ()
     (setq web-mode-indent 2)
+    (setq c-basic-offset 2)
     (setq-default tab-width 8)
     (setq web-mode-markup-indent-offset web-mode-indent)
     (setq web-mode-css-indent-offset web-mode-indent)
@@ -926,10 +934,9 @@
     (setq web-mode-script-padding 0)
     (setq web-mode-block-padding 0)
     (setq web-mode-comment-style web-mode-indent)
+    (message "web-mode-hook")
     (when (string-equal "tsx" (file-name-extension buffer-file-name))
-      '(lambda ()
-	 (flycheck-add-mode 'typescript-tslint 'web-mode)
-	 (setup-tide-mode)))))
+      (tsx-mode-hook))))
 
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
