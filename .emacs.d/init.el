@@ -200,6 +200,8 @@
 (if (not(eq window-system 'w32))
     (add-load-path "/usr/local/share/emacs/site-lisp"))
 
+(setq-default indent-tabs-mode nil)
+
 (mode-icons-mode)
 (add-load-path "/Users/katsusuke/.emacsd.d")
 
@@ -213,7 +215,6 @@
   (interactive)
   (turn-on-font-lock)
   (turn-on-auto-revert-mode)
-  (setq indent-tabs-mode nil)
   (setq vbnet-mode-indent 4)
   (setq vbnet-want-imenu t)
   )
@@ -500,8 +501,7 @@
  '(lambda ()
     (c-set-offset 'substatement-open '0)
     (setq tab-width  4
-          c-basic-offset 4
-          indent-tabs-mode nil)))
+          c-basic-offset 4)))
 
 ;; markdown-mode
 (use-package markdown-mode
@@ -526,7 +526,6 @@
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 (defun coffee-custom ()
   "coffee-mode-hook"
-  (setq indent-tabs-mode nil)
   (set (make-local-variable 'tab-width) 8)
   (setq coffee-tab-width 2))
 (add-hook 'coffee-mode-hook
@@ -598,9 +597,7 @@
  '(lambda ()
     (add-to-list 'write-file-functions 'delete-trailing-whitespace)
     (c-set-offset 'substatement-open '0)
-    (setq tab-width  8
-          indent-tabs-mode nil)
-    (setq indent-tabs-mode nil)
+    (setq tab-width 8)
     (flycheck-def-config-file-var flycheck-haml-lintrc haml-lint ".haml-lint.yml" :safe #'stringp)
     (flycheck-define-checker haml-lint
       "A haml-lint syntax checker"
@@ -694,14 +691,10 @@
 (autoload 'yaml-mode "yaml-mode" "YAML mode" t)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-(add-hook 'yaml-mode-hook
-	  '(lambda ()
-	     (setq indent-tabs-mode nil)))
 ;; css-mode
 (add-hook 'css-mode-hook
 	  '(lambda ()
 	     (setq css-indent-offset 2)
-	     (setq indent-tabs-mode nil)
 	     (setq css-indent-offset 2)
 	     ))
 
@@ -717,8 +710,7 @@
 ;; html-mode
 (add-hook 'html-mode-hook
           (lambda()
-            (setq sgml-basic-offset 2)
-            (setq indent-tabs-mode nil)))
+            (setq sgml-basic-offset 2)))
 
 ;; delphi-mode
 (add-to-list 'auto-mode-alist '("\\.pas$" . delphi-mode))
@@ -872,7 +864,6 @@
 	     (setq js2-highlight-external-variables nil)
 	     (setq js2-include-jslint-globals nil)
 	     (setq c-basic-offset 2)
-	     (setq indent-tabs-mode nil)
 	     (setq js2-basic-offset 2)))
 
 (autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
@@ -927,7 +918,6 @@
  'web-mode-hook
  '(lambda ()
     (setq web-mode-indent 2)
-    (setq indent-tabs-mode nil)
     (setq-default tab-width 8)
     (setq web-mode-markup-indent-offset web-mode-indent)
     (setq web-mode-css-indent-offset web-mode-indent)
