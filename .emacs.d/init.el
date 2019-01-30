@@ -864,8 +864,9 @@
 	     (setq js2-mode-show-strict-warnings nil)
 	     (setq js2-highlight-external-variables nil)
 	     (setq js2-include-jslint-globals nil)
-	     (setq c-basic-offset 2)
-	     (setq js2-basic-offset 2)))
+             (setq typescript-indent-level 2)
+             (lsp-mode 1)
+             (lsp)))
 
 (autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
 (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
@@ -919,6 +920,7 @@
 (defun tsx-mode-hook ()
   (flycheck-add-mode 'typescript-tslint 'web-mode)
   (setup-tide-mode)
+  (lsp-mode 1)
   (lsp))
     
 (add-hook
