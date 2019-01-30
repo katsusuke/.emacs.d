@@ -117,6 +117,7 @@
       ;; 		     '(alpha . 85)
       ;; 		     '(font . "fontset-standard")
       ;; 		     ) default-frame-alist))
+      (set-frame-parameter (selected-frame) 'alpha '(75 . 65))
 
       ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       (setq ns-pop-up-frames nil)
@@ -441,7 +442,7 @@
 (if (executable-find "aspell")
     (progn
       (setq-default ispell-program-name "aspell")
-      
+
       (defun flyspell-emacs-popup-textual (event poss word)
 	"A textual flyspell popup menu."
 	(require 'popup)
@@ -471,12 +472,12 @@
                       (lambda (arg) (if (consp arg) (car arg) arg))
                       base-menu)))
           (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
-      
+
       (eval-after-load "ispell"
 	'(progn
 	   (add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))
 	   (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
-      
+
       (flyspell-mode 1)))
 
 ;; flycheck
@@ -922,7 +923,7 @@
   (setup-tide-mode)
   (lsp-mode 1)
   (lsp))
-    
+
 (add-hook
  'web-mode-hook
  '(lambda ()
