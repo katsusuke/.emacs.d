@@ -1,3 +1,4 @@
+(source gnu)
 (source melpa)
 
 (depends-on "use-package")
@@ -53,4 +54,4 @@
 (depends-on "typescript-mode")
 (depends-on "tide")
 (depends-on "lsp-mode")
-
+(depends-on "vue-mode")
