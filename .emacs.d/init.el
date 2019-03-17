@@ -865,31 +865,31 @@
 	     (setq js2-mode-show-strict-warnings nil)
 	     (setq js2-highlight-external-variables nil)
 	     (setq js2-include-jslint-globals nil)
-             (setq typescript-indent-level 2)
-             (lsp-mode 1)
-             (lsp)))
+             (setq js2-basic-offset 2)))
+
+;; typescript-mode
+(defun setup-typescript ()
+  (interactive)
+  (message "setup-typescript")
+  (tide-setup)
+  (flycheck-mode 1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode 1)
+  (tide-hl-identifier-mode 1)
+  (lsp-mode 1)
+  )
 
 (autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
 (add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  ;; (company-mode +1))
-  )
+(add-hook 'before-save-hook 'tide-format-before-save)
+(add-hook 'typescript-mode-hook
+          '(lambda ()
+             (setq typescript-indent-level 2)
+             (flycheck-add-mode 'typescript-tslint 'typescript-mode)
+             (setup-typescript)))
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -920,9 +920,7 @@
 (add-to-list 'auto-mode-alist '("\\.tsx$"     . web-mode))
 (defun tsx-mode-hook ()
   (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (setup-tide-mode)
-  (lsp-mode 1)
-  (lsp))
+  (setup-typescript))
 
 (add-hook
  'web-mode-hook
