@@ -52,3 +52,4 @@
 (depends-on "lsp-mode")
 (depends-on "vue-mode")
 (depends-on "prettier-js")
+(depends-on "flymake")
