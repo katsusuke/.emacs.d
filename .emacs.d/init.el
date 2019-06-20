@@ -203,7 +203,8 @@
 
 (setq-default indent-tabs-mode nil)
 
-(mode-icons-mode)
+(use-package mode-icons :config (mode-icons-mode))
+
 (add-load-path "/Users/katsusuke/.emacsd.d")
 
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -417,16 +418,56 @@
   (set-face-attribute 'whitespace-empty nil
 		      :background my/bg-color))
 
+(use-package company
+  :config
+  (global-company-mode))
 
-;; auto-complete
-(require 'auto-complete-config)
-;(add-to-list 'ac-dictionary-directories (expand-file-name "~/.emacs.d/auto-complete/dict"))
-(ac-config-default)
-;; これを設定するとC-n C-p で候補の選択ができるようになる.
-(setq ac-use-menu-map t)
+(use-package lsp-mode
+  :custom
+  (lsp-print-io t)
+  (lsp-auto-guess-root t)
+  (lsp-document-sync-method 'incremental) ;; always send incremental document
+  (lsp-prefer-flymake 'flymake)
+  :config
+  (use-package lsp-ui
+    :custom
+    ;; ;; lsp-ui-doc
+    ;; (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-header t)
+    (lsp-ui-doc-include-signature t)
+    ;; (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
+    ;; (lsp-ui-doc-max-width 150)
+    ;; (lsp-ui-doc-max-height 30)
+    ;; (lsp-ui-doc-use-childframe t)
+    (lsp-ui-doc-use-webkit t)
+    
+    ;; ;; lsp-ui-flycheck
+    ;; (lsp-ui-flycheck-enable nil)
 
-
-(require 'lsp)
+    ;; ;; lsp-ui-peek
+    ;; (lsp-ui-peek-enable t)
+    ;; (lsp-ui-peek-peek-height 20)
+    ;; (lsp-ui-peek-list-width 50)
+    ;; (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
+    
+    ;; ;; lsp-ui-imenu
+    ;; (lsp-ui-imenu-enable nil)
+    ;; (lsp-ui-imenu-kind-position 'top)
+    
+    ;; ;; lsp-ui-sideline
+    (lsp-ui-sideline-enable t)
+    (lsp-ui-sideline-show-symbol t)
+    (lsp-ui-sideline-show-hover t)
+    (lsp-ui-sideline-show-diagnostics t)
+    (lsp-ui-sideline-show-code-actions t)
+    
+    :commands lsp-ui-mode
+    :config
+    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+    (eval-after-load "flymake"
+      (setq flymake-fringe-indicator-position nil)
+      )
+    ))
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -814,7 +855,7 @@
 (defun setup-typescript ()
   (interactive)
   (message "setup-typescript")
-  (prettier-js-mode)
+  ;(prettier-js-mode)
   (tide-setup)
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
