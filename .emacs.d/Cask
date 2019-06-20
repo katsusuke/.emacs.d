@@ -2,7 +2,6 @@
 (source melpa)
 
 (depends-on "use-package")
-(depends-on "auto-complete")
 (depends-on "robe")
 (depends-on "ag")
 (depends-on "pt")
@@ -52,4 +51,4 @@
 (depends-on "lsp-mode")
 (depends-on "vue-mode")
 (depends-on "prettier-js")
-(depends-on "flymake")
+(depends-on "company")
