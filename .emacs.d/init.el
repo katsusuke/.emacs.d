@@ -208,19 +208,6 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
-(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
-                                 vbnet-mode)) auto-mode-alist))
-(defun my-vbnet-mode-fn ()
-  "My hook for VB.NET mode"
-  (interactive)
-  (turn-on-font-lock)
-  (turn-on-auto-revert-mode)
-  (setq vbnet-mode-indent 4)
-  (setq vbnet-want-imenu t)
-  )
-(add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
-
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
 ;; C-x C-x でリージョンを復活
@@ -447,6 +434,22 @@
 ;; リモートのファイルを編集するTRAMP
 (require 'tramp)
 (setq tramp-default-method "ssh")
+
+;;; Languages
+
+;; vbnet-mode
+(autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
+(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
+                                 vbnet-mode)) auto-mode-alist))
+(defun my-vbnet-mode-fn ()
+  "My hook for VB.NET mode"
+  (interactive)
+  (turn-on-font-lock)
+  (turn-on-auto-revert-mode)
+  (setq vbnet-mode-indent 4)
+  (setq vbnet-want-imenu t)
+  )
+(add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
 
 ;; CSharp-mode
 (autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
