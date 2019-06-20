@@ -438,53 +438,6 @@
 ;; これを設定するとC-n C-p で候補の選択ができるようになる.
 (setq ac-use-menu-map t)
 
-;; ispell
-(if (executable-find "aspell")
-    (progn
-      (setq-default ispell-program-name "aspell")
-
-      (defun flyspell-emacs-popup-textual (event poss word)
-	"A textual flyspell popup menu."
-	(require 'popup)
-	(let* ((corrects (if flyspell-sort-corrections
-                             (sort (car (cdr (cdr poss))) 'string<)
-                           (car (cdr (cdr poss)))))
-	       (cor-menu (if (consp corrects)
-                             (mapcar (lambda (correct)
-				       (list correct correct))
-                                     corrects)
-                           '()))
-	       (affix (car (cdr (cdr (cdr poss)))))
-	       show-affix-info
-	       (base-menu  (let ((save (if (and (consp affix) show-affix-info)
-                                           (list
-                                            (list (concat "Save affix: " (car affix))
-                                                  'save)
-                                            '("Accept (session)" session)
-                                            '("Accept (buffer)" buffer))
-					 '(("Save word" save)
-                                           ("Accept (session)" session)
-                                           ("Accept (buffer)" buffer)))))
-                             (if (consp cor-menu)
-				 (append cor-menu (cons "" save))
-			       save)))
-	       (menu (mapcar
-                      (lambda (arg) (if (consp arg) (car arg) arg))
-                      base-menu)))
-          (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
-
-      (eval-after-load "ispell"
-	'(progn
-	   (add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))
-	   (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
-
-      (flyspell-mode 1)))
-
-;; flycheck
-(global-flycheck-mode)
-(flycheck-pos-tip-mode)
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-(flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 
 (require 'lsp)
 
@@ -569,7 +522,6 @@
 	     (make-local-variable 'ac-ignores)
 	     (add-to-list 'ac-ignores "end")
 	     (whitespace-mode)
-	     (setq flycheck-checker 'ruby-rubocop)
 	     (define-key enh-ruby-mode-map (kbd "C-c r") 'helm-rdefs)
 	     ))
 
@@ -592,25 +544,13 @@
 (require 'rhtml-mode)
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 
-(add-to-list 'flycheck-checkers 'haml-lint)
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
 (add-hook
  'haml-mode-hook
  '(lambda ()
     (add-to-list 'write-file-functions 'delete-trailing-whitespace)
     (c-set-offset 'substatement-open '0)
-    (setq tab-width 8)
-    (flycheck-def-config-file-var flycheck-haml-lintrc haml-lint ".haml-lint.yml" :safe #'stringp)
-    (flycheck-define-checker haml-lint
-      "A haml-lint syntax checker"
-      :command ("haml-lint"
-		(config-file "--config" flycheck-haml-lintrc)
-		source)
-      :error-patterns ((warning line-start
-				(file-name) ":" line " [W] "  (message)
-				line-end))
-      :modes (haml-mode))
-    ))
+    (setq tab-width 8)))
 
 ;; Scheme-mode
 (setq scheme-program-name "gosh -i")
@@ -871,9 +811,8 @@
 (defun setup-typescript ()
   (interactive)
   (message "setup-typescript")
+  (prettier-js-mode)
   (tide-setup)
-  (flycheck-mode 1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
   (lsp-mode 1)
@@ -884,9 +823,7 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook
           '(lambda ()
-             (prettier-js-mode)
              (setq typescript-indent-level 2)
-             (flycheck-add-mode 'typescript-tslint 'typescript-mode)
              (setup-typescript)))
 
 ;; aligns annotation to the right hand side
@@ -920,7 +857,6 @@
 (add-to-list 'auto-mode-alist '("\\.ctp$"     . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx$"     . web-mode))
 (defun tsx-mode-hook ()
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
   (setup-typescript))
 
 (add-hook
