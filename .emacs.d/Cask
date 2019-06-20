@@ -55,3 +55,4 @@
 (depends-on "tide")
 (depends-on "lsp-mode")
 (depends-on "vue-mode")
+(depends-on "prettier-js")
