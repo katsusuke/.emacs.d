@@ -972,3 +972,5 @@
 (defun display-ansi-colors ()
   (interactive)
   (ansi-color-apply-on-region (point-min) (point-max)))
+
+(setq ediff-split-window-function 'split-window-horizontally)
