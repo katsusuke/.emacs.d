@@ -860,11 +860,11 @@
 (add-hook 'js2-mode-hook
 	  '(lambda ()
 	     (nodenv-mode)
-	     (setq js2-include-browser-externs nil)
-	     (setq js2-mode-show-parse-errors nil)
-	     (setq js2-mode-show-strict-warnings nil)
-	     (setq js2-highlight-external-variables nil)
-	     (setq js2-include-jslint-globals nil)
+             (setq js2-include-browser-externs nil)
+             (setq js2-mode-show-parse-errors nil)
+             (setq js2-mode-show-strict-warnings nil)
+             (setq js2-highlight-external-variables nil)
+             (setq js2-include-jslint-globals nil)
              (setq js2-basic-offset 2)))
 
 ;; typescript-mode
@@ -884,6 +884,7 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 (add-hook 'typescript-mode-hook
           '(lambda ()
+             (prettier-js-mode)
              (setq typescript-indent-level 2)
              (flycheck-add-mode 'typescript-tslint 'typescript-mode)
              (setup-typescript)))
