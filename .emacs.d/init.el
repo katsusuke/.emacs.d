@@ -101,39 +101,17 @@
 ;; ns
 (if (eq window-system 'ns)
     (progn
-      ;; custom-set-faces で fontset を使う方法が不明
-      ;; (set-fontset-font "fontset-standard"
-      ;; 			'ascii
-      ;; 			(font-spec :family "ricty" :size 13) nil 'prepend)  ;; ここでサイズを指定
-      ;; (set-fontset-font "fontset-standard"
-      ;; 			'japanese-jisx0213.2004-1
-      ;; 			(font-spec :family "ricty") nil 'prepend)
-      ;; (setq default-frame-alist
-      ;; 	    (append (list
-      ;; 		     '(foreground-color . "white")
-      ;; 		     '(background-color . "black")
-      ;; 		     '(width . 120)     ; フレームの横幅
-      ;; 		     '(height . 50)    ; フレームの高さ
-      ;; 		     '(alpha . 85)
-      ;; 		     '(font . "fontset-standard")
-      ;; 		     ) default-frame-alist))
       (set-frame-parameter (selected-frame) 'alpha '(75 . 65))
-
-      ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
-      (setq ns-pop-up-frames nil)
-
-      ;; C-zで最小化してうざいので無効に
-      (global-unset-key "\C-z")
-
+      (setq ns-pop-up-frames nil) ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
+      ;; keybind
+      (global-unset-key "\C-z") ;; C-zで最小化してうざいので無効に
       (setq mac-option-modifier 'meta)   ;; Option キーを Meta キーとして使う
       (setq mac-command-modifier 'super) ;; Command キーを Super キーとして使う
-
       ;; Mac 標準キーバインド
       (global-set-key [(super v)] 'yank)
       (global-set-key [(super c)] 'kill-ring-save)
       (global-set-key [(super s)] 'save-buffer)
       (global-set-key [(super x)] 'kill-region)
-
       ;; バックスラッシュ入力
       (define-key global-map [2213] nil)
       (define-key global-map [67111077] nil)
@@ -202,12 +180,11 @@
     (add-load-path "/usr/local/share/emacs/site-lisp"))
 
 (setq-default indent-tabs-mode nil)
-
-(use-package mode-icons :config (mode-icons-mode))
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (add-load-path "/Users/katsusuke/.emacsd.d")
 
-(defalias 'yes-or-no-p 'y-or-n-p)
+(use-package mode-icons :config (mode-icons-mode))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -238,13 +215,13 @@
 ;; M--	ahs-back-to-start	最初のカーソル位置のシンボルへ移動
 ;; C-x C-'	ahs-change-range	ハイライトする範囲を表示しているディスプレイの範囲かバッファ全体かを切り替える
 ;; C-x C-a	ahs-edit-mode	ハイライトしているシンボルを一括でrenameする
-(require 'auto-highlight-symbol)
-(global-auto-highlight-symbol-mode t)
+(use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 
 ;; 日本語インクリメンタル検索
-(require 'migemo)
-(setq migemo-command "cmigemo")
-(setq migemo-options '("-q" "--emacs"))
+(use-package migemo
+  :config
+  (setq migemo-command "cmigemo")
+  (setq migemo-options '("-q" "--emacs")))
 
 ;; Set your installed path
 (if (eq window-system 'w32)
@@ -338,8 +315,9 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(when (require 'helm-config nil t)
-  (helm-mode 1)
+(use-package helm-config
+  :config
+  (helm-mode)
   (helm-migemo-mode 1)
   (define-key global-map (kbd "C-;") 'helm-mini)
   (define-key global-map (kbd "M-x")     'helm-M-x)
@@ -422,52 +400,27 @@
   :config
   (global-company-mode))
 
-(use-package lsp-mode
-  :custom
-  (lsp-print-io t)
-  (lsp-auto-guess-root t)
-  (lsp-document-sync-method 'incremental) ;; always send incremental document
-  (lsp-prefer-flymake 'flymake)
+(use-package flycheck
   :config
-  (use-package lsp-ui
-    :custom
-    ;; ;; lsp-ui-doc
-    ;; (lsp-ui-doc-enable nil)
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature t)
-    ;; (lsp-ui-doc-position 'at-point) ;; top, bottom, or at-point
-    ;; (lsp-ui-doc-max-width 150)
-    ;; (lsp-ui-doc-max-height 30)
-    ;; (lsp-ui-doc-use-childframe t)
-    (lsp-ui-doc-use-webkit t)
-    
-    ;; ;; lsp-ui-flycheck
-    ;; (lsp-ui-flycheck-enable nil)
+  (global-flycheck-mode))
 
-    ;; ;; lsp-ui-peek
-    ;; (lsp-ui-peek-enable t)
-    ;; (lsp-ui-peek-peek-height 20)
-    ;; (lsp-ui-peek-list-width 50)
-    ;; (lsp-ui-peek-fontify 'on-demand) ;; never, on-demand, or always
-    
-    ;; ;; lsp-ui-imenu
-    ;; (lsp-ui-imenu-enable nil)
-    ;; (lsp-ui-imenu-kind-position 'top)
-    
-    ;; ;; lsp-ui-sideline
-    (lsp-ui-sideline-enable t)
-    (lsp-ui-sideline-show-symbol t)
-    (lsp-ui-sideline-show-hover t)
-    (lsp-ui-sideline-show-diagnostics t)
-    (lsp-ui-sideline-show-code-actions t)
-    
-    :commands lsp-ui-mode
-    :config
-    (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-    (eval-after-load "flymake"
-      (setq flymake-fringe-indicator-position nil)
-      )
-    ))
+(use-package company-lsp
+  :config
+  (push 'company-lsp company-backends))
+
+(use-package lsp-mode
+  :commands lsp
+  :hook
+  (typescript-mode lisp-mode enh-ruby-mode)
+  :config
+  (message "lsp-mode :config")
+  (setq lsp-auto-configure t)
+  (setq lsp-auto-guess-root t)
+  (lsp-ui-mode)
+  (lsp-ui-sideline)
+  )
+
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -859,7 +812,6 @@
   (tide-setup)
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
-  (lsp-mode 1)
   )
 
 (autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
