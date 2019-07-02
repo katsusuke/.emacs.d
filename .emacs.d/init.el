@@ -625,16 +625,6 @@
           c-basic-offset 4
           indent-tabs-mode 1)))
 
-;; objc-mode
-(add-hook
- 'objc-mode-hook
- '(lambda ()
-    (c-set-offset 'substatement-open '0)
-    (setq tab-width 4)
-    (c-basic-offset 4)
-    (indent-tabs-mode 1)))
-
-
 ;; YAML-mode
 (use-package yaml-mode
   :mode "\\.yml$")
