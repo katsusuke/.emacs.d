@@ -220,21 +220,19 @@
 (use-package migemo
   :config
   (setq migemo-command "cmigemo")
-  (setq migemo-options '("-q" "--emacs")))
-
-;; Set your installed path
-(if (eq window-system 'w32)
-    (setq migemo-dictionary (expand-file-name "~/.emacs.d/share/migemo/dict/utf-8/migemo-dict")))
-(if (eq window-system 'ns)
-    (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
-
-(setq migemo-user-dictionary nil)
-(setq migemo-regex-dictionary nil)
-(setq migemo-coding-system 'utf-8-unix)
-(migemo-init)
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  ;; Set your installed path
+  (if (eq window-system 'w32)
+      (setq migemo-dictionary (expand-file-name "~/.emacs.d/share/migemo/dict/utf-8/migemo-dict")))
+  (if (eq window-system 'ns)
+      (setq migemo-dictionary "/usr/local/opt/cmigemo/share/migemo/utf-8/migemo-dict"))
+  (migemo-init)
+  )
 
 ;; バックアップ関係
-
 ;; ロックファイルを作らない
 (setq create-lockfiles nil)
 
