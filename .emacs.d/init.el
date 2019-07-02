@@ -894,11 +894,10 @@
   :mode "[Dd]ockerfile")
 
 ;; elixir-mode
-(autoload 'elixir-mode "elixir-mode" "Major mode for editing Elixir files" t)
-(add-hook 'elixir-mode-hook '(lambda ()
-			       (alchemist-mode)
-			       (ac-alchemist-setup)
-			       ))
+(use-package elixir-mode
+  :config
+  (alchemist-mode)
+  (ac-alchemist-setup))
 
 ;; dash-at-point
 (global-set-key "\C-cd" 'dash-at-point)
