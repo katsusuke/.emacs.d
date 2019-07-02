@@ -481,17 +481,6 @@
 	     (if (member major-mode (list 'grep-mode 'ag-mode 'pt-mode))
 		    (setq truncate-lines t))))
 
-;; Coffee-mode
-(autoload 'coffee-mode "coffee-mode" "Major mode for editing Coffeescript." t)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-(defun coffee-custom ()
-  "coffee-mode-hook"
-  (set (make-local-variable 'tab-width) 8)
-  (setq coffee-tab-width 2))
-(add-hook 'coffee-mode-hook
-  '(lambda()
-     (coffee-custom)))
 
 ;; ruby-mode
 (if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
