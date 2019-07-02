@@ -405,7 +405,9 @@
 
 (use-package company
   :config
-  (global-company-mode))
+  (global-company-mode)
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t))
 
 (use-package flycheck
   :config
@@ -696,8 +698,6 @@
              (setq typescript-indent-level 2)
              (setup-typescript)))
 
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
