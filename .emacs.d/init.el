@@ -164,7 +164,6 @@
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.rbenv/shims"))
-      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.nodenv/shims"))
       (setq exec-path (split-string (getenv "PATH") ":"))
       ;; fix drag n drop
       (global-set-key [C-M-s-drag-n-drop] 'ns-drag-n-drop)
