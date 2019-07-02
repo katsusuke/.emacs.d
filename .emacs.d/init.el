@@ -547,15 +547,12 @@
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
-(autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
-
-(add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
-(add-hook
- 'haml-mode-hook
- '(lambda ()
-    (add-to-list 'write-file-functions 'delete-trailing-whitespace)
-    (c-set-offset 'substatement-open '0)
-    (setq tab-width 8)))
+(use-package haml-mode
+  :mode "\\.haml$"
+  :config
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
+  (c-set-offset 'substatement-open '0)
+  (setq tab-width 8))
 
 
 (autoload 'ggtags-mode "ggtags" "" t)
