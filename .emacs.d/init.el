@@ -663,7 +663,8 @@
             (setq sgml-basic-offset 2)))
 
 ;; nodenv
-(autoload 'nodenv-mode "nodenv" "nodenv mode" t)
+(use-package nodenv
+  :commands nodenv-mode)
 
 ;; js2-mode
 (autoload 'js2-mode "js2-mode" "JS2 mode" t)
@@ -682,6 +683,7 @@
 
 ;; typescript-mode
 (defun setup-typescript ()
+  (nodenv-mode)
   (tide-setup)
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
