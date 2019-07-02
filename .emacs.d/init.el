@@ -682,22 +682,17 @@
 
 ;; typescript-mode
 (defun setup-typescript ()
-  (interactive)
-  (message "setup-typescript")
-  ;(prettier-js-mode)
   (tide-setup)
   (eldoc-mode 1)
   (tide-hl-identifier-mode 1)
   )
 
-(autoload 'typescript-mode "typescript-mode" "TypeScript mode" t)
-(add-to-list 'auto-mode-alist '("\\.ts$" . typescript-mode))
-(add-hook 'before-save-hook 'tide-format-before-save)
-(add-hook 'typescript-mode-hook
-          '(lambda ()
-             (setq typescript-indent-level 2)
-             (setup-typescript)))
-
+(use-package typescript-mode
+  :mode "\\.ts$"
+  :config
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (setq typescript-indent-level 2)
+  (setup-typescript))
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
