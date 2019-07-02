@@ -455,14 +455,12 @@
 (add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
 
 ;; CSharp-mode
-(autoload 'csharp-mode "csharp-mode" "Major mode for editing C# code." t)
-(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
-(add-hook
- 'csharp-mode-hook
- '(lambda ()
-    (c-set-offset 'substatement-open '0)
-    (setq tab-width  4
-          c-basic-offset 4)))
+(use-package csharp-mode
+  :mode "\\.cs$"
+  :config
+  (c-set-offset 'substatement-open '0)
+  (setq tab-width  4
+        c-basic-offset 4))
 
 ;; markdown-mode
 (use-package markdown-mode
