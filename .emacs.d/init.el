@@ -558,11 +558,6 @@
     (c-set-offset 'substatement-open '0)
     (setq tab-width 8)))
 
-;; Scheme-mode
-(setq scheme-program-name "gosh -i")
-(autoload 'scheme-mode "cmuscheme" "Major mode for Scheme." t)
-(autoload 'run-scheme "cmuscheme" "Run an inferior Scheme process." t)
-
 
 (autoload 'ggtags-mode "ggtags" "" t)
 (setq ggtags-mode-hook
