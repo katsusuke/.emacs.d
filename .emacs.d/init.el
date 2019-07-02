@@ -441,18 +441,14 @@
 ;;; Languages
 
 ;; vbnet-mode
-(autoload 'vbnet-mode "vbnet-mode" "Mode for editing VB.NET code." t)
-(setq auto-mode-alist (append '(("\\.\\(frm\\|bas\\|cls\\|vb\\)$" .
-                                 vbnet-mode)) auto-mode-alist))
-(defun my-vbnet-mode-fn ()
-  "My hook for VB.NET mode"
-  (interactive)
+(use-package vbnet-mode
+  :mode "\\.\\(frm\\|bas\\|cls\\|vb\\)$"
+  :load-path "./site-lisp"
+  :config
   (turn-on-font-lock)
   (turn-on-auto-revert-mode)
   (setq vbnet-mode-indent 4)
-  (setq vbnet-want-imenu t)
-  )
-(add-hook 'vbnet-mode-hook 'my-vbnet-mode-fn)
+  (setq vbnet-want-imenu t))
 
 ;; CSharp-mode
 (use-package csharp-mode
