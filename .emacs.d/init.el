@@ -652,8 +652,8 @@
   (setq scss-compile-at-save nil))
 
 ;; sass-mode
-(autoload 'sass-mode "sass-mode")
-(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+(use-package sass-mode
+  :mode "\\.sass\\'")
 
 ;; html-mode
 (add-hook 'html-mode-hook
