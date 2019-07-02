@@ -666,19 +666,18 @@
   :commands nodenv-mode)
 
 ;; js2-mode
-(autoload 'js2-mode "js2-mode" "JS2 mode" t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.es6$" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json$" . js2-mode))
-(add-hook 'js2-mode-hook
-	  '(lambda ()
-	     (nodenv-mode)
-             (setq js2-include-browser-externs nil)
-             (setq js2-mode-show-parse-errors nil)
-             (setq js2-mode-show-strict-warnings nil)
-             (setq js2-highlight-external-variables nil)
-             (setq js2-include-jslint-globals nil)
-             (setq js2-basic-offset 2)))
+(use-package js2-mode
+  :mode (("\\.js$" . js2-mode)
+         ("\\.es6$" . js2-mode)
+         ("\\.json$" . js2-mode))
+  :config
+  (nodenv-mode)
+  (setq js2-include-browser-externs nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
+  (setq js2-highlight-external-variables nil)
+  (setq js2-include-jslint-globals nil)
+  (setq js2-basic-offset 2))
 
 ;; typescript-mode
 (defun setup-typescript ()
