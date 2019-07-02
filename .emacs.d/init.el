@@ -315,6 +315,13 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+(use-package lsp-ui-mode
+  :commands lsp-ui-mode
+  :after lsp-mode
+  :config
+  (message "lsp-ui-mode :custom")
+  (lsp-ui-sideline))
+
 (use-package helm-config
   :config
   (helm-mode)
@@ -410,14 +417,15 @@
 
 (use-package lsp-mode
   :commands lsp
-  :hook
-  (typescript-mode lisp-mode enh-ruby-mode)
+  :init
+  (add-hook 'typescript-mode-hook #'lsp)
+  (add-hook 'lisp-mode-hook #'lsp)
+  (add-hook 'enh-ruby-mode-hook #'lsp)
   :config
   (message "lsp-mode :config")
+  (setq lsp-enable-snippet nil)
   (setq lsp-auto-configure t)
   (setq lsp-auto-guess-root t)
-  (lsp-ui-mode)
-  (lsp-ui-sideline)
   )
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
