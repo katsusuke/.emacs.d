@@ -635,8 +635,8 @@
 
 
 ;; YAML-mode
-(autoload 'yaml-mode "yaml-mode" "YAML mode" t)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(use-package yaml-mode
+  :mode "\\.yml$")
 
 ;; css-mode
 (add-hook 'css-mode-hook
