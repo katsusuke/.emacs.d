@@ -890,9 +890,8 @@
 ;; indent の有効.
 (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
 
-;; dockerfile-mode
-(require 'dockerfile-mode)
-(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+(use-package dockerfile-mode
+  :mode "[Dd]ockerfile")
 
 ;; elixir-mode
 (autoload 'elixir-mode "elixir-mode" "Major mode for editing Elixir files" t)
