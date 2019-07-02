@@ -547,7 +547,6 @@
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
-(require 'rhtml-mode)
 (autoload 'haml-mode "haml-mode" "Mode for editing HAML" t)
 
 (add-to-list 'auto-mode-alist '("\\.haml$" . haml-mode))
