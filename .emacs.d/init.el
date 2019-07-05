@@ -418,7 +418,6 @@
   :commands lsp
   :init
   (add-hook 'typescript-mode-hook #'lsp)
-  (add-hook 'lisp-mode-hook #'lsp)
   (add-hook 'enh-ruby-mode-hook #'lsp)
   :config
   (message "lsp-mode :config")
