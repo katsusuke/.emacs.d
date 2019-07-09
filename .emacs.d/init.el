@@ -419,6 +419,7 @@
   :init
   (add-hook 'typescript-mode-hook #'lsp)
   (add-hook 'enh-ruby-mode-hook #'lsp)
+  (add-hook 'web-mode-hook #'lsp)
   :config
   (message "lsp-mode :config")
   (setq lsp-enable-snippet nil)
