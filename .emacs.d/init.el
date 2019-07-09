@@ -348,6 +348,7 @@
   (setq helm-ag-insert-at-point 'symbol)
 
   ;; helm-projectile
+  (setq projectile-keymap-prefix (kbd "C-c p"))
   (projectile-mode)
   (helm-projectile-on)
 
