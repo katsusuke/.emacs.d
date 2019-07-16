@@ -200,11 +200,22 @@
 ;; 最近使ったファイルを時々保存
 (when (require 'recentf nil t)
   (setq recentf-max-saved-items 2000)
-  (setq recentf-exclude '(".recentf"))
-  (setq recentf-auto-cleanup 10)
+  (setq recentf-exclude '(".recentf" "^/ssh:"))
+  (setq recentf-auto-cleanup 'never)
+  
   (setq recentf-auto-save-timer
         (run-with-idle-timer 30 t 'recentf-save-list))
-  (recentf-mode 1))
+  (recentf-mode 1)
+  ;; recentf の メッセージをエコーエリア(ミニバッファ)に表示しない
+  ;; (*Messages* バッファには出力される)
+  (defun recentf-save-list-inhibit-message:around (orig-func &rest args)
+    (setq inhibit-message t)
+    (apply orig-func args)
+    (setq inhibit-message nil)
+    'around)
+  (advice-add 'recentf-cleanup   :around 'recentf-save-list-inhibit-message:around)
+  (advice-add 'recentf-save-list :around 'recentf-save-list-inhibit-message:around)
+  )
 
 ;; カーソル位置の単語をハイライト
 ;; M-<left>	ahs-backward	前のシンボルへ移動
@@ -312,13 +323,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(use-package lsp-ui-mode
-  :commands lsp-ui-mode
-  :after lsp-mode
-  :config
-  (message "lsp-ui-mode :custom")
-  (lsp-ui-sideline))
-
 (use-package helm-config
   :config
   (helm-mode)
@@ -407,28 +411,50 @@
   ;; aligns annotation to the right hand side
   (setq company-tooltip-align-annotations t))
 
-(use-package flycheck
-  :config
-  (global-flycheck-mode))
-
 (use-package company-lsp
   :config
   (push 'company-lsp company-backends))
 
 (use-package lsp-mode
-  :commands lsp
-  :init
-  (add-hook 'typescript-mode-hook #'lsp)
-  (add-hook 'enh-ruby-mode-hook #'lsp)
-  (add-hook 'web-mode-hook #'lsp)
+  :hook
+  ((enh-ruby-mode . lsp)
+   (web-mode . lsp))
   :config
   (message "lsp-mode :config")
-  (setq lsp-enable-snippet nil)
-  (setq lsp-auto-configure t)
-  (setq lsp-auto-guess-root t)
-  )
+  (setq lsp-enable-snippet nil
+        lsp-auto-configure t
+        lsp-auto-guess-root t
+        lsp-prefer-flymake nil
+        ))
+
+(use-package lsp-ui
+  :after (lsp-mode)
+  :config
+  (message "lsp-ui-mode :custom")
+  (setq lsp-ui-flycheck-enable t)
+  (lsp-ui-sideline))
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+(defun hello
+    (interactive)
+  (message "Hello typescript hook"))
+
+(use-package tide
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save))
+  :config
+  (message "tide :config"))
+
+(use-package flycheck
+  :config
+  (message "flycheck :config")
+  (global-flycheck-mode)
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  )
+  
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
@@ -626,6 +652,10 @@
 
 ;; nodenv
 (use-package nodenv
+  :hook
+  ((javascript-mode . nodenv-mode)
+   (typescript-mode . nodenv-mode)
+   (web-mode . nodenv-mode))
   :commands nodenv-mode)
 
 ;; js2-mode
@@ -642,20 +672,10 @@
   (setq js2-include-jslint-globals nil)
   (setq js2-basic-offset 2))
 
-;; typescript-mode
-(defun setup-typescript ()
-  (nodenv-mode)
-  (tide-setup)
-  (eldoc-mode 1)
-  (tide-hl-identifier-mode 1)
-  )
-
 (use-package typescript-mode
   :mode "\\.ts$"
   :config
-  (add-hook 'before-save-hook 'tide-format-before-save)
-  (setq typescript-indent-level 2)
-  (setup-typescript))
+  (setq typescript-indent-level 2))
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -682,7 +702,13 @@
          ("\\.html?$"     . web-mode)
          ("\\.ctp$"     . web-mode)
          ("\\.tsx$"     . web-mode))
+  :init
+  (add-hook 'web-mode-hook
+             '(lambda ()
+                (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                  (typescript-mode))))
   :config
+  (message "web-mode config")
   (setq web-mode-indent 2)
   (setq c-basic-offset 2)
   (setq-default tab-width 8)
@@ -692,10 +718,7 @@
   (setq web-mode-style-padding 0)
   (setq web-mode-script-padding 0)
   (setq web-mode-block-padding 0)
-  (setq web-mode-comment-style web-mode-indent)
-  (message "web-mode-hook")
-  (when (string-equal "tsx" (file-name-extension buffer-file-name))
-    (setup-typescript)))
+  (setq web-mode-comment-style web-mode-indent))
 
 ;; haskell-mode
 (autoload 'haskell-mode "haskell-mode" nil t)
