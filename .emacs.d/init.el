@@ -418,13 +418,16 @@
 (use-package lsp-mode
   :hook
   ((enh-ruby-mode . lsp)
-   (web-mode . lsp))
+   (web-mode . lsp)
+   (scss-mode . lsp))
   :config
   (message "lsp-mode :config")
   (setq lsp-enable-snippet nil
         lsp-auto-configure t
         lsp-auto-guess-root t
         lsp-prefer-flymake nil
+        lsp-language-id-configuration '((scss-mode . "css")
+                                        (typescript-mode . "typescript"))
         ))
 
 (use-package lsp-ui
@@ -436,15 +439,11 @@
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
-(defun hello
-    (interactive)
-  (message "Hello typescript hook"))
-
 (use-package tide
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save))
+         (typescript-mode . tide-hl-identifier-mode))
+         ;(before-save . tide-format-before-save))
   :config
   (message "tide :config"))
 
@@ -454,7 +453,6 @@
   (global-flycheck-mode)
   (flycheck-add-mode 'typescript-tslint 'web-mode)
   )
-  
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
