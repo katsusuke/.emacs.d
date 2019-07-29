@@ -202,7 +202,7 @@
   (setq recentf-max-saved-items 2000)
   (setq recentf-exclude '(".recentf" "^/ssh:"))
   (setq recentf-auto-cleanup 'never)
-  
+
   (setq recentf-auto-save-timer
         (run-with-idle-timer 30 t 'recentf-save-list))
   (recentf-mode 1)
@@ -419,14 +419,18 @@
   :hook
   ((enh-ruby-mode . lsp)
    (web-mode . lsp)
-   (scss-mode . lsp))
+   (scss-mode . lsp)
+   (sass-mode . lsp))
   :config
   (message "lsp-mode :config")
   (setq lsp-enable-snippet nil
         lsp-auto-configure t
         lsp-auto-guess-root t
         lsp-prefer-flymake nil
-        lsp-language-id-configuration '((scss-mode . "css")
+        lsp-language-id-configuration '((enh-ruby-mode . "ruby")
+                                        (scss-mode . "scss")
+                                        (sass-mode . "sass")
+                                        (web-mode . "typescriptreact")
                                         (typescript-mode . "typescript"))
         ))
 
@@ -704,7 +708,8 @@
   (add-hook 'web-mode-hook
              '(lambda ()
                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                  (typescript-mode))))
+                  (lsp)
+                  )))
   :config
   (message "web-mode config")
   (setq web-mode-indent 2)
