@@ -417,8 +417,7 @@
 
 (use-package lsp-mode
   :hook
-  ((enh-ruby-mode . lsp)
-   (web-mode . lsp)
+  ((web-mode . lsp)
    (scss-mode . lsp)
    (sass-mode . lsp))
   :config
@@ -427,8 +426,7 @@
         lsp-auto-configure t
         lsp-auto-guess-root t
         lsp-prefer-flymake nil
-        lsp-language-id-configuration '((enh-ruby-mode . "ruby")
-                                        (scss-mode . "scss")
+        lsp-language-id-configuration '((scss-mode . "scss")
                                         (sass-mode . "sass")
                                         (web-mode . "typescriptreact")
                                         (typescript-mode . "typescript"))
@@ -629,6 +627,10 @@
 ;; YAML-mode
 (use-package yaml-mode
   :mode "\\.yml$")
+
+(use-package yaml-tomato
+  :commands
+  (yaml-tomato-show-current-path yaml-tomato-copy))
 
 ;; css-mode
 (add-hook 'css-mode-hook
