@@ -411,6 +411,16 @@
   ;; aligns annotation to the right hand side
   (setq company-tooltip-align-annotations t))
 
+(use-package company-tabnine
+  :ensure t
+  :config
+  (add-to-list 'company-backends #'company-tabnine)
+  ;; Trigger completion immediately.
+  (setq company-idle-delay 0)
+  ;; Number the candidates (use M-1, M-2 etc to select completions).
+  (setq company-show-numbers t)
+  )
+
 (use-package company-lsp
   :config
   (push 'company-lsp company-backends))
