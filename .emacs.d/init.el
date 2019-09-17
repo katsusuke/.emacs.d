@@ -429,18 +429,30 @@
   :hook
   ((web-mode . lsp)
    (scss-mode . lsp)
-   (sass-mode . lsp))
+   (sass-mode . lsp)
+   (vue-mode . lsp))
   :config
   (message "lsp-mode :config")
   (setq lsp-enable-snippet nil
         lsp-auto-configure t
         lsp-auto-guess-root t
         lsp-prefer-flymake nil
-        lsp-language-id-configuration '((scss-mode . "scss")
+        lsp-language-id-configuration '((enh-ruby-mode . "ruby")
+                                        (scss-mode . "scss")
                                         (sass-mode . "sass")
                                         (web-mode . "typescriptreact")
-                                        (typescript-mode . "typescript"))
+                                        (typescript-mode . "typescript")
+                                        (js2-mode . "typescript")
+                                        (vue-mode . "vue"))
         ))
+
+(use-package lsp-vetur
+  :after
+  (lsp-mode)
+  :config
+  (message "lsp-vetur")
+  (require 'lsp-vetur)
+  )
 
 (use-package lsp-ui
   :after (lsp-mode)
@@ -634,6 +646,17 @@
           c-basic-offset 4
           indent-tabs-mode 1)))
 
+;; add-node-modules-path
+(use-package add-node-modules-path
+  :hook
+  ((javascript-mode . add-node-modules-path)
+   (typescript-mode . add-node-modules-path)
+   (web-mode . add-node-modules-path)
+   (vue-mode . add-node-modules-path))
+  :commands
+  add-node-modules-path)
+
+
 ;; YAML-mode
 (use-package yaml-mode
   :mode "\\.yml$")
@@ -669,7 +692,8 @@
   :hook
   ((javascript-mode . nodenv-mode)
    (typescript-mode . nodenv-mode)
-   (web-mode . nodenv-mode))
+   (web-mode . nodenv-mode)
+   (vue-mode . nodenv-mode))
   :commands nodenv-mode)
 
 ;; js2-mode
@@ -685,6 +709,10 @@
   (setq js2-highlight-external-variables nil)
   (setq js2-include-jslint-globals nil)
   (setq js2-basic-offset 2))
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (setq js-indent-level 2)))
 
 (use-package typescript-mode
   :mode "\\.ts$"
