@@ -58,3 +58,4 @@
 (depends-on "yaml-tomato")
 (depends-on "company-tabnine")
 (depends-on "add-node-modules-path")
+(depends-on "fsharp-mode")
