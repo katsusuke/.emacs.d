@@ -2,7 +2,6 @@
 (source melpa)
 
 (depends-on "use-package")
-(depends-on "robe")
 (depends-on "ag")
 (depends-on "pt")
 (depends-on "helm")
@@ -12,7 +11,6 @@
 (depends-on "migemo")
 (depends-on "rbenv")
 (depends-on "enh-ruby-mode")
-(depends-on "inf-ruby")
 (depends-on "helm-rdefs")
 (depends-on "rhtml-mode")
 (depends-on "web-mode")

@@ -364,46 +364,52 @@
 
   )
 
-(require 'whitespace)
-(setq whitespace-style '(face           ; faceで可視化
-                         trailing       ; 行末
-                         tabs           ; タブ
-                         spaces         ; スペース
-                         empty          ; 先頭/末尾の空行
-                         space-mark     ; 表示のマッピング
-                         tab-mark
-                         ))
+(use-package whitespace
+  :commands whitespace-mode
+  :hook
+  ((enh-ruby-mode . whitespace-mode))
+  :config
+  (setq whitespace-style '(face           ; faceで可視化
+                           trailing       ; 行末
+                           tabs           ; タブ
+                           spaces         ; スペース
+                           empty          ; 先頭/末尾の空行
+                           space-mark     ; 表示のマッピング
+                           tab-mark
+                           ))
 
-(setq whitespace-display-mappings
-      '((space-mark ?\u3000 [?\u25a1])
-        ;; WARNING: the mapping below has a problem.
-        ;; When a TAB occupies exactly one column, it will display the
-        ;; character ?\xBB at that column followed by a TAB which goes to
-        ;; the next TAB column.
-        ;; If this is a problem for you, please, comment the line below.
-        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+  (setq whitespace-display-mappings
+        '((space-mark ?\u3000 [?\u25a1])
+          ;; WARNING: the mapping below has a problem.
+          ;; When a TAB occupies exactly one column, it will display the
+          ;; character ?\xBB at that column followed by a TAB which goes to
+          ;; the next TAB column.
+          ;; If this is a problem for you, please, comment the line below.
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
 
-;; スペースは全角のみを可視化
-(setq whitespace-space-regexp "\\(\u3000+\\)")
+  ;; スペースは全角のみを可視化
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
 
-;; 保存前に自動でクリーンアップ
-(setq whitespace-action '(auto-cleanup))
+  ;; 保存前に自動でクリーンアップ
+  (setq whitespace-action '(auto-cleanup))
 
-(let ((my/bg-color "black"))
-  (set-face-attribute 'whitespace-trailing nil
-		      :background my/bg-color
-		      :foreground "DeepPink"
-		      :underline t)
-  (set-face-attribute 'whitespace-tab nil
-		      :background my/bg-color
-		      :foreground "LightSkyBlue"
-		      :underline t)
-  (set-face-attribute 'whitespace-space nil
-		      :background my/bg-color
-		      :foreground "GreenYellow"
-		      :weight 'bold)
-  (set-face-attribute 'whitespace-empty nil
-		      :background my/bg-color))
+  (let ((my/bg-color "black"))
+    (set-face-attribute 'whitespace-trailing nil
+                        :background my/bg-color
+                        :foreground "DeepPink"
+                        :underline t)
+    (set-face-attribute 'whitespace-tab nil
+                        :background my/bg-color
+                        :foreground "LightSkyBlue"
+                        :underline t)
+    (set-face-attribute 'whitespace-space nil
+                        :background my/bg-color
+                        :foreground "GreenYellow"
+                        :weight 'bold)
+    (set-face-attribute 'whitespace-empty nil
+                        :background my/bg-color))
+  
+  )
 
 (use-package company
   :config
@@ -531,48 +537,30 @@
 	    (require 'rbenv)
 	    (global-rbenv-mode)))))
 
-(autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
-(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-
-(add-to-list 'auto-mode-alist '("\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.xml\\.builder$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
-(setq interpreter-mode-alist (append '(("ruby" . enh-ruby-mode))
-  interpreter-mode-alist))
-(autoload 'run-ruby "inf-ruby" "Run an inferior Ruby process")
-
-;; 保存時にmagic commentを追加しないようにする
-(defadvice enh-ruby-mode-set-encoding (around stop-enh-ruby-mode-set-encoding)
-  "If enh-ruby-not-insert-magic-comment is true, stops enh-ruby-mode-set-encoding."
-  (if (and (boundp 'enh-ruby-not-insert-magic-comment)
-           (not enh-ruby-not-insert-magic-comment))
-      ad-do-it))
-(ad-activate 'enh-ruby-mode-set-encoding)
-(setq-default enh-ruby-not-insert-magic-comment t)
-
-(add-hook 'enh-ruby-mode-hook
-	  '(lambda ()
-	     (inf-ruby-minor-mode)
-	     (auto-complete-mode)
-	     (robe-mode)
-	     (make-local-variable 'ac-ignores)
-	     (add-to-list 'ac-ignores "end")
-	     (whitespace-mode)
-	     (define-key enh-ruby-mode-map (kbd "C-c r") 'helm-rdefs)
-	     ))
-
-(add-hook 'robe-mode-hook 'ac-robe-setup)
-
-;; hash-rocket を1.9記法に変換する
-(defun ruby-anti-hash-rocket ()
-  (interactive)
-  (beginning-of-line)
-  (setq current-line (count-lines (point-min) (point)))
-  (setq replaced (replace-regexp-in-string ":\\([a-z0-9_]+\\)\s*=>" "\\1:" (buffer-string)))
-  (erase-buffer)
-  (insert replaced)
-  (goto-line (+ 1 current-line))
-  (beginning-of-line)
+(use-package enh-ruby-mode
+  :mode "\\(\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)\\|Gemfile\\)$"
+  :config
+  (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+  ;; 保存時にmagic commentを追加しないようにする
+  (defadvice enh-ruby-mode-set-encoding (around stop-enh-ruby-mode-set-encoding)
+    "If enh-ruby-not-insert-magic-comment is true, stops enh-ruby-mode-set-encoding."
+    (if (and (boundp 'enh-ruby-not-insert-magic-comment)
+             (not enh-ruby-not-insert-magic-comment))
+        ad-do-it))
+  (ad-activate 'enh-ruby-mode-set-encoding)
+  (setq-default enh-ruby-not-insert-magic-comment t)
+  
+  ;; hash-rocket を1.9記法に変換する
+  (defun ruby-anti-hash-rocket ()
+    (interactive)
+    (beginning-of-line)
+    (setq current-line (count-lines (point-min) (point)))
+    (setq replaced (replace-regexp-in-string ":\\([a-z0-9_]+\\)\s*=>" "\\1:" (buffer-string)))
+    (erase-buffer)
+    (insert replaced)
+    (goto-line (+ 1 current-line))
+    (beginning-of-line)
+    )
   )
 
 ;; HAML
