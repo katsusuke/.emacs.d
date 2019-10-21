@@ -788,3 +788,12 @@
   (ansi-color-apply-on-region (point-min) (point-max)))
 
 (setq ediff-split-window-function 'split-window-horizontally)
+
+(defun copy-projectile-path ()
+  (interactive)
+  (kill-new (file-relative-name buffer-file-name (projectile-project-root))))
+
+(defun copy-projectile-line ()
+  (interactive)
+  (kill-new
+   (concat (file-relative-name buffer-file-name (projectile-project-root)) ":" (number-to-string (line-number-at-pos)))))
