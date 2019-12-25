@@ -436,7 +436,9 @@
   ((web-mode . lsp)
    (scss-mode . lsp)
    (sass-mode . lsp)
-   (vue-mode . lsp))
+   (vue-mode . lsp)
+   (js-mode . lsp)
+   )
   :config
   (message "lsp-mode :config")
   (setq lsp-enable-snippet nil
@@ -448,7 +450,7 @@
                                         (sass-mode . "sass")
                                         (web-mode . "typescriptreact")
                                         (typescript-mode . "typescript")
-                                        (js2-mode . "typescript")
+                                        (js-mode . "javascript")
                                         (vue-mode . "vue"))
         ))
 
@@ -637,7 +639,7 @@
 ;; add-node-modules-path
 (use-package add-node-modules-path
   :hook
-  ((javascript-mode . add-node-modules-path)
+  ((js-mode . add-node-modules-path)
    (typescript-mode . add-node-modules-path)
    (web-mode . add-node-modules-path)
    (vue-mode . add-node-modules-path))
@@ -678,26 +680,13 @@
 ;; nodenv
 (use-package nodenv
   :hook
-  ((javascript-mode . nodenv-mode)
+  ((js-mode . nodenv-mode)
    (typescript-mode . nodenv-mode)
    (web-mode . nodenv-mode)
    (vue-mode . nodenv-mode))
   :commands nodenv-mode)
 
-;; js2-mode
-(use-package js2-mode
-  :mode (("\\.js$" . js2-mode)
-         ("\\.es6$" . js2-mode)
-         ("\\.json$" . js2-mode))
-  :config
-  (nodenv-mode)
-  (setq js2-include-browser-externs nil)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-mode-show-strict-warnings nil)
-  (setq js2-highlight-external-variables nil)
-  (setq js2-include-jslint-globals nil)
-  (setq js2-basic-offset 2))
-
+;; js-mode (javascript-mode)
 (add-hook 'js-mode-hook
           (lambda ()
             (setq js-indent-level 2)))
