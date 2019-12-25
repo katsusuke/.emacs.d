@@ -15,7 +15,6 @@
 (depends-on "rhtml-mode")
 (depends-on "web-mode")
 (depends-on "nodenv")
-(depends-on "js2-mode")
 (depends-on "yaml-mode")
 (depends-on "haml-mode")
 (depends-on "markdown-mode")
