@@ -408,7 +408,7 @@
                         :weight 'bold)
     (set-face-attribute 'whitespace-empty nil
                         :background my/bg-color))
-  
+
   )
 
 (use-package company
@@ -551,7 +551,7 @@
         ad-do-it))
   (ad-activate 'enh-ruby-mode-set-encoding)
   (setq-default enh-ruby-not-insert-magic-comment t)
-  
+
   ;; hash-rocket を1.9記法に変換する
   (defun ruby-anti-hash-rocket ()
     (interactive)
@@ -658,9 +658,7 @@
 ;; css-mode
 (add-hook 'css-mode-hook
 	  '(lambda ()
-	     (setq css-indent-offset 2)
-	     (setq css-indent-offset 2)
-	     ))
+	     (setq css-indent-offset 2)))
 
 ;; scss-mode
 (use-package scss-mode
