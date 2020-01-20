@@ -263,18 +263,6 @@
     (backup-buffer)))
 (add-hook 'before-save-hook  'force-backup-of-buffer)
 
-;; 自動でrevert-buffer
-;; ↓こいつをnon-nilにしておくと、vcsによる変更もチェックしてくれる
-;; (setq auto-revert-check-vc-info t)
-;; (setq auto-revert-interval 30)
-;; (add-hook 'find-file-hook
-;; 	  '(lambda ()
-;; 	     (when (and buffer-file-name
-;; 			(vc-backend buffer-file-name))
-;; 	       (auto-revert-mode))))
-
-
-
 ;; http://namazu.org/~satoru/diary/?200203c&to=200203272#200203272
 ;; 編集中のファイルを開き直す
 ;; - yes/no の確認が不要;;   - revert-buffer は yes/no の確認がうるさい
