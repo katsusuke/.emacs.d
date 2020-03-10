@@ -637,7 +637,9 @@
 
 ;; YAML-mode
 (use-package yaml-mode
-  :mode "\\.yml$")
+  :mode "\\.yml$"
+  :config
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
 (use-package yaml-tomato
   :commands
