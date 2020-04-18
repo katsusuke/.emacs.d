@@ -403,7 +403,8 @@
   :config
   (global-company-mode)
   ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t))
+  (setq company-tooltip-align-annotations t)
+  (setq company-minimum-prefix-length 2))
 
 (use-package company-tabnine
   :ensure t
@@ -690,9 +691,9 @@
       ;; サーバ起動
       (require 'server)
       (unless (server-running-p)
-	(progn
-	  (server-start)
-	  (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
+        (progn
+         (server-start)
+         (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
 
 ;; 選択中のフレームを強調
 (hiwin-activate)
