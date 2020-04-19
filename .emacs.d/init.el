@@ -28,12 +28,6 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;;; load-path の追加
-(defun add-load-path (path)
-  (let ((epath (expand-file-name path)))
-    (unless (member epath load-path)
-      (add-to-list 'load-path epath))))
-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
 (package-initialize)
@@ -41,13 +35,11 @@
 (if (file-exists-p "/usr/local/share/emacs/site-lisp/cask/cask.el")
     (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el"))
 
-(if (file-exists-p "~/.cask/cask.el")
-    (require "~/.cask/cask.el")
-  (require 'cask))
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
+
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
-
-(cask-initialize)
 
 (defun set-font-size (height)
   (interactive "nHeight:")
@@ -176,12 +168,10 @@
       (put 'backspace 'ascii-character 8)))
 
 (if (not(eq window-system 'w32))
-    (add-load-path "/usr/local/share/emacs/site-lisp"))
+    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp"))
 
 (setq-default indent-tabs-mode nil)
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-(add-load-path "/Users/katsusuke/.emacsd.d")
 
 (use-package mode-icons :config (mode-icons-mode))
 
