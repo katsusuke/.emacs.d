@@ -37,7 +37,6 @@
 (depends-on "dash-at-point")
 (depends-on "wakatime-mode")
 (depends-on "slim-mode")
-(depends-on "jsx-mode")
 (depends-on "terraform-mode")
 (depends-on "elixir-mode")
 (depends-on "alchemist")
@@ -56,3 +55,4 @@
 (depends-on "company-tabnine")
 (depends-on "add-node-modules-path")
 (depends-on "fsharp-mode")
+(depends-on "multiple-cursors")
