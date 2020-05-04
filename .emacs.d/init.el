@@ -173,6 +173,7 @@
 (setq-default indent-tabs-mode nil)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
 
 ;; リージョンをハイライト
