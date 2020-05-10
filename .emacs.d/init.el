@@ -463,7 +463,8 @@
   :config
   (message "flycheck :config")
   (global-flycheck-mode)
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-next-checker 'lsp 'javascript-eslint)
   )
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
