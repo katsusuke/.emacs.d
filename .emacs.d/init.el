@@ -463,8 +463,6 @@
   :config
   (message "flycheck :config")
   (global-flycheck-mode)
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (flycheck-add-next-checker 'lsp 'javascript-eslint)
   )
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
@@ -675,7 +673,9 @@
 (use-package typescript-mode
   :mode "\\.ts$"
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (flycheck-add-next-checker 'lsp 'javascript-eslint))
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -739,7 +739,6 @@
   :config
   (alchemist-mode)
   (ac-alchemist-setup))
-
 
 (use-package fsharp-mode
   :mode "\\.fs[iylx]?$")
