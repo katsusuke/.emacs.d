@@ -57,3 +57,4 @@
 (depends-on "fsharp-mode")
 (depends-on "multiple-cursors")
 (depends-on "rustic")
+(depends-on "flycheck-rust")
