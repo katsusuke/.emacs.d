@@ -420,19 +420,20 @@
    (js-mode . lsp)
    )
   :config
-  (message "lsp-mode :config")
-  (setq lsp-enable-snippet nil
-        lsp-auto-configure t
-        lsp-auto-guess-root t
-        lsp-prefer-flymake nil
-        lsp-language-id-configuration '((enh-ruby-mode . "ruby")
-                                        (scss-mode . "scss")
-                                        (sass-mode . "sass")
-                                        (web-mode . "typescriptreact")
-                                        (typescript-mode . "typescript")
-                                        (js-mode . "javascript")
-                                        (vue-mode . "vue"))
-        ))
+  (add-to-list 'lsp-language-id-configuration '(enh-ruby-mode . "ruby"))
+  (add-to-list 'lsp-language-id-configuration '(scss-mode . "scss"))
+  (add-to-list 'lsp-language-id-configuration '(sass-mode . "sass"))
+  (add-to-list 'lsp-language-id-configuration '(web-mode . "typescriptreact"))
+  (add-to-list 'lsp-language-id-configuration '(typescript-mode . "typescript"))
+  (add-to-list 'lsp-language-id-configuration '(js-mode . "javascript"))
+  (add-to-list 'lsp-language-id-configuration '(vue-mode . "vue"))
+  (setq
+   lsp-enable-snippet nil
+   lsp-auto-configure t
+   lsp-auto-guess-root t
+   lsp-prefer-flymake nil
+   )
+  )
 
 (use-package lsp-vetur
   :after
@@ -739,6 +740,13 @@
   :config
   (alchemist-mode)
   (ac-alchemist-setup))
+
+;; rust
+(use-package rustic
+  :mode ("\\.rs$" . rustic-mode)
+  :commands rustic-mode
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package fsharp-mode
   :mode "\\.fs[iylx]?$")
