@@ -38,6 +38,8 @@
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
+(require 'cl)
+
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
 
@@ -347,7 +349,7 @@
   :commands whitespace-mode
   :hook
   ((enh-ruby-mode . whitespace-mode))
-  :config
+  :config  
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
                            tabs           ; タブ
@@ -356,18 +358,26 @@
                            space-mark     ; 表示のマッピング
                            tab-mark
                            ))
+  
+    ;; 全角スペース的なもの
+  (setq alt-spaces "\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u200B\u3000\uFEFF")
+  (setq space-marks
+        (mapcar
+         (lambda (c) (list 'space-mark c [?\u25a1]))
+         alt-spaces))
 
   (setq whitespace-display-mappings
-        '((space-mark ?\u3000 [?\u25a1])
-          ;; WARNING: the mapping below has a problem.
-          ;; When a TAB occupies exactly one column, it will display the
-          ;; character ?\xBB at that column followed by a TAB which goes to
-          ;; the next TAB column.
-          ;; If this is a problem for you, please, comment the line below.
-          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-
-  ;; スペースは全角のみを可視化
-  (setq whitespace-space-regexp "\\(\u3000+\\)")
+        (cl-concatenate
+         'list
+         space-marks
+         ;; WARNING: the mapping below has a problem.
+         ;; When a TAB occupies exactly one column, it will display the
+         ;; character ?\xBB at that column followed by a TAB which goes to
+         ;; the next TAB column.
+         ;; If this is a problem for you, please, comment the line below.
+         '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t]))))
+  
+  (setq whitespace-space-regexp (concat "\\([" alt-spaces "]+\\)"))
 
   ;; 保存前に自動でクリーンアップ
   (setq whitespace-action '(auto-cleanup))
