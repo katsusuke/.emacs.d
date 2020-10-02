@@ -457,7 +457,13 @@
   :after (lsp-mode)
   :config
   (message "lsp-ui-mode :custom")
-  (setq lsp-ui-flycheck-enable t)
+  (setq
+    lsp-ui-flycheck-enable t
+    lsp-ui-doc-max-width 150
+    lsp-ui-doc-max-height 30
+    lsp-ui-peek-peek-height 20
+    lsp-ui-peek-list-width 50
+    )
   (lsp-ui-sideline))
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
@@ -710,7 +716,6 @@
          ("\\.jsp$"       . web-mode)
          ("\\.as[cp]x$"   . web-mode)
          ("\\.erb$"       . web-mode)
-         ("\\.html?$"     . web-mode)
          ("\\.ctp$"     . web-mode)
          ("\\.tsx$"     . web-mode))
   :init
