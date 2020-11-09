@@ -28,13 +28,13 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(setq debug-on-message t)
+
 (if (file-exists-p "/usr/local/share/emacs/site-lisp/cask/cask.el")
     (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
   (require 'cask "~/.cask/cask.el"))
 
 (cask-initialize)
-
-(require 'use-package)
 
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
