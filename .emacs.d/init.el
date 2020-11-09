@@ -28,17 +28,13 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t) ;; MELPAを追加
-(package-initialize)
-
 (if (file-exists-p "/usr/local/share/emacs/site-lisp/cask/cask.el")
-    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el"))
+    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+  (require 'cask "~/.cask/cask.el"))
 
-(require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
-(require 'cl)
+(require 'use-package)
 
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
@@ -465,6 +461,12 @@
     lsp-ui-peek-list-width 50
     )
   (lsp-ui-sideline))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 

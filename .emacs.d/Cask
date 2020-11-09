@@ -48,6 +48,7 @@
 (depends-on "lsp-ui")
 (depends-on "company")
 (depends-on "company-lsp")
+(depends-on "lsp-pyright")
 (depends-on "vue-mode")
 (depends-on "prettier-js")
 (depends-on "flycheck")
