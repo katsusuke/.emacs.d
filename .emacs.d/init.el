@@ -542,6 +542,8 @@
 	    (require 'rbenv)
 	    (global-rbenv-mode)))))
 
+
+
 (use-package enh-ruby-mode
   :mode "\\(\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)\\|Gemfile\\)$"
   :config
@@ -680,14 +682,18 @@
           (lambda()
             (setq sgml-basic-offset 2)))
 
-;; nodenv
-(use-package nodenv
+;; nodenv by shim
+(use-package shim
+  :load-path "./site-lisp"
   :hook
-  ((js-mode . nodenv-mode)
-   (typescript-mode . nodenv-mode)
-   (web-mode . nodenv-mode)
-   (vue-mode . nodenv-mode))
-  :commands nodenv-mode)
+  ((js-mode . shim-mode)
+   (typescript-mode . shim-mode)
+   (web-mode . shim-mode)
+   (vue-mode . shim-mode)))
+
+(require 'shim)
+(shim-init-node)
+(shim-register-mode 'node 'typescript-mode)
 
 ;; js-mode (javascript-mode)
 (add-hook 'js-mode-hook

@@ -14,7 +14,7 @@
 (depends-on "helm-rdefs")
 (depends-on "rhtml-mode")
 (depends-on "web-mode")
-(depends-on "nodenv")
+;; (depends-on "shim")
 (depends-on "yaml-mode")
 (depends-on "haml-mode")
 (depends-on "markdown-mode")
