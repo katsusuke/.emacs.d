@@ -58,3 +58,4 @@
 (depends-on "multiple-cursors")
 (depends-on "rustic")
 (depends-on "flycheck-rust")
+(depends-on "yasnippet")

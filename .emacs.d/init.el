@@ -34,7 +34,11 @@
     (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
   (require 'cask "~/.cask/cask.el"))
 
+;; suppress warning
+;; cf: https://github.com/cask/cask/issues/463
+(setq warning-minimum-level :emergency)
 (cask-initialize)
+
 
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
@@ -413,10 +417,6 @@
   (setq company-show-numbers t)
   )
 
-(use-package company-lsp
-  :config
-  (push 'company-lsp company-backends))
-
 (use-package lsp-mode
   :hook
   ((web-mode . lsp)
@@ -437,6 +437,7 @@
    lsp-enable-snippet nil
    lsp-auto-configure t
    lsp-auto-guess-root t
+   lsp-completion-provider :capf
    lsp-prefer-flymake nil
    )
   )
@@ -483,6 +484,10 @@
   (message "flycheck :config")
   (global-flycheck-mode)
   )
+
+(use-package flycheck
+  :config
+  (yas-global-mode 1))
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
