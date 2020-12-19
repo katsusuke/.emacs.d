@@ -61,3 +61,4 @@
 (depends-on "yasnippet")
 (depends-on "tree-sitter")
 (depends-on "tree-sitter-langs")
+(depends-on "ng2-mode")

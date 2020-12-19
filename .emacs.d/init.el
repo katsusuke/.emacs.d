@@ -439,6 +439,14 @@
    lsp-auto-guess-root t
    lsp-completion-provider :capf
    lsp-prefer-flymake nil
+   lsp-clients-angular-language-server-command
+        '("node"
+          "node_modules/@angular/language-server"
+          "--ngProbeLocations"
+          "node_modules"
+          "--tsProbeLocations"
+          "node_modules"
+          "--stdio")
    )
   )
 
