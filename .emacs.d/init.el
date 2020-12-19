@@ -430,6 +430,7 @@
   (add-to-list 'lsp-language-id-configuration '(scss-mode . "scss"))
   (add-to-list 'lsp-language-id-configuration '(sass-mode . "sass"))
   (add-to-list 'lsp-language-id-configuration '(web-mode . "typescriptreact"))
+  (add-to-list 'lsp-language-id-configuration '(ng2-ts-mode . "angular"))
   (add-to-list 'lsp-language-id-configuration '(typescript-mode . "typescript"))
   (add-to-list 'lsp-language-id-configuration '(js-mode . "javascript"))
   (add-to-list 'lsp-language-id-configuration '(vue-mode . "vue"))
