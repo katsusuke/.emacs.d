@@ -349,7 +349,7 @@
   :commands whitespace-mode
   :hook
   ((enh-ruby-mode . whitespace-mode))
-  :config  
+  :config
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
                            tabs           ; タブ
@@ -358,7 +358,7 @@
                            space-mark     ; 表示のマッピング
                            tab-mark
                            ))
-  
+
     ;; 全角スペース的なもの
   (setq alt-spaces "\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u200B\u3000\uFEFF")
   (setq space-marks
@@ -376,7 +376,7 @@
          ;; the next TAB column.
          ;; If this is a problem for you, please, comment the line below.
          '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t]))))
-  
+
   (setq whitespace-space-regexp (concat "\\([" alt-spaces "]+\\)"))
 
   ;; 保存前に自動でクリーンアップ
@@ -458,10 +458,8 @@
     lsp-ui-flycheck-enable t
     lsp-ui-doc-max-width 150
     lsp-ui-doc-max-height 30
-    lsp-ui-peek-peek-height 20
-    lsp-ui-peek-list-width 50
     )
-  (lsp-ui-sideline))
+  (lsp-ui-imenu))
 
 (use-package lsp-pyright
   :ensure t
