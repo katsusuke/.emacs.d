@@ -467,6 +467,11 @@
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
 
+(use-package tree-sitter-mode
+  :hook
+  ((typescript-mode . tree-sitter-mode)
+   (enh-ruby-mode . tree-sitter-mode)))
+
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package tide

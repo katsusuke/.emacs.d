@@ -59,3 +59,5 @@
 (depends-on "rustic")
 (depends-on "flycheck-rust")
 (depends-on "yasnippet")
+(depends-on "tree-sitter")
+(depends-on "tree-sitter-langs")
