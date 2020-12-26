@@ -202,10 +202,12 @@
 (use-package rubocop)
 (use-package groovy-mode)
 (use-package dash-at-point
-  :config
-  ;; dash-at-point
-  (global-set-key "\C-cd" 'dash-at-point)
-  (global-set-key "\C-ce" 'dash-at-point-with-docset))
+  :commands
+  (dash-at-point dash-at-point-with-docset)
+  :bind
+  (("\C-cd" . dash-at-point)
+   ("\C-ce" . dash-at-point-with-docset)))
+  
 (use-package wakatime-mode
   :config
   ;; wakatime-mode
