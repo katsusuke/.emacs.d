@@ -196,7 +196,6 @@
 (use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
-(use-package ggtags)
 (use-package helm-ghq)
 (use-package hiwin)
 (use-package nginx-mode)
@@ -618,23 +617,24 @@
   (setq tab-width 8))
 
 
-(autoload 'ggtags-mode "ggtags" "" t)
-(setq ggtags-mode-hook
-      '(lambda ()
-         (local-set-key "\M-t" 'ggtags-find-definition) ;; 定義にジャンプ
-         (local-set-key "\M-r" 'ggtags-find-reference)  ;; 参照を検索
-         (local-set-key "\M-s" 'ggtags-find-symbol)     ;; 定義にジャンプ
-	 (setq ggtags-completing-read-function nil)
-	 (helm-mode 1)
-	 ))
-(global-set-key "\M-e" 'ggtags-pop-stack)               ;; スタックを戻る
-
-;; c-mode-common
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'web-mode)
-              (ggtags-mode 1))))
-
+(use-package ggtags
+  :commands ggtags-mode
+  :init
+  (setq ggtags-mode-hook
+        '(lambda ()
+           (local-set-key "\M-t" 'ggtags-find-definition) ;; 定義にジャンプ
+           (local-set-key "\M-r" 'ggtags-find-reference)  ;; 参照を検索
+           (local-set-key "\M-s" 'ggtags-find-symbol)     ;; 定義にジャンプ
+	   (setq ggtags-completing-read-function nil)
+	   (helm-mode 1)
+	   ))
+  (global-set-key "\M-e" 'ggtags-pop-stack)               ;; スタックを戻る
+  :config
+  ;; c-mode-common
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'web-mode)
+                (ggtags-mode 1)))))
 
 ;; c-mod
 (add-hook
