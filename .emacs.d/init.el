@@ -192,7 +192,15 @@
 (use-package helm-pt)
 (use-package helm-ag)
 (use-package helm-swoop)
-(use-package rbenv)
+(use-package rbenv
+  :config
+  ;; ruby-mode
+  (if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
+      (progn
+        (if (not(string-match "not found" (shell-command-to-string "which rbenv")))
+	    (progn
+	      (require 'rbenv)
+	      (global-rbenv-mode))))))
 (use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
@@ -543,8 +551,9 @@
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
 
 ;; リモートのファイルを編集するTRAMP
-(require 'tramp)
-(setq tramp-default-method "ssh")
+(use-package tramp
+  :config
+  (setq tramp-default-method "ssh"))
 
 ;;; Languages
 
@@ -582,15 +591,6 @@
 	     (prin1 major-mode)
 	     (if (member major-mode (list 'grep-mode 'ag-mode 'pt-mode))
 		    (setq truncate-lines t))))
-
-
-;; ruby-mode
-(if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
-    (progn
-      (if (not(string-match "not found" (shell-command-to-string "which rbenv")))
-	  (progn
-	    (require 'rbenv)
-	    (global-rbenv-mode)))))
 
 
 
