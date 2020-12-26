@@ -192,15 +192,7 @@
 (use-package helm-pt)
 (use-package helm-ag)
 (use-package helm-swoop)
-(use-package rbenv
-  :config
-  ;; ruby-mode
-  (if (eq window-system 'ns) ;;何故かターミナルで動かない そのうち調べる
-      (progn
-        (if (not(string-match "not found" (shell-command-to-string "which rbenv")))
-	    (progn
-	      (require 'rbenv)
-	      (global-rbenv-mode))))))
+(use-package rbenv :config (global-rbenv-mode))
 (use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
