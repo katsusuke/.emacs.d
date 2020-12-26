@@ -12,3 +12,4 @@
 /.emacs.d/tramp
 /.emacs.d/abbrev_defs
 /.emacs.d/url
+/.emacs.d/straight

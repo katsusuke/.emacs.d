@@ -30,15 +30,19 @@
 
 (setq debug-on-message t)
 
-(if (file-exists-p "/usr/local/share/emacs/site-lisp/cask/cask.el")
-    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
-  (require 'cask "~/.cask/cask.el"))
-
-;; suppress warning
-;; cf: https://github.com/cask/cask/issues/463
-(setq warning-minimum-level :emergency)
-(cask-initialize)
-
+;; initialize straight
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
@@ -175,8 +179,50 @@
 (setq-default indent-tabs-mode nil)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
+
+
+(use-package ag)
+(use-package pt)
+(use-package helm-pt)
+(use-package helm-ag)
+(use-package helm-swoop)
+(use-package rbenv)
+(use-package helm-rdefs)
+(use-package rhtml-mode)
+(use-package coffee-mode)
+(use-package ggtags)
+(use-package helm-ghq)
+(use-package hiwin)
+(use-package haskell-mode)
+(use-package nginx-mode)
+(use-package rubocop)
+(use-package visual-regexp)
+(use-package groovy-mode)
+(use-package dash-at-point
+  :config
+  ;; dash-at-point
+  (global-set-key "\C-cd" 'dash-at-point)
+  (global-set-key "\C-ce" 'dash-at-point-with-docset))
+(use-package wakatime-mode
+  :config
+  ;; wakatime-mode
+  (if (and (executable-find "wakatime") (boundp 'wakatime-api-key))
+      (global-wakatime-mode t)))
+(use-package slim-mode)
+(use-package terraform-mode)
+(use-package alchemist)
+(use-package ac-alchemist)
+(use-package vue-mode)
+(use-package prettier-js)
+(use-package flycheck-rust)
+(use-package yasnippet)
+(use-package ng2-mode)
+
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -304,7 +350,11 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(use-package helm-config
+(use-package projectile)
+(use-package helm-projectile)
+
+
+(use-package helm
   :config
   (helm-mode)
   (helm-migemo-mode 1)
@@ -451,14 +501,6 @@
    )
   )
 
-(use-package lsp-vetur
-  :after
-  (lsp-mode)
-  :config
-  (message "lsp-vetur")
-  (require 'lsp-vetur)
-  )
-
 (use-package lsp-ui
   :after (lsp-mode)
   :config
@@ -467,8 +509,7 @@
     lsp-ui-flycheck-enable t
     lsp-ui-doc-max-width 150
     lsp-ui-doc-max-height 30
-    )
-  (lsp-ui-imenu))
+    ))
 
 (use-package lsp-pyright
   :ensure t
@@ -476,10 +517,11 @@
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
 
-(use-package tree-sitter-mode
+(use-package tree-sitter
   :hook
   ((typescript-mode . tree-sitter-mode)
    (enh-ruby-mode . tree-sitter-mode)))
+(use-package tree-sitter-langs)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
@@ -696,7 +738,7 @@
 
 ;; nodenv by shim
 (use-package shim
-  :load-path "./site-lisp"
+  :straight (:host github :repo "twlz0ne/shim.el")
   :hook
   ((js-mode . shim-mode)
    (typescript-mode . shim-mode)
@@ -717,7 +759,8 @@
   :config
   (setq typescript-indent-level 2)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
-  (flycheck-add-next-checker 'lsp 'javascript-eslint))
+  ;(flycheck-add-next-checker 'lsp 'javascript-eslint)
+  )
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -790,14 +833,6 @@
 
 (use-package fsharp-mode
   :mode "\\.fs[iylx]?$")
-
-;; dash-at-point
-(global-set-key "\C-cd" 'dash-at-point)
-(global-set-key "\C-ce" 'dash-at-point-with-docset)
-
-;; wakatime-mode
-(if (and (executable-find "wakatime") (boundp 'wakatime-api-key))
-    (global-wakatime-mode t))
 
 (require 'ansi-color)
 (defun display-ansi-colors ()
