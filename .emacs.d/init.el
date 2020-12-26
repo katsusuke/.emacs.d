@@ -199,7 +199,6 @@
 (use-package ggtags)
 (use-package helm-ghq)
 (use-package hiwin)
-(use-package haskell-mode)
 (use-package nginx-mode)
 (use-package rubocop)
 (use-package groovy-mode)
@@ -792,15 +791,15 @@
   (setq web-mode-block-padding 0)
   (setq web-mode-comment-style web-mode-indent))
 
-;; haskell-mode
-(autoload 'haskell-mode "haskell-mode" nil t)
-(autoload 'haskell-cabal "haskell-cabal" nil t)
-
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.cabal\\'" . haskell-cabal-mode))
-;; indent の有効.
-(add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+(use-package haskell-mode
+  :mode
+  (("\\.hs$" . haskell-mode)
+   ("\\.lhs$" . literate-haskell-mode)
+   ("\\.cabal\\'" . haskell-cabal-mode))
+  :commands
+  (haskell-mode literate-haskell-mode haskell-cabal-mode)
+  :hook
+  haskell-indentation-mode)
 
 (use-package dockerfile-mode
   :mode "[Dd]ockerfile")
