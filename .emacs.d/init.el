@@ -180,6 +180,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (straight-use-package 'use-package)
+(setq use-package-verbose t)
 (setq straight-use-package-by-default t)
 
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
@@ -743,11 +744,10 @@
   ((js-mode . shim-mode)
    (typescript-mode . shim-mode)
    (web-mode . shim-mode)
-   (vue-mode . shim-mode)))
-
-(require 'shim)
-(shim-init-node)
-(shim-register-mode 'node 'typescript-mode)
+   (vue-mode . shim-mode))
+  :config
+  (shim-init-node)
+  (shim-register-mode 'node 'typescript-mode))
 
 ;; js-mode (javascript-mode)
 (add-hook 'js-mode-hook
