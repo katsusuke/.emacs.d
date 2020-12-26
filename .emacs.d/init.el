@@ -525,18 +525,12 @@
 (use-package tide
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode))
-         ;(before-save . tide-format-before-save))
-  :config
-  (message "tide :config"))
+         (typescript-mode . tide-hl-identifier-mode)))
 
 (use-package flycheck
   :config
   (message "flycheck :config")
   (global-flycheck-mode))
-
-;(define-key ac-menu-map "\C-n" 'ac-next)
-;(define-key ac-menu-map "\C-p" 'ac-previous)
 
 ;; リモートのファイルを編集するTRAMP
 (use-package tramp
