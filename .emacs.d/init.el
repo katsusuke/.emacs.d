@@ -187,10 +187,10 @@
 (use-package mode-icons :config (mode-icons-mode))
 
 
-(use-package ag)
-(use-package pt)
-(use-package helm-pt)
-(use-package helm-ag)
+(use-package ag :commands ag)
+(use-package pt :commands pt)
+(use-package helm-ag :commands helm-ag)
+(use-package helm-pt :commands helm-pt)
 (use-package helm-swoop)
 (use-package rbenv :config (global-rbenv-mode))
 (use-package helm-rdefs)
@@ -353,7 +353,6 @@
 
 (use-package projectile)
 (use-package helm-projectile)
-
 
 (use-package helm
   :config
