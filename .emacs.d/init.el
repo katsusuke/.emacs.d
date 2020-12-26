@@ -538,10 +538,6 @@
   :config
   (message "flycheck :config")
   (global-flycheck-mode)
-  )
-
-(use-package flycheck
-  :config
   (yas-global-mode 1))
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
