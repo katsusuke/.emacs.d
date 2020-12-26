@@ -202,7 +202,6 @@
 (use-package haskell-mode)
 (use-package nginx-mode)
 (use-package rubocop)
-(use-package visual-regexp)
 (use-package groovy-mode)
 (use-package dash-at-point
   :config
@@ -233,11 +232,13 @@
 ;; ウインドウ移動をShift+矢印で
 (windmove-default-keybindings)
 
-;; visual-regexp
-(global-set-key (kbd "M-%") 'vr/query-replace)
+(use-package visual-regexp
+  :config
+  (global-set-key (kbd "M-%") 'vr/query-replace))
 
 ;; 最近使ったファイルを時々保存
-(when (require 'recentf nil t)
+(use-package recentf
+  :config
   (setq recentf-max-saved-items 2000)
   (setq recentf-exclude '(".recentf" "^/ssh:"))
   (setq recentf-auto-cleanup 'never)
