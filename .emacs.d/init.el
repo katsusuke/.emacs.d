@@ -458,7 +458,6 @@
   (setq company-minimum-prefix-length 2))
 
 (use-package company-tabnine
-  :ensure t
   :config
   (add-to-list 'company-backends #'company-tabnine)
   ;; Trigger completion immediately.
@@ -512,7 +511,6 @@
     ))
 
 (use-package lsp-pyright
-  :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
@@ -568,7 +566,6 @@
 
 ;; markdown-mode
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("\\.md\\'" . gfm-mode))
   :init (lambda()
