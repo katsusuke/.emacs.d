@@ -88,6 +88,5 @@
  ("xref" . "aaa823a31befded016aa5370c4a22545e480911a")
  ("xterm-color" . "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
  ("yaml-mode" . "fc5e1c58f94472944c4aa838f00f6adcac6fa992")
- ("yaml-tomato" . "f9df1c9bdfcec629b03031b2d2032f9dc533cb14")
- ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"))
+ ("yaml-tomato" . "f9df1c9bdfcec629b03031b2d2032f9dc533cb14"))
 :beta

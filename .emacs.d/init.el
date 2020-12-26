@@ -221,7 +221,6 @@
 (use-package vue-mode)
 (use-package prettier-js)
 (use-package flycheck-rust)
-(use-package yasnippet)
 (use-package ng2-mode)
 
 
@@ -537,8 +536,7 @@
 (use-package flycheck
   :config
   (message "flycheck :config")
-  (global-flycheck-mode)
-  (yas-global-mode 1))
+  (global-flycheck-mode))
 
 ;(define-key ac-menu-map "\C-n" 'ac-next)
 ;(define-key ac-menu-map "\C-p" 'ac-previous)
