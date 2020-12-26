@@ -747,13 +747,14 @@
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
-      ;; クライアントを終了するとき終了するかどうかを聞かない
-      ;; サーバ起動
-      (require 'server)
-      (unless (server-running-p)
-        (progn
-         (server-start)
-         (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)))))
+      (use-package server
+        ;; クライアントを終了するとき終了するかどうかを聞かない
+        ;; サーバ起動
+        :config
+        (unless (server-running-p)
+          (progn
+            (server-start)
+            (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function))))))
 
 ;; 選択中のフレームを強調
 (hiwin-activate)
