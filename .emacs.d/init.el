@@ -821,10 +821,11 @@
 (use-package fsharp-mode
   :mode "\\.fs[iylx]?$")
 
-(require 'ansi-color)
-(defun display-ansi-colors ()
-  (interactive)
-  (ansi-color-apply-on-region (point-min) (point-max)))
+(use-package ansi-color
+  :config
+  (defun display-ansi-colors ()
+    (interactive)
+    (ansi-color-apply-on-region (point-min) (point-max))))
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
