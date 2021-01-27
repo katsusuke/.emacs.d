@@ -192,7 +192,10 @@
 (use-package helm-ag :commands helm-ag)
 (use-package helm-pt :commands helm-pt)
 (use-package helm-swoop)
-(use-package rbenv :config (global-rbenv-mode))
+(use-package rbenv
+  :config
+  (setq rbenv-executable (executable-find "rbenv"))
+  (global-rbenv-mode))
 (use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
@@ -818,6 +821,9 @@
   (defun display-ansi-colors ()
     (interactive)
     (ansi-color-apply-on-region (point-min) (point-max))))
+
+(use-package csv-mode
+  :mode ("\\.csv$" . csv-align-mode))
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
