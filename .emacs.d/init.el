@@ -183,10 +183,12 @@
 (setq use-package-verbose t)
 (setq straight-use-package-by-default t)
 
+(use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
-
-
+(use-package mmm-mode)
+(use-package request)
+(use-package graphql-mode)
 (use-package ag :commands ag)
 (use-package pt :commands pt)
 (use-package helm-ag :commands helm-ag)
@@ -210,7 +212,7 @@
   :bind
   (("\C-cd" . dash-at-point)
    ("\C-ce" . dash-at-point-with-docset)))
-  
+
 (use-package wakatime-mode
   :config
   ;; wakatime-mode
@@ -478,15 +480,8 @@
    (js-mode . lsp)
    )
   :config
-  (add-to-list 'lsp-language-id-configuration '(enh-ruby-mode . "ruby"))
-  (add-to-list 'lsp-language-id-configuration '(scss-mode . "scss"))
-  (add-to-list 'lsp-language-id-configuration '(sass-mode . "sass"))
-  (add-to-list 'lsp-language-id-configuration '(web-mode . "typescriptreact"))
-  (add-to-list 'lsp-language-id-configuration '(ng2-ts-mode . "angular"))
-  (add-to-list 'lsp-language-id-configuration '(typescript-mode . "typescript"))
-  (add-to-list 'lsp-language-id-configuration '(js-mode . "javascript"))
-  (add-to-list 'lsp-language-id-configuration '(vue-mode . "vue"))
   (setq
+   web-mode-enable-auto-quoting nil
    lsp-enable-snippet nil
    lsp-auto-configure t
    lsp-auto-guess-root t
