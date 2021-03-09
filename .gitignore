@@ -12,4 +12,8 @@
 /.emacs.d/tramp
 /.emacs.d/abbrev_defs
 /.emacs.d/url
-/.emacs.d/straight
+/.emacs.d/request
+/.emacs.d/straight/build-cache.el
+/.emacs.d/straight/build
+/.emacs.d/straight/modified
+/.emacs.d/straight/repos
