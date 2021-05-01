@@ -183,6 +183,7 @@
 (setq use-package-verbose t)
 (setq straight-use-package-by-default t)
 
+(use-package editorconfig :config (editorconfig-mode 1))
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
