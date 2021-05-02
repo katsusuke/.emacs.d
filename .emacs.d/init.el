@@ -482,7 +482,6 @@
    )
   :config
   (setq
-   web-mode-enable-auto-quoting nil
    lsp-enable-snippet nil
    lsp-auto-configure t
    lsp-auto-guess-root t
@@ -501,8 +500,8 @@
 
 (use-package lsp-ui
   :after (lsp-mode)
+  :commands lsp-ui-mode
   :config
-  (message "lsp-ui-mode :custom")
   (setq
     lsp-ui-flycheck-enable t
     lsp-ui-doc-max-width 150
@@ -533,9 +532,9 @@
   (global-flycheck-mode))
 
 ;; リモートのファイルを編集するTRAMP
-(use-package tramp
-  :config
-  (setq tramp-default-method "ssh"))
+;; (use-package tramp
+;;   :config
+;;   (setq tramp-default-method "ssh"))
 
 ;;; Languages
 
@@ -724,7 +723,13 @@
    (vue-mode . shim-mode))
   :config
   (shim-init-node)
-  (shim-register-mode 'node 'typescript-mode))
+  (shim-register-mode 'node 'typescript-mode)
+  (shim-register-mode 'node 'web-mode)
+  )
+
+(use-package add-node-modules-path
+  :hook
+  ((typescript-mode . add-node-modules-path)))
 
 ;; js-mode (javascript-mode)
 (add-hook 'js-mode-hook
@@ -764,23 +769,18 @@
          ("\\.erb$"       . web-mode)
          ("\\.ctp$"     . web-mode)
          ("\\.tsx$"     . web-mode))
-  :init
-  (add-hook 'web-mode-hook
-             '(lambda ()
-                (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                  (lsp)
-                  )))
   :config
   (message "web-mode config")
+  (setq-default tab-width 8)
   (setq web-mode-indent 2)
   (setq c-basic-offset 2)
-  (setq-default tab-width 8)
   (setq web-mode-markup-indent-offset web-mode-indent)
   (setq web-mode-css-indent-offset web-mode-indent)
   (setq web-mode-code-indent-offset web-mode-indent)
   (setq web-mode-style-padding 0)
   (setq web-mode-script-padding 0)
   (setq web-mode-block-padding 0)
+  (setq web-mode-enable-auto-quoting nil)
   (setq web-mode-comment-style web-mode-indent))
 
 (use-package haskell-mode
