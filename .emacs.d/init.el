@@ -774,6 +774,7 @@
   (setq-default tab-width 8)
   (setq web-mode-indent 2)
   (setq c-basic-offset 2)
+  (setq web-mode-enable-auto-indentation nil)
   (setq web-mode-markup-indent-offset web-mode-indent)
   (setq web-mode-css-indent-offset web-mode-indent)
   (setq web-mode-code-indent-offset web-mode-indent)
