@@ -515,8 +515,7 @@
 
 (use-package tree-sitter
   :hook
-  ((typescript-mode . tree-sitter-mode)
-   (enh-ruby-mode . tree-sitter-mode)))
+  ((typescript-mode . tree-sitter-mode)))
 (use-package tree-sitter-langs)
 
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
