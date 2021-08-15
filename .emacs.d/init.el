@@ -160,8 +160,6 @@
 
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
-      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.pyenv/shims"))
-      (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.rbenv/shims"))
       (setq exec-path (split-string (getenv "PATH") ":"))
       ;; fix drag n drop
       (global-set-key [C-M-s-drag-n-drop] 'ns-drag-n-drop)
@@ -195,10 +193,10 @@
 (use-package helm-ag :commands helm-ag)
 (use-package helm-pt :commands helm-pt)
 (use-package helm-swoop)
-(use-package rbenv
+(use-package asdf
+  :straight (:host github :repo "tabfugnic/asdf.el")
   :config
-  (setq rbenv-executable (executable-find "rbenv"))
-  (global-rbenv-mode))
+  (asdf-enable))
 (use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
@@ -404,7 +402,9 @@
 (use-package whitespace
   :commands whitespace-mode
   :hook
-  ((enh-ruby-mode . whitespace-mode))
+  ((enh-ruby-mode . whitespace-mode)
+   (haml-mode . whitespace-mode)
+   (yaml-mode . whitespace-mode))
   :config
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -478,10 +478,12 @@
    (scss-mode . lsp)
    (sass-mode . lsp)
    (vue-mode . lsp)
-   (js-mode . lsp)
+   (typescript-mode . lsp)
+   ;(js-mode . lsp)
    )
   :config
   (setq
+   lsp-log-max t
    lsp-enable-snippet nil
    lsp-auto-configure t
    lsp-auto-guess-root t
@@ -525,9 +527,23 @@
   :hook ((typescript-mode . tide-setup)
          (typescript-mode . tide-hl-identifier-mode)))
 
+
+
 (use-package flycheck
   :config
-  (message "flycheck :config")
+  (flycheck-define-checker cfn-lint
+    "AWS CloudFormation linter using cfn-lint.
+Install cfn-lint first: pip install cfn-lint
+See `https://github.com/aws-cloudformation/cfn-python-lint'."
+    :command ("cfn-lint" "-f" "parseable" source)
+    :error-patterns ((warning line-start (file-name) ":" line ":" column
+                              ":" (one-or-more digit) ":" (one-or-more digit) ":"
+                              (id "W" (one-or-more digit)) ":" (message) line-end)
+                     (error line-start (file-name) ":" line ":" column
+                            ":" (one-or-more digit) ":" (one-or-more digit) ":"
+                            (id "E" (one-or-more digit)) ":" (message) line-end))
+    :modes (cfn-yaml-mode))
+  (add-to-list 'flycheck-checkers 'cfn-lint)
   (global-flycheck-mode))
 
 ;; リモートのファイルを編集するTRAMP
@@ -686,6 +702,12 @@
 (use-package yaml-mode
   :mode "\\.yml$"
   :config
+  (define-derived-mode cfn-yaml-mode yaml-mode
+    "CFN-YAML"
+    "Simple mode to edit CloudFormation template in YAML format.")
+  (add-to-list 'magic-mode-alist
+               '("\\(---\n\\)?AWSTemplateFormatVersion:" . cfn-yaml-mode))
+
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
 (use-package yaml-tomato
@@ -711,20 +733,6 @@
 (add-hook 'html-mode-hook
           (lambda()
             (setq sgml-basic-offset 2)))
-
-;; nodenv by shim
-(use-package shim
-  :straight (:host github :repo "twlz0ne/shim.el")
-  :hook
-  ((js-mode . shim-mode)
-   (typescript-mode . shim-mode)
-   (web-mode . shim-mode)
-   (vue-mode . shim-mode))
-  :config
-  (shim-init-node)
-  (shim-register-mode 'node 'typescript-mode)
-  (shim-register-mode 'node 'web-mode)
-  )
 
 (use-package add-node-modules-path
   :hook
