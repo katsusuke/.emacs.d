@@ -236,6 +236,9 @@
 ;; ウインドウ移動をShift+矢印で
 (windmove-default-keybindings)
 
+;; シンボリックは読め
+(setq vc-follow-symlinks t)
+
 (use-package visual-regexp
   :config
   (global-set-key (kbd "M-%") 'vr/query-replace))
@@ -404,7 +407,9 @@
   :hook
   ((enh-ruby-mode . whitespace-mode)
    (haml-mode . whitespace-mode)
-   (yaml-mode . whitespace-mode))
+   (yaml-mode . whitespace-mode)
+   (typescript-mode . whitespace-mode)
+   (python-mode . whitespace-mode))
   :config
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
