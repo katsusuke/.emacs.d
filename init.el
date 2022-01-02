@@ -28,7 +28,7 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
-(setq debug-on-message t)
+;(setq debug-on-message t)
 
 ;; initialize straight
 (defvar bootstrap-version)
@@ -214,7 +214,9 @@
 (use-package vue-mode)
 ;(use-package prettier-js)
 (use-package ng2-mode)
-
+(use-package which-key
+  :config
+  (which-key-mode))
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -412,21 +414,28 @@
   :init
   (vertico-mode))
 
-(use-package company
-  :config
-  (global-company-mode)
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-  (setq company-minimum-prefix-length 2))
-
-(use-package company-tabnine
-  :config
-  (add-to-list 'company-backends #'company-tabnine)
-  ;; Trigger completion immediately.
-  (setq company-idle-delay 0)
-  ;; Number the candidates (use M-1, M-2 etc to select completions).
-  (setq company-show-numbers t)
+(use-package consult
+  :bind
+  (
+   ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+   ("M-g g" . consult-goto-line)             ;; orig. goto-line
+   ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+   )
+  :hook (completion-list-mode . consult-preview-at-point-mode)
   )
+
+(use-package company
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
+;; (use-package company-tabnine
+;;   :config
+;;   (add-to-list 'company-backends #'company-tabnine)
+;;   ;; Trigger completion immediately.
+;;   (setq company-idle-delay 0)
+;;   ;; Number the candidates (use M-1, M-2 etc to select completions).
+;;   (setq company-show-numbers t)
+;;   )
 
 (use-package lsp-mode
   :hook
@@ -444,6 +453,7 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
   
   (setq
+   lsp-prefer-capf t
    lsp-log-io t
    lsp-log-max t
    lsp-enable-snippet nil
