@@ -87,13 +87,6 @@
 				      (deactivate-input-method)
 				      (setq w32-ime-composition-window (minibuffer-window))))
       (add-hook 'isearch-mode-end-hook '(lambda () (setq w32-ime-composition-window nil)))
-
-      ;; helm 使用中に日本語入力を無効にする
-      (advice-add 'helm :around '(lambda (orig-fun &rest args)
-				   (let ((select-window-functions nil)
-					 (w32-ime-composition-window (minibuffer-window)))
-				     (deactivate-input-method)
-				     (apply orig-fun args))))
       ))
 
 ;; ns
@@ -181,6 +174,8 @@
 (setq use-package-verbose t)
 (setq straight-use-package-by-default t)
 
+(setq debug-on-error t)
+
 (use-package editorconfig :config (editorconfig-mode 1))
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
@@ -190,17 +185,12 @@
 (use-package graphql-mode)
 (use-package ag :commands ag)
 (use-package pt :commands pt)
-(use-package helm-ag :commands helm-ag)
-(use-package helm-pt :commands helm-pt)
-(use-package helm-swoop)
 (use-package asdf
   :straight (:host github :repo "tabfugnic/asdf.el")
   :config
   (asdf-enable))
-(use-package helm-rdefs)
 (use-package rhtml-mode)
 (use-package coffee-mode)
-(use-package helm-ghq)
 (use-package hiwin)
 (use-package nginx-mode)
 (use-package rubocop)
@@ -222,8 +212,7 @@
 (use-package alchemist)
 (use-package ac-alchemist)
 (use-package vue-mode)
-(use-package prettier-js)
-(use-package flycheck-rust)
+;(use-package prettier-js)
 (use-package ng2-mode)
 
 
@@ -359,48 +348,6 @@
           'executable-make-buffer-file-executable-if-script-p)
 
 (use-package projectile)
-(use-package helm-projectile)
-
-(use-package helm
-  :config
-  (helm-mode)
-  (helm-migemo-mode 1)
-  (define-key global-map (kbd "C-;") 'helm-mini)
-  (define-key global-map (kbd "M-x")     'helm-M-x)
-  (define-key global-map (kbd "C-x C-f") 'helm-find-files)
-  ;; helm-swoop
-  (setq helm-swoop-pattern "") ;; TODO:delte me. hotfix helm-swoop-from-isearch
-  (global-set-key (kbd "M-i") 'helm-swoop)
-  (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
-  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
-
-  ;; For helm-find-files etc.
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-
-  ;helm でC-k の挙動を通常のバッファと同等にする
-  (setq helm-delete-minibuffer-contents-from-point t)
-  (defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
-    "Emulate `kill-line' in helm minibuffer"
-    (kill-new (buffer-substring (point) (field-end))))
-
-  (require 'helm-buffers)
-  (defadvice helm-buffers-sort-transformer (around ignore activate)
-    (setq ad-return-value (ad-get-arg 0)))
-
-  (setq helm-ag-insert-at-point 'symbol)
-
-  ;; helm-projectile
-  (setq projectile-keymap-prefix (kbd "C-c p"))
-  (projectile-mode)
-  (helm-projectile-on)
-
-  (setq helm-mini-default-sources
-    '(helm-source-projectile-files-list
-      helm-source-projectile-projects
-      helm-source-recentf
-      helm-source-buffer-not-found))
-
-  )
 
 (use-package whitespace
   :commands whitespace-mode
@@ -461,6 +408,10 @@
 
   )
 
+(use-package vertico
+  :init
+  (vertico-mode))
+
 (use-package company
   :config
   (global-company-mode)
@@ -484,16 +435,26 @@
    (sass-mode . lsp)
    (vue-mode . lsp)
    (typescript-mode . lsp)
-   ;(js-mode . lsp)
+   (rustic-mode . lsp)
+   (js-mode . lsp)
    )
   :config
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]public\\'")
+  (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
+  
   (setq
+   lsp-log-io t
    lsp-log-max t
    lsp-enable-snippet nil
-   lsp-auto-configure t
    lsp-auto-guess-root t
    lsp-completion-provider :capf
    lsp-prefer-flymake nil
+   lsp-eldoc-render-all t
+   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+   gc-cons-threshold 100000000
+   read-process-output-max (* 1024 1024) ;; 1mb
+   
    lsp-clients-angular-language-server-command
         '("node"
           "node_modules/@angular/language-server"
@@ -520,18 +481,10 @@
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
 
-(use-package tree-sitter
-  :hook
-  ((typescript-mode . tree-sitter-mode)))
-(use-package tree-sitter-langs)
-
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-
-(use-package tide
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)))
-
+;; (use-package tide
+;;   :after (typescript-mode company flycheck)
+;;   :hook ((typescript-mode . tide-setup)
+;;          (typescript-mode . tide-hl-identifier-mode)))
 
 
 (use-package flycheck
@@ -639,7 +592,6 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
            (local-set-key "\M-r" 'ggtags-find-reference)  ;; 参照を検索
            (local-set-key "\M-s" 'ggtags-find-symbol)     ;; 定義にジャンプ
 	   (setq ggtags-completing-read-function nil)
-	   (helm-mode 1)
 	   ))
   (global-set-key "\M-e" 'ggtags-pop-stack)               ;; スタックを戻る
   :config
@@ -744,9 +696,9 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   ((typescript-mode . add-node-modules-path)))
 
 ;; js-mode (javascript-mode)
-(add-hook 'js-mode-hook
-          (lambda ()
-            (setq js-indent-level 2)))
+;; (add-hook 'js-mode-hook
+;;           (lambda ()
+;;             (setq js-indent-level 2)))
 
 (use-package typescript-mode
   :mode "\\.ts$"
@@ -820,7 +772,7 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   :mode ("\\.rs$" . rustic-mode)
   :commands rustic-mode
   :config
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  )
 
 (use-package fsharp-mode
   :mode "\\.fs[iylx]?$")
