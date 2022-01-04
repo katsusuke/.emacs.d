@@ -92,7 +92,9 @@
 ;; ns
 (if (eq window-system 'ns)
     (progn
+      (load-theme 'wombat t)
       (set-frame-parameter (selected-frame) 'alpha '(75 . 65))
+      (tool-bar-mode -1)
       (setq ns-pop-up-frames nil) ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       ;; keybind
       (global-unset-key "\C-z") ;; C-zで最小化してうざいので無効に
@@ -139,7 +141,7 @@
       (global-hl-line-mode)
 
       ;; Show filename on titlebar
-      (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
+      (setq frame-title-format (format "%%f - Emacs"))
 
       ;; disable x-popup-dialog
       (defadvice yes-or-no-p (around prevent-dialog activate)
@@ -422,11 +424,26 @@
    ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
    )
   :hook (completion-list-mode . consult-preview-at-point-mode)
+  :config
+  (setq consult-project-root-function #'projectile-project-root)
   )
+
+(use-package orderless
+  :ensure t
+  :custom (completion-styles '(orderless)))
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
 (use-package company
   :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  ; setting for lsp
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.0) ;; default is 0.2
+  )
 
 ;; (use-package company-tabnine
 ;;   :config
@@ -451,40 +468,24 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]public\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
-  
+
   (setq
-   lsp-prefer-capf t
    lsp-log-io t
-   lsp-log-max t
-   lsp-enable-snippet nil
    lsp-auto-guess-root t
-   lsp-completion-provider :capf
-   lsp-prefer-flymake nil
-   lsp-eldoc-render-all t
+   lsp-log-max 1000
    ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
    gc-cons-threshold 100000000
    read-process-output-max (* 1024 1024) ;; 1mb
-   
-   lsp-clients-angular-language-server-command
-        '("node"
-          "node_modules/@angular/language-server"
-          "--ngProbeLocations"
-          "node_modules"
-          "--tsProbeLocations"
-          "node_modules"
-          "--stdio")
-   )
-  )
+  ))
 
 (use-package lsp-ui
-  :after (lsp-mode)
   :commands lsp-ui-mode
   :config
   (setq
-    lsp-ui-flycheck-enable t
-    lsp-ui-doc-max-width 150
-    lsp-ui-doc-max-height 30
-    ))
+   lsp-ui-sideline-show-diagnostics t
+   lsp-ui-sideline-show-hover t
+   )
+  )
 
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
