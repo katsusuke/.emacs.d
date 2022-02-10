@@ -487,6 +487,9 @@
    ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
    gc-cons-threshold 100000000
    read-process-output-max (* 1024 1024) ;; 1mb
+   ;; https://www.reddit.com/r/emacs/comments/fxqfs2/trouble_with_lspmode_and_eldoc/
+   lsp-signature-auto-activate t
+   lsp-signature-doc-lines 1
   ))
 
 (use-package lsp-ui
@@ -728,7 +731,7 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   :mode "\\.ts$"
   :config
   (setq typescript-indent-level 2)
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  ;(flycheck-add-mode 'javascript-eslint 'web-mode)
   ;(flycheck-add-next-checker 'lsp 'javascript-eslint)
   )
 
