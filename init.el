@@ -176,7 +176,7 @@
 (setq use-package-verbose t)
 (setq straight-use-package-by-default t)
 
-(setq debug-on-error t)
+;(setq debug-on-error t)
 
 (use-package editorconfig :config (editorconfig-mode 1))
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
@@ -360,7 +360,9 @@
    (haml-mode . whitespace-mode)
    (yaml-mode . whitespace-mode)
    (typescript-mode . whitespace-mode)
-   (python-mode . whitespace-mode))
+   (python-mode . whitespace-mode)
+   (csharp-mode . whitespace-mode)
+   )
   :config
   (setq whitespace-style '(face           ; faceで可視化
                            trailing       ; 行末
@@ -416,6 +418,14 @@
   :init
   (vertico-mode))
 
+(use-package extensions/vertico-directory
+  :straight (:type built-in)
+  :after vertico
+  :ensure nil
+  :bind (:map vertico-map
+              ("C-l" . vertico-directory-up)
+              ("\d" . vertico-directory-delete-char)))
+
 (use-package consult
   :bind
   (
@@ -463,6 +473,7 @@
    (typescript-mode . lsp)
    (rustic-mode . lsp)
    (js-mode . lsp)
+   (csharp-mode . lsp)
    )
   :config
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
@@ -570,6 +581,8 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
         ad-do-it))
   (ad-activate 'enh-ruby-mode-set-encoding)
   (setq-default enh-ruby-not-insert-magic-comment t)
+  (setq-local flycheck-command-wrapper-function
+              (lambda (command) (append '("bundle" "exec") command)))
 
   ;; hash-rocket を1.9記法に変換する
   (defun ruby-anti-hash-rocket ()
@@ -810,3 +823,4 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   (interactive)
   (kill-new
    (concat (projectile-path) ":" (number-to-string (line-number-at-pos)))))
+(put 'dired-find-alternate-file 'disabled nil)
