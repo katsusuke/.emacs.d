@@ -153,6 +153,8 @@
 	(let ((use-dialog-box nil))
 	  ad-do-it))
 
+      (if (file-directory-p "/opt/homebrew/bin")
+          (setenv "PATH" (format "%s:%s" (getenv "PATH") "/opt/homebrew/bin")))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "/usr/local/bin"))
       (setenv "PATH" (format "%s:%s" (getenv "PATH") "~/.go/bin"))
       (setq exec-path (split-string (getenv "PATH") ":"))
