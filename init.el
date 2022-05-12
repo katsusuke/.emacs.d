@@ -181,6 +181,7 @@
 ;(setq debug-on-error t)
 
 (use-package editorconfig :config (editorconfig-mode 1))
+
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 (use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
@@ -752,7 +753,6 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 (use-package typescript-mode
   :mode "\\.ts$"
   :config
-  (setq typescript-indent-level 2)
   ;(flycheck-add-mode 'javascript-eslint 'web-mode)
   ;(flycheck-add-next-checker 'lsp 'javascript-eslint)
   )
@@ -783,19 +783,8 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
          ("\\.ctp$"     . web-mode)
          ("\\.tsx$"     . web-mode))
   :config
-  (message "web-mode config")
-  (setq-default tab-width 8)
-  (setq web-mode-indent 2)
-  (setq c-basic-offset 2)
   (setq web-mode-enable-auto-indentation nil)
-  (setq web-mode-markup-indent-offset web-mode-indent)
-  (setq web-mode-css-indent-offset web-mode-indent)
-  (setq web-mode-code-indent-offset web-mode-indent)
-  (setq web-mode-style-padding 0)
-  (setq web-mode-script-padding 0)
-  (setq web-mode-block-padding 0)
-  (setq web-mode-enable-auto-quoting nil)
-  (setq web-mode-comment-style web-mode-indent))
+  (setq web-mode-enable-auto-quoting nil))
 
 (use-package haskell-mode
   :mode
