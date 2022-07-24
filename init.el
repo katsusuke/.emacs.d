@@ -631,7 +631,6 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 (use-package haml-mode
   :mode "\\.haml$"
   :config
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace)
   (c-set-offset 'substatement-open '0)
   (setq tab-width 8))
 
@@ -718,9 +717,7 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
     "CFN-YAML"
     "Simple mode to edit CloudFormation template in YAML format.")
   (add-to-list 'magic-mode-alist
-               '("\\(---\n\\)?AWSTemplateFormatVersion:" . cfn-yaml-mode))
-
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+               '("\\(---\n\\)?AWSTemplateFormatVersion:" . cfn-yaml-mode)))
 
 (use-package yaml-tomato
   :commands
@@ -842,4 +839,5 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   (interactive)
   (kill-new
    (concat (projectile-path) ":" (number-to-string (line-number-at-pos)))))
+
 (put 'dired-find-alternate-file 'disabled nil)
