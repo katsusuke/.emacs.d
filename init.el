@@ -160,6 +160,7 @@
       (setq exec-path (split-string (getenv "PATH") ":"))
       ;; fix drag n drop
       (global-set-key [C-M-s-drag-n-drop] 'ns-drag-n-drop)
+      (setenv "LANG" "ja_JP.UTF-8")
       ))
 
 ; X用
@@ -362,7 +363,7 @@
 (use-package whitespace
   :commands whitespace-mode
   :hook
-  ((enh-ruby-mode . whitespace-mode)
+  ((ruby-mode . whitespace-mode)
    (haml-mode . whitespace-mode)
    (yaml-mode . whitespace-mode)
    (typescript-mode . whitespace-mode)
@@ -464,7 +465,7 @@
 ;; (use-package copilot
 ;;   :hook
 ;;   ((python-mode . copilot-mode)
-;;    (enh-ruby-mode . copilot-mode)
+;;    (ruby-mode . copilot-mode)
 ;;    (web-mode . copilot-mode)
 ;;    (scss-mode . copilot-mode)
 ;;    (sass-mode . copilot-mode)
@@ -598,18 +599,9 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 
 
 
-(use-package enh-ruby-mode
+(use-package ruby-mode
   :mode "\\(\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)\\|Gemfile\\)$"
   :config
-  (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-  ;; 保存時にmagic commentを追加しないようにする
-  (defadvice enh-ruby-mode-set-encoding (around stop-enh-ruby-mode-set-encoding)
-    "If enh-ruby-not-insert-magic-comment is true, stops enh-ruby-mode-set-encoding."
-    (if (and (boundp 'enh-ruby-not-insert-magic-comment)
-             (not enh-ruby-not-insert-magic-comment))
-        ad-do-it))
-  (ad-activate 'enh-ruby-mode-set-encoding)
-  (setq-default enh-ruby-not-insert-magic-comment t)
   (setq-local flycheck-command-wrapper-function
               (lambda (command) (append '("bundle" "exec") command)))
 
