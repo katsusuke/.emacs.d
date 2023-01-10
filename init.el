@@ -602,9 +602,6 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 (use-package ruby-mode
   :mode "\\(\\.\\(rb\\|rake\\|ruby\\|thor\\|jbuilder\\|cap\\)\\|Gemfile\\)$"
   :config
-  (setq-local flycheck-command-wrapper-function
-              (lambda (command) (append '("bundle" "exec") command)))
-
   ;; hash-rocket を1.9記法に変換する
   (defun ruby-anti-hash-rocket ()
     (interactive)
