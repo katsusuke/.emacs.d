@@ -467,33 +467,33 @@
         company-idle-delay 0.0) ;; default is 0.2
   )
 
-;; (use-package copilot
-;;   :hook
-;;   ((python-mode . copilot-mode)
-;;    (ruby-mode . copilot-mode)
-;;    (web-mode . copilot-mode)
-;;    (scss-mode . copilot-mode)
-;;    (sass-mode . copilot-mode)
-;;    (vue-mode . copilot-mode)
-;;    (typescript-mode . copilot-mode)
-;;    (rustic-mode . copilot-mode)
-;;    (js-mode . copilot-mode)
-;;    (csharp-mode . copilot-mode)
-;;    (emacs-lisp-mode . copilot-mode))
-;;   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-;;   :bind
-;;   (("M-]" . copilot-next-completion)
-;;    ("M-[" . copilot-previous-completion))
-;;   :init
-;;   (defun my-tab ()
-;;     (interactive)
-;;     (or (copilot-accept-completion)
-;;         (company-indent-or-complete-common nil)))
-;;   (delq 'company-preview-if-just-one-frontend company-frontends)
-;;   (define-key company-mode-map (kbd "<tab>") 'my-tab)
-;;   (define-key company-mode-map (kbd "TAB") 'my-tab)
-;;   (define-key company-active-map (kbd "<tab>") 'my-tab)
-;;   (define-key company-active-map (kbd "TAB") 'my-tab))
+(use-package copilot
+  :hook
+  ((python-mode . copilot-mode)
+   (ruby-mode . copilot-mode)
+   (web-mode . copilot-mode)
+   (scss-mode . copilot-mode)
+   (sass-mode . copilot-mode)
+   (vue-mode . copilot-mode)
+   (typescript-mode . copilot-mode)
+   (rustic-mode . copilot-mode)
+   (js-mode . copilot-mode)
+   (csharp-mode . copilot-mode)
+   (emacs-lisp-mode . copilot-mode))
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :bind
+  (("M-]" . copilot-next-completion)
+   ("M-[" . copilot-previous-completion))
+  :init
+  (defun my-tab ()
+    (interactive)
+    (or (copilot-accept-completion)
+        (company-indent-or-complete-common nil)))
+  (delq 'company-preview-if-just-one-frontend company-frontends)
+  (define-key company-mode-map (kbd "<tab>") 'my-tab)
+  (define-key company-mode-map (kbd "TAB") 'my-tab)
+  (define-key company-active-map (kbd "<tab>") 'my-tab)
+  (define-key company-active-map (kbd "TAB") 'my-tab))
 
 
 (use-package lsp-mode
