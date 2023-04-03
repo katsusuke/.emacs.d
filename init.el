@@ -495,8 +495,7 @@
   (define-key company-active-map (kbd "<tab>") 'my-tab)
   (define-key company-active-map (kbd "TAB") 'my-tab))
 
-;(use-package chatgpt
-                                        ;  :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt" :branch "master"))
+; dep key (setq openai-key "[YOUR API KEY]")
 (use-package openai :straight (:host github :repo "emacs-openai/openai"))
 (use-package chatgpt :straight (:host github :repo "emacs-openai/chatgpt"))
 (use-package codegpt :straight (:host github :repo "emacs-openai/codegpt"))
