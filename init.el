@@ -34,11 +34,11 @@
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
+      (bootstrap-version 6))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
          'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
@@ -494,6 +494,13 @@
   (define-key company-mode-map (kbd "TAB") 'my-tab)
   (define-key company-active-map (kbd "<tab>") 'my-tab)
   (define-key company-active-map (kbd "TAB") 'my-tab))
+
+;(use-package chatgpt
+                                        ;  :straight (chatgpt :type git :host github :repo "emacs-openai/chatgpt" :branch "master"))
+(use-package openai :straight (:host github :repo "emacs-openai/openai"))
+(use-package chatgpt :straight (:host github :repo "emacs-openai/chatgpt"))
+(use-package codegpt :straight (:host github :repo "emacs-openai/codegpt"))
+(use-package dall-e :straight (:host github :repo "emacs-openai/dall-e"))
 
 
 (use-package lsp-mode
