@@ -184,7 +184,7 @@
 (use-package editorconfig :config (editorconfig-mode 1))
 
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
-(use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
+;(use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 (use-package mode-icons :config (mode-icons-mode))
 (use-package mmm-mode)
 (use-package request)
@@ -223,6 +223,8 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package lua-mode)
 
 ;; リージョンをハイライト
 ;; C-g で解除(マークは残っているがリージョンは無効)
@@ -443,6 +445,9 @@
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   (setq consult-project-root-function #'projectile-project-root)
+  (defun consult-ripgrep-symbol-at-point ()
+    (interactive)
+    (consult-ripgrep nil (thing-at-point 'symbol)))
   )
 
 (use-package orderless
@@ -508,6 +513,7 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
 
   (setq
+   lsp-restart 'ignore
    lsp-log-io t
    lsp-auto-guess-root t
    lsp-log-max 1000
