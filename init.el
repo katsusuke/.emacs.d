@@ -479,7 +479,8 @@
    (rustic-mode . copilot-mode)
    (js-mode . copilot-mode)
    (csharp-mode . copilot-mode)
-   (emacs-lisp-mode . copilot-mode))
+   (emacs-lisp-mode . copilot-mode)
+   (markdown-mode . copilot-mode))
   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
   :bind
   (("M-]" . copilot-next-completion)
@@ -782,6 +783,7 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
          ("\\.tpl\\.php$" . web-mode)
          ("\\.jsp$"       . web-mode)
          ("\\.as[cp]x$"   . web-mode)
+         ("\\.cshtml$"   . web-mode)
          ("\\.erb$"       . web-mode)
          ("\\.ctp$"     . web-mode)
          ("\\.tsx$"     . web-mode))
