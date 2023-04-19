@@ -599,8 +599,29 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   :commands (markdown-mode gfm-mode)
   :mode (("\\.md\\'" . gfm-mode))
   :init (lambda()
-	  (setq markdown-command "/usr/local/bin/multimarkdown")
+	  (setq markdown-command "pandoc")
 	  (setq markdown-open-command "marked2")))
+
+(use-package websocket)
+(use-package web-server)
+
+(use-package maple-preview
+  :straight (:host github :repo "katsusuke/emacs-maple-preview" :files ("*.el" "index.html" "static"))
+  :commands (maple-preview-mode)
+  :config
+  :init
+  (setq maple-preview:allow-modes '(org-mode markdown-mode html-mode web-mode gfm-mode))
+  (setq maple-preview:text-content '((t . maple-preview:markdown-content)))
+  (setq maple-preview:js-file
+        '(
+          "/preview/static/js/jquery.min.js"
+          "/preview/static/js/marked.min.js"
+          "/preview/static/js/highlight.min.js"
+          "<script type=\"module\">
+import mermaid from \'https://cdn.jsdelivr.net/npm/mermaid@10.1.0/+esm\';
+window.mermaid = mermaid;
+</script>"))
+  )
 
 ;; grep の結果画面は画面端で折り返さないけど、
 ;; コンパイルの結果画面は画面端で折り返す
