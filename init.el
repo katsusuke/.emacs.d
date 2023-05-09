@@ -598,9 +598,10 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("\\.md\\'" . gfm-mode))
-  :init (lambda()
-	  (setq markdown-command "pandoc")
-	  (setq markdown-open-command "marked2")))
+  :init
+  (setq markdown-gfm-additional-languages '("mermaid"))
+  (setq markdown-command "pandoc")
+  (setq markdown-open-command "marked2"))
 
 (use-package websocket)
 (use-package web-server)
