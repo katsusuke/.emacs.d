@@ -215,8 +215,6 @@
       (global-wakatime-mode t)))
 (use-package slim-mode)
 (use-package terraform-mode)
-(use-package alchemist)
-(use-package ac-alchemist)
 (use-package vue-mode)
 ;(use-package prettier-js)
 (use-package ng2-mode)
@@ -299,10 +297,10 @@
 ;; backup-directory-alist は以下の構造を持つ
 ;; (regexp . directory)
 ;; regexp に一致したファイルのバックアップが directory に作られる
-(setq backup-directory-alist (cons (cons "\\.*$" (expand-file-name "~/.backup"))
-				   backup-directory-alist))
+(setq backup-directory-alist '(("." . "~/.backup")))
 
-(setq version-control t ;; Use version numbers for backups
+(setq backup-by-copying t ;; don't clobber symlinks
+      version-control t ;; Use version numbers for backups
       kept-new-versions 16 ;; Number of newest versions to keep
       kept-old-versions 2 ;; Number of oldest versions to keep
       delete-old-versions t ;; Ask to delete excess backup versions?
@@ -444,11 +442,11 @@
    )
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
-  (setq consult-project-root-function #'projectile-project-root)
-  (defun consult-ripgrep-symbol-at-point ()
-    (interactive)
-    (consult-ripgrep nil (thing-at-point 'symbol)))
-  )
+  (setq consult-project-root-function #'projectile-project-root))
+
+(defun consult-ripgrep-symbol-at-point ()
+  (interactive)
+  (consult-ripgrep nil (thing-at-point 'symbol)))
 
 (use-package orderless
   :ensure t
@@ -522,15 +520,17 @@
   (setq
    lsp-restart 'ignore
    lsp-log-io t
-   lsp-auto-guess-root t
+   ;lsp-auto-guess-root t
    lsp-log-max 1000
    ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
    gc-cons-threshold 100000000
    read-process-output-max (* 1024 1024) ;; 1mb
    ;; https://www.reddit.com/r/emacs/comments/fxqfs2/trouble_with_lspmode_and_eldoc/
-   lsp-signature-auto-activate t
-   lsp-signature-doc-lines 1
-  ))
+   ;lsp-signature-auto-activate t
+   ;lsp-signature-doc-lines 1
+   ;lsp-typescript-tsserver-trace "verbose"
+   ;lsp-clients-typescript-log-verbosity "verbose"
+   ))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -827,6 +827,8 @@ window.mermaid = mermaid;
   :mode "[Dd]ockerfile")
 
 ;; elixir-mode
+(use-package alchemist)
+(use-package ac-alchemist)
 (use-package elixir-mode
   :config
   (alchemist-mode)
