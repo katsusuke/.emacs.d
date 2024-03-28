@@ -24,3 +24,5 @@
 /.cache
 /.mc-lists.el
 /lsp-cache
+
+/.dap-breakpoints
