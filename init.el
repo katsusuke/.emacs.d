@@ -194,7 +194,10 @@
 (use-package asdf
   :straight (:host github :repo "tabfugnic/asdf.el")
   :config
+  (setq asdf-path (expand-file-name "~/.local/share/mise"))
+  (setq asdf-binary "/opt/homebrew/bin/mise")
   (asdf-enable))
+(use-package pipenv)
 (use-package rhtml-mode)
 (use-package coffee-mode)
 (use-package hiwin)
@@ -466,23 +469,12 @@
   )
 
 (use-package copilot
-  :hook
-  ((python-mode . copilot-mode)
-   (ruby-mode . copilot-mode)
-   (web-mode . copilot-mode)
-   (scss-mode . copilot-mode)
-   (sass-mode . copilot-mode)
-   (vue-mode . copilot-mode)
-   (typescript-mode . copilot-mode)
-   (rustic-mode . copilot-mode)
-   (js-mode . copilot-mode)
-   (csharp-mode . copilot-mode)
-   (emacs-lisp-mode . copilot-mode)
-   (markdown-mode . copilot-mode))
   :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
   :bind
   (("M-]" . copilot-next-completion)
    ("M-[" . copilot-previous-completion))
+  :config
+  (setq )
   :init
   (defun my-tab ()
     (interactive)
@@ -498,7 +490,7 @@
 (use-package openai :straight (:host github :repo "emacs-openai/openai"))
 (use-package chatgpt :straight (:host github :repo "emacs-openai/chatgpt"))
 (use-package codegpt :straight (:host github :repo "emacs-openai/codegpt"))
-(use-package dall-e :straight (:host github :repo "emacs-openai/dall-e"))
+; (use-package dall-e :straight (:host github :repo "emacs-openai/dall-e"))
 
 
 (use-package lsp-mode
@@ -516,7 +508,34 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]public\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
-
+(lsp-register-client
+ (make-lsp-client :new-connection
+                  (lsp-stdio-connection
+                   #'(lambda ()
+                       (append
+                        (list (lsp-csharp--language-server-path) "-lsp")
+                        (when lsp-csharp-solution-file
+                          (list "-s" (expand-file-name lsp-csharp-solution-file)))))
+                   #'(lambda ()
+                       (when-let ((binary (lsp-csharp--language-server-path)))
+                         (f-exists? binary))))
+                  :activation-fn (lsp-activate-on "csharp")
+                  :server-id 'omnisharp
+                  :priority -1
+                  :action-handlers (ht ("omnisharp/client/findReferences" 'lsp-csharp--action-client-find-references))
+                  :notification-handlers (ht ("o#/projectadded" 'ignore)
+                                             ("o#/projectchanged" 'ignore)
+                                             ("o#/projectremoved" 'ignore)
+                                             ("o#/packagerestorestarted" 'ignore)
+                                             ("o#/msbuildprojectdiagnostics" 'ignore)
+                                             ("o#/packagerestorefinished" 'ignore)
+                                             ("o#/unresolveddependencies" 'ignore)
+                                             ("o#/error" 'lsp-csharp--handle-os-error)
+                                             ("o#/testmessage" 'lsp-csharp--handle-os-testmessage)
+                                             ("o#/testcompleted" 'lsp-csharp--handle-os-testcompleted)
+                                             ("o#/projectconfiguration" 'ignore)
+                                             ("o#/backgrounddiagnosticstatus" 'ignore))
+                  :download-server-fn #'lsp-csharp--omnisharp-download-server))
   (setq
    lsp-restart 'ignore
    lsp-log-io t
@@ -543,13 +562,16 @@
 
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+                         (pipenv-mode)
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
 
 ;; (use-package tide
 ;;   :after (typescript-mode company flycheck)
 ;;   :hook ((typescript-mode . tide-setup)
 ;;          (typescript-mode . tide-hl-identifier-mode)))
+
+(use-package dap-mode)
 
 
 (use-package flycheck
@@ -587,12 +609,12 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
   (setq vbnet-want-imenu t))
 
 ;; CSharp-mode
-(use-package csharp-mode
-  :mode "\\.cs$"
-  :config
-  (c-set-offset 'substatement-open '0)
-  (setq tab-width  4
-        c-basic-offset 4))
+(add-hook
+ 'csharp-mode-hook
+ '(lambda ()
+    (dap-mode 1)
+    (require 'dap-netcore)    
+    ))
 
 ;; markdown-mode
 (use-package markdown-mode
@@ -830,7 +852,7 @@ window.mermaid = mermaid;
 (use-package alchemist)
 (use-package ac-alchemist)
 (use-package elixir-mode
-  :config
+  :init
   (alchemist-mode)
   (ac-alchemist-setup))
 
