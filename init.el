@@ -469,22 +469,12 @@
   )
 
 (use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :ensure t
   :bind
   (("M-]" . copilot-next-completion)
-   ("M-[" . copilot-previous-completion))
-  :config
-  (setq )
-  :init
-  (defun my-tab ()
-    (interactive)
-    (or (copilot-accept-completion)
-        (company-indent-or-complete-common nil)))
-  (delq 'company-preview-if-just-one-frontend company-frontends)
-  (define-key company-mode-map (kbd "<tab>") 'my-tab)
-  (define-key company-mode-map (kbd "TAB") 'my-tab)
-  (define-key company-active-map (kbd "<tab>") 'my-tab)
-  (define-key company-active-map (kbd "TAB") 'my-tab))
+   ("M-[" . copilot-previous-completion)
+  ))
 
 ; dep key (setq openai-key "[YOUR API KEY]")
 (use-package openai :straight (:host github :repo "emacs-openai/openai"))
@@ -538,17 +528,10 @@
                   :download-server-fn #'lsp-csharp--omnisharp-download-server))
   (setq
    lsp-restart 'ignore
-   lsp-log-io t
-   ;lsp-auto-guess-root t
+   ;;lsp-log-io t
    lsp-log-max 1000
-   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-   gc-cons-threshold 100000000
    read-process-output-max (* 1024 1024) ;; 1mb
-   ;; https://www.reddit.com/r/emacs/comments/fxqfs2/trouble_with_lspmode_and_eldoc/
-   ;lsp-signature-auto-activate t
-   ;lsp-signature-doc-lines 1
-   ;lsp-typescript-tsserver-trace "verbose"
-   ;lsp-clients-typescript-log-verbosity "verbose"
+   lsp-auto-guess-root t
    ))
 
 (use-package lsp-ui
@@ -629,7 +612,7 @@ See `https://github.com/aws-cloudformation/cfn-python-lint'."
 (use-package web-server)
 
 (use-package maple-preview
-  :straight (:host github :repo "katsusuke/emacs-maple-preview" :files ("*.el" "index.html" "static"))
+  :straight (:host github :repo "honmaple/emacs-maple-preview" :files ("*.el" "index.html" "static"))
   :commands (maple-preview-mode)
   :config
   :init
@@ -799,7 +782,7 @@ window.mermaid = mermaid;
 ;;             (setq js-indent-level 2)))
 
 (use-package typescript-mode
-  :mode "\\.ts$"
+  :mode "\\.m?ts$"
   :config
   ;(flycheck-add-mode 'javascript-eslint 'web-mode)
   ;(flycheck-add-next-checker 'lsp 'javascript-eslint)
