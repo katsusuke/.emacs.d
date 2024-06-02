@@ -498,34 +498,6 @@
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]public\\'")
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
-(lsp-register-client
- (make-lsp-client :new-connection
-                  (lsp-stdio-connection
-                   #'(lambda ()
-                       (append
-                        (list (lsp-csharp--language-server-path) "-lsp")
-                        (when lsp-csharp-solution-file
-                          (list "-s" (expand-file-name lsp-csharp-solution-file)))))
-                   #'(lambda ()
-                       (when-let ((binary (lsp-csharp--language-server-path)))
-                         (f-exists? binary))))
-                  :activation-fn (lsp-activate-on "csharp")
-                  :server-id 'omnisharp
-                  :priority -1
-                  :action-handlers (ht ("omnisharp/client/findReferences" 'lsp-csharp--action-client-find-references))
-                  :notification-handlers (ht ("o#/projectadded" 'ignore)
-                                             ("o#/projectchanged" 'ignore)
-                                             ("o#/projectremoved" 'ignore)
-                                             ("o#/packagerestorestarted" 'ignore)
-                                             ("o#/msbuildprojectdiagnostics" 'ignore)
-                                             ("o#/packagerestorefinished" 'ignore)
-                                             ("o#/unresolveddependencies" 'ignore)
-                                             ("o#/error" 'lsp-csharp--handle-os-error)
-                                             ("o#/testmessage" 'lsp-csharp--handle-os-testmessage)
-                                             ("o#/testcompleted" 'lsp-csharp--handle-os-testcompleted)
-                                             ("o#/projectconfiguration" 'ignore)
-                                             ("o#/backgrounddiagnosticstatus" 'ignore))
-                  :download-server-fn #'lsp-csharp--omnisharp-download-server))
   (setq
    lsp-restart 'ignore
    ;;lsp-log-io t
