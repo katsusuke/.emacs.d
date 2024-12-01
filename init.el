@@ -178,6 +178,7 @@
 (straight-use-package 'use-package)
 (setq use-package-verbose t)
 (setq straight-use-package-by-default t)
+(setq load-prefer-newer t)
 
 ;(setq debug-on-error t)
 
@@ -191,12 +192,13 @@
 (use-package graphql-mode)
 (use-package ag :commands ag)
 (use-package pt :commands pt)
-(use-package asdf
-  :straight (:host github :repo "tabfugnic/asdf.el")
-  :config
-  (setq asdf-path (expand-file-name "~/.local/share/mise"))
-  (setq asdf-binary "/opt/homebrew/bin/mise")
-  (asdf-enable))
+(use-package dash)
+(use-package inheritenv)
+(use-package mise
+  :init
+  (add-hook 'after-init-hook #'global-mise-mode)
+  (setq mise-executable (expand-file-name "~/.local/bin/mise"))
+  (setq mise-debug t))
 (use-package pipenv)
 (use-package rhtml-mode)
 (use-package coffee-mode)
@@ -221,6 +223,8 @@
 (use-package vue-mode)
 ;(use-package prettier-js)
 (use-package ng2-mode)
+(with-eval-after-load 'typescript-mode (add-hook 'typescript-mode-hook #'lsp))
+
 (use-package which-key
   :config
   (which-key-mode))
@@ -465,20 +469,31 @@
   :config
   ; setting for lsp
   (setq company-minimum-prefix-length 1
-        company-idle-delay 0.0) ;; default is 0.2
+        company-idle-delay 0.0) ;; default is 0.2  
   )
 
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :ensure t
   :bind
-  (("M-]" . copilot-next-completion)
-   ("M-[" . copilot-previous-completion)
-  ))
+  (:map copilot-completion-map
+        ("<tab>" . 'copilot-accept-completion)
+        ("TAB" . 'copilot-accept-completion)
+        ("C-TAB" . 'copilot-accept-completion-by-word)
+        ("C-<tab>" . 'copilot-accept-completion-by-word)
+        ("M-]" . copilot-next-completion)
+        ("M-[" . copilot-previous-completion))
+  :config
+  (setq warning-suppress-log-types '((copilot copilot-exceeds-max-char)))
+  )
 
 ; dep key (setq openai-key "[YOUR API KEY]")
 (use-package openai :straight (:host github :repo "emacs-openai/openai"))
-(use-package chatgpt :straight (:host github :repo "emacs-openai/chatgpt"))
+(use-package chatgpt
+  :straight (:host github :repo "emacs-openai/chatgpt")
+  :config
+  (setq chatgpt-model "chatgpt-4o-latest")
+  )
 (use-package codegpt :straight (:host github :repo "emacs-openai/codegpt"))
 ; (use-package dall-e :straight (:host github :repo "emacs-openai/dall-e"))
 
@@ -489,7 +504,6 @@
    (scss-mode . lsp)
    (sass-mode . lsp)
    (vue-mode . lsp)
-   (typescript-mode . lsp)
    (rustic-mode . lsp)
    (js-mode . lsp)
    (csharp-mode . lsp)
@@ -526,7 +540,13 @@
 ;;   :hook ((typescript-mode . tide-setup)
 ;;          (typescript-mode . tide-hl-identifier-mode)))
 
-(use-package dap-mode)
+(use-package dap-mode
+  :config
+  (setq dap-auto-configure-features '(sessions locals controls tooltip))
+  (require 'dap-node)
+  (dap-mode 1)
+  (dap-auto-configure-mode 1)
+  )
 
 
 (use-package flycheck
@@ -673,7 +693,11 @@ window.mermaid = mermaid;
            ))
     (setq tab-width 4
           c-basic-offset 4
-          indent-tabs-mode 1)))
+          indent-tabs-mode 1)
+
+    (setq lsp-clients-clangd-args '("--header-insertion-decorators=0" "--log=verbose"))
+    (lsp)
+    ))
 
 ;; c++-mode
 (add-hook
@@ -756,9 +780,22 @@ window.mermaid = mermaid;
 (use-package typescript-mode
   :mode "\\.m?ts$"
   :config
-  ;(flycheck-add-mode 'javascript-eslint 'web-mode)
-  ;(flycheck-add-next-checker 'lsp 'javascript-eslint)
+  (setq lsp-clients-angular-language-server-command
+        (list
+         "/ngserver"
+         "--tsProbeLocations" "./node_modules"
+         "--ngProbeLocations" "./node_modules/@angular"
+         "--stdio"
+         ))
   )
+
+(defun my-typescript-mode-setup ()
+  (when (string= (file-name-extension buffer-file-name) "ts")
+    (if (string-match-p "\\.component\\.ts$" (file-name-nondirectory buffer-file-name))
+        (lsp 'angular)  ;; Angular LSPを起動
+      (lsp))))          ;; 通常のTypeScript LSPを起動
+(add-hook 'typescript-mode-hook #'my-typescript-mode-setup)
+
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
