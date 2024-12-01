@@ -1,6 +1,7 @@
 *~
 #*#
 *.elc
+*.eln
 /semanticdb
 /server
 /elpa
@@ -24,5 +25,7 @@
 /.cache
 /.mc-lists.el
 /lsp-cache
+/eln-cache
+
 
 /.dap-breakpoints
