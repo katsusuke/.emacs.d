@@ -6,6 +6,7 @@
 /server
 /elpa
 /projectile.cache
+/projects
 /recentf
 /image-dired
 /.env.el
@@ -26,6 +27,5 @@
 /.mc-lists.el
 /lsp-cache
 /eln-cache
-
 
 /.dap-breakpoints
