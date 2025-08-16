@@ -1,13 +1,5 @@
-;; ↓等幅フォントチェック用
-;; 12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
-;; あいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえおあいうえお
-;; メモ
-;; 現在有効なキーボードショートカットを表示するには<F1> b
-;;
-;; .emacs.el を再読み込みするには
-;; C-x C-s または Command + s
-;; M-x load-file RET ~/.emacs.el RET
-;;
+;;; init.el --- Emacs initialization file  -*- lexical-binding: t -*-
+;;; Commentary:
 ;; Dependencies
 ;;    cask
 ;;    marked (npmで入れる)
@@ -20,6 +12,14 @@
 ;;    aspell
 ;;    ※ migemo のインストール時に文字コードエラーが出るので euc-jp-unix を選んでやること
 ;;    wakatime (pyenv + pipで入れる)
+;; 
+;; メモ
+;; 現在有効なキーボードショートカットを表示するには<F1> b
+;;
+;; .emacs.el を再読み込みするには
+;; C-x C-s または Command + s
+;; M-x load-file RET ~/.emacs.el RET
+;;
 
 ;; custom-set-variables は別ファイルにする
 (setq custom-file (locate-user-emacs-file "custom.el"))
@@ -56,7 +56,7 @@
     (progn
       (custom-set-faces
        '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 98 :width normal :foundry "outline" :family "Osaka－等幅")))))
-      (set-frame-parameter nil 'alpha 85)
+      (set-frame-parameter nil 'alpha 90)
       ;; デフォルトの文字コードはUTF-8にする
       (set-default-coding-systems 'utf-8)
       (prefer-coding-system 'utf-8-unix)
@@ -144,14 +144,13 @@
       (setq frame-title-format (format "%%f - Emacs"))
 
       ;; disable x-popup-dialog
-      (defadvice yes-or-no-p (around prevent-dialog activate)
-	"Prevent yes-or-no-p from activating a dialog"
-	(let ((use-dialog-box nil))
-	  ad-do-it))
-      (defadvice y-or-n-p (around prevent-dialog-yorn activate)
-	"Prevent y-or-n-p from (and )ctivating a dialog"
-	(let ((use-dialog-box nil))
-	  ad-do-it))
+      (defun my-prevent-dialog-advice (orig-fun &rest args)
+        "Prevent dialog activation by temporarily disabling use-dialog-box"
+        (let ((use-dialog-box nil))
+          (apply orig-fun args)))
+      
+      (advice-add 'yes-or-no-p :around #'my-prevent-dialog-advice)
+      (advice-add 'y-or-n-p :around #'my-prevent-dialog-advice)
 
       (if (file-directory-p "/opt/homebrew/bin")
           (setenv "PATH" (format "%s:%s" (getenv "PATH") "/opt/homebrew/bin")))
@@ -186,7 +185,7 @@
 
 (use-package auto-highlight-symbol :config (global-auto-highlight-symbol-mode t))
 ;(use-package multiple-cursors :config (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
-(use-package mode-icons :config (mode-icons-mode))
+;(use-package mode-icons :config (mode-icons-mode))
 (use-package mmm-mode)
 (use-package request)
 (use-package graphql-mode)
@@ -196,13 +195,17 @@
 (use-package inheritenv)
 (use-package mise
   :init
-  (add-hook 'after-init-hook #'global-mise-mode)
   (setq mise-executable (expand-file-name "~/.local/bin/mise"))
-  (setq mise-debug t))
+  (add-hook 'after-init-hook #'global-mise-mode))
 (use-package pipenv)
 (use-package rhtml-mode)
 (use-package coffee-mode)
-(use-package hiwin)
+(use-package hiwin
+   :config
+   ;; 選択中のフレームを強調
+   (hiwin-activate)
+   (set-face-background 'hiwin-face "gray8")
+   )
 (use-package nginx-mode)
 (use-package rubocop)
 (use-package groovy-mode)
@@ -483,8 +486,10 @@
         ("C-<tab>" . 'copilot-accept-completion-by-word)
         ("M-]" . copilot-next-completion)
         ("M-[" . copilot-previous-completion))
-  :config
+  :init
   (setq warning-suppress-log-types '((copilot copilot-exceeds-max-char)))
+  :hook
+  ((prog-mode . copilot-mode))
   )
 
 ; dep key (setq openai-key "[YOUR API KEY]")
@@ -507,6 +512,8 @@
    (rustic-mode . lsp)
    (js-mode . lsp)
    (csharp-mode . lsp)
+   (ruby-mode . lsp)
+   (rbs-mode . lsp)
    )
   :config
   (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
@@ -542,10 +549,24 @@
 
 (use-package dap-mode
   :config
-  (setq dap-auto-configure-features '(sessions locals controls tooltip))
+  ;(setq dap-auto-configure-features '(sessions locals controls tooltip))
+  (setq dap-auto-configure-features '(sessions locals breakpoints expressions tooltip))
+  ;(setq dap-print-io t)
   (require 'dap-node)
   (dap-mode 1)
   (dap-auto-configure-mode 1)
+  (dap-register-debug-template "TSX Attach"
+                               (list :type "node"
+                                     :request "attach"
+                                     :name "TSX Attach"
+                                     :port 9229
+                                     :address "localhost"
+                                     :localRoot "${workspaceFolder}"
+                                     :remoteRoot "${workspaceFolder}"
+                                     :skipFiles ["<node_internals>/**"]
+                                     :sourceMaps t
+                                     :outFiles ["${workspaceFolder}/**/*.js"]
+                                     :protocol "inspector"))
   )
 
 
@@ -646,6 +667,8 @@ window.mermaid = mermaid;
     (beginning-of-line)
     )
   )
+
+(use-package rbs-mode)
 
 ;; HAML
 ;; C-i でインデント C-I でアンインデント
@@ -808,10 +831,6 @@ window.mermaid = mermaid;
             (server-start)
             (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function))))))
 
-;; 選択中のフレームを強調
-(hiwin-activate)
-(set-face-background 'hiwin-face "gray8")
-
 ;;web-mode
 (use-package web-mode
   :mode (("\\.\\(ctp\\|php\\|php5\\|inc\\)$" . web-mode)
@@ -841,12 +860,12 @@ window.mermaid = mermaid;
   :mode "[Dd]ockerfile")
 
 ;; elixir-mode
-(use-package alchemist)
-(use-package ac-alchemist)
-(use-package elixir-mode
-  :init
-  (alchemist-mode)
-  (ac-alchemist-setup))
+;(use-package alchemist)
+;(use-package ac-alchemist)
+;(use-package elixir-mode
+;  :init
+;  (alchemist-mode)
+;  (ac-alchemist-setup))
 
 ;; rust
 (use-package rustic
