@@ -506,8 +506,12 @@
   :ensure t
   :hook
   (csharp-mode . eglot-ensure)
+  (web-mode . (lambda ()
+                (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                  (eglot-ensure))))
   :config
   (add-to-list 'eglot-server-programs '((bitbake-mode) "bitbake-language-server"))
+  (add-to-list 'eglot-server-programs '(web-mode . ("typescript-language-server" "--stdio")))
   :bind (("M-t" . xref-find-definitions)
      ("M-r" . xref-find-references)
      ("C-t" . xref-go-back)))
