@@ -44,6 +44,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package '(project :type built-in))
+
 (if (file-exists-p "~/.emacs.d/.env.el")
     (load "~/.emacs.d/.env.el"))
 
@@ -226,7 +228,6 @@
 (use-package vue-mode)
 ;(use-package prettier-js)
 (use-package ng2-mode)
-(with-eval-after-load 'typescript-mode (add-hook 'typescript-mode-hook #'lsp))
 
 (use-package which-key
   :config
@@ -368,8 +369,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(use-package projectile)
-
 (use-package whitespace
   :commands whitespace-mode
   :hook
@@ -452,7 +451,8 @@
    )
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
-  (setq consult-project-root-function #'projectile-project-root))
+  ;(setq consult-project-root-function #'projectile-project-root)
+  )
 
 (defun consult-ripgrep-symbol-at-point ()
   (interactive)
@@ -471,8 +471,8 @@
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   ; setting for lsp
-  (setq company-minimum-prefix-length 1
-        company-idle-delay 0.0) ;; default is 0.2  
+  ;(setq company-minimum-prefix-length 1
+  ;company-idle-delay 0.0) ;; default is 0.2  
   )
 
 (use-package copilot
@@ -502,45 +502,15 @@
 (use-package codegpt :straight (:host github :repo "emacs-openai/codegpt"))
 ; (use-package dall-e :straight (:host github :repo "emacs-openai/dall-e"))
 
-
-(use-package lsp-mode
+(use-package eglot
+  :ensure t
   :hook
-  ((web-mode . lsp)
-   (scss-mode . lsp)
-   (sass-mode . lsp)
-   (vue-mode . lsp)
-   (rustic-mode . lsp)
-   (js-mode . lsp)
-   (csharp-mode . lsp)
-   (ruby-mode . lsp)
-   (rbs-mode . lsp)
-   )
+  (csharp-mode . eglot-ensure)
   :config
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]vendor\\'")
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]public\\'")
-  (add-to-list 'lsp-file-watch-ignored "[/\\\\]tmp\\'")
-  (setq
-   lsp-restart 'ignore
-   ;;lsp-log-io t
-   lsp-log-max 1000
-   read-process-output-max (* 1024 1024) ;; 1mb
-   lsp-auto-guess-root t
-   ))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq
-   lsp-ui-sideline-show-diagnostics t
-   lsp-ui-sideline-show-hover t
-   )
-  )
-
-(use-package lsp-pyright
-  :hook (python-mode . (lambda ()
-                         (pipenv-mode)
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+  (add-to-list 'eglot-server-programs '((bitbake-mode) "bitbake-language-server"))
+  :bind (("M-t" . xref-find-definitions)
+     ("M-r" . xref-find-references)
+     ("C-t" . xref-go-back)))
 
 ;; (use-package tide
 ;;   :after (typescript-mode company flycheck)
@@ -717,9 +687,6 @@ window.mermaid = mermaid;
     (setq tab-width 4
           c-basic-offset 4
           indent-tabs-mode 1)
-
-    (setq lsp-clients-clangd-args '("--header-insertion-decorators=0" "--log=verbose"))
-    (lsp)
     ))
 
 ;; c++-mode
@@ -803,22 +770,14 @@ window.mermaid = mermaid;
 (use-package typescript-mode
   :mode "\\.m?ts$"
   :config
-  (setq lsp-clients-angular-language-server-command
-        (list
-         "/ngserver"
-         "--tsProbeLocations" "./node_modules"
-         "--ngProbeLocations" "./node_modules/@angular"
-         "--stdio"
-         ))
+  ;; (setq lsp-clients-angular-language-server-command
+  ;;       (list
+  ;;        "/ngserver"
+  ;;        "--tsProbeLocations" "./node_modules"
+  ;;        "--ngProbeLocations" "./node_modules/@angular"
+  ;;        "--stdio"
+  ;;        ))
   )
-
-(defun my-typescript-mode-setup ()
-  (when (string= (file-name-extension buffer-file-name) "ts")
-    (if (string-match-p "\\.component\\.ts$" (file-name-nondirectory buffer-file-name))
-        (lsp 'angular)  ;; Angular LSPを起動
-      (lsp))))          ;; 通常のTypeScript LSPを起動
-(add-hook 'typescript-mode-hook #'my-typescript-mode-setup)
-
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
@@ -888,16 +847,16 @@ window.mermaid = mermaid;
 
 (setq ediff-split-window-function 'split-window-horizontally)
 
-(defun projectile-path ()
-  (file-relative-name buffer-file-name (projectile-project-root)))
+;; (defun projectile-path ()
+;;   (file-relative-name buffer-file-name (projectile-project-root)))
 
-(defun copy-projectile-path ()
-  (interactive)
-  (kill-new (projectile-path)))
+;; (defun copy-projectile-path ()
+;;   (interactive)
+;;   (kill-new (projectile-path)))
 
-(defun copy-projectile-line ()
-  (interactive)
-  (kill-new
-   (concat (projectile-path) ":" (number-to-string (line-number-at-pos)))))
+;; (defun copy-projectile-line ()
+;;   (interactive)
+;;   (kill-new
+;;    (concat (projectile-path) ":" (number-to-string (line-number-at-pos)))))
 
 (put 'dired-find-alternate-file 'disabled nil)
