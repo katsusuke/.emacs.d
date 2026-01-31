@@ -95,7 +95,7 @@
 (if (eq window-system 'ns)
     (progn
       (load-theme 'wombat t)
-      (set-frame-parameter (selected-frame) 'alpha '(75 . 65))
+      (set-frame-parameter (selected-frame) 'alpha '(85 . 75))
       (tool-bar-mode -1)
       (setq ns-pop-up-frames nil) ;; コマンドから open -a Emacs.app されたときに新しいフレームを開かない
       ;; keybind
@@ -504,6 +504,15 @@
   ((prog-mode . copilot-mode))
   )
 
+(use-package vterm
+  :commands vterm)
+
+(use-package claude-code-ide
+  :straight (:host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
+
 ; dep key (setq openai-key "[YOUR API KEY]")
 (use-package openai :straight (:host github :repo "emacs-openai/openai"))
 (use-package chatgpt
@@ -784,16 +793,7 @@ window.mermaid = mermaid;
 ;;             (setq js-indent-level 2)))
 
 (use-package typescript-mode
-  :mode "\\.m?ts$"
-  :config
-  ;; (setq lsp-clients-angular-language-server-command
-  ;;       (list
-  ;;        "/ngserver"
-  ;;        "--tsProbeLocations" "./node_modules"
-  ;;        "--ngProbeLocations" "./node_modules/@angular"
-  ;;        "--stdio"
-  ;;        ))
-  )
+  :mode "\\.m?ts$")
 
 (if (or (eq window-system 'w32) (eq window-system 'ns) (eq window-system 'x))
     (progn
