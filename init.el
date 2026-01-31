@@ -466,14 +466,26 @@
   :init
   (marginalia-mode))
 
-(use-package company
+(use-package corfu
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous))
   :init
-  (add-hook 'after-init-hook 'global-company-mode)
-  :config
-  ; setting for lsp
-  ;(setq company-minimum-prefix-length 1
-  ;company-idle-delay 0.0) ;; default is 0.2  
-  )
+  (global-corfu-mode))
+
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
 
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
