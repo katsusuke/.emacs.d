@@ -27,6 +27,7 @@
 /.mc-lists.el
 /lsp-cache
 /eln-cache
+/transient/history.el
 
 /.dap-breakpoints
 /.extension
