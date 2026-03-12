@@ -220,9 +220,7 @@
 
 (use-package wakatime-mode
   :config
-  ;; wakatime-mode
-  (if (and (executable-find "wakatime") (boundp 'wakatime-api-key))
-      (global-wakatime-mode t)))
+  (global-wakatime-mode t))
 (use-package slim-mode)
 (use-package terraform-mode)
 (use-package vue-mode)
@@ -506,6 +504,25 @@
 
 (use-package vterm
   :commands vterm)
+
+(use-package inheritenv
+  :straight (:type git :host github :repo "purcell/inheritenv"))
+
+;; eat
+(use-package eat
+  :straight (:type git :host codeberg :repo "akib/emacs-eat"
+             :files ("*.el" ("term" "term/*.el") "*.texi" "*.ti"
+                     ("terminfo/e" "terminfo/e/*")
+                     ("terminfo/65" "terminfo/65/*")
+                     ("integration" "integration/*")
+                     (:exclude ".dir-locals.el" "*-tests.el"))))
+
+;; claude-code.el
+(use-package claude-code
+  :straight (:type git :host github :repo "stevemolitor/claude-code.el"
+             :branch "main" :depth 1
+             :files ("*.el" (:exclude "images/*")))
+  :bind-keymap ("C-c c" . claude-code-command-map))
 
 (use-package claude-code-ide
   :straight (:host github :repo "manzaltu/claude-code-ide.el")
